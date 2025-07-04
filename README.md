@@ -64,7 +64,12 @@ l3_conf = {'size': 512, 'line_size': 4, 'assoc': 8}
 * The second tab of plots shows that the execution time for both application is usually larger when running in parallel. 
 ![Alt text](image/time.png) 
 By performing exploration, we would like the white space within the scatter plot to be as covered as possible. Moreover, we would like the diffusion of the histograms to be as high as possible.
-## IMGEP
+## IMGEP, Only module made of essential informations
+One create a vector made of :
+* $ (ratio[(0,\cdot)], ratio[(\cdot,1)],ratio[(0,1)], t_{0,\cdot}(c_{0}), t_{\cdot,1}(c_{1}),t_{0,1}(c_{0}),t_{0,1}(c_{1}))\mathbb{R}^{6}$
+
+## IMGEP with several goal spaces (modules), each with different type of informations. 
+Modules are selected at random or with a criterium like intrinsic reward
 * I would like to perform a modular approach of IMGEP with several modules : 
 	* time : $(t_{\cdot,1}(c_{1}),t_{0,\cdot}(c_{0}), t_{0,1}(c_{1}),t_{0,1}(c_{0}))\in\mathbb{R}^{4}$
 	* time difference core 0: $|(t_{0,\cdot}(c_{0})-(t_{0,1}(c_{0}))|\in\mathbb{R}$
