@@ -50,11 +50,11 @@ class IR:
         probs = []
         #constant to normalize: sum of all progress accross all modules
         for module in self.modules:
-            sum_ += module["progress"]
+            sum_ += module["total_progress"]
         if sum_!=0:
             for module in self.modules:
                 #print(module["type"], module["progress"])
-                probs.append(module["progress"]/sum_)
+                probs.append(module["total_progress"]/sum_)
         else:
             probs = [(1.0/len(self.modules))]*len(self.modules)
         return probs
@@ -63,19 +63,34 @@ class IR:
         choose the module to explore, the choice is random, based on the learing progress,
         itself based on the diversity
         """
-        probs = self.prob()
-        C = np.random.binomial(1,self.epsilon)
         vec = np.zeros(len(self.modules))
-        if C:
+        if self.calls==0:
+            C = 1
             vec[np.random.randint(0,len(self.modules))] = 1.0
-        probs = (1-C)*np.array(probs)+ C*vec
+            probs = vec
+        else:
+            probs = self.prob()
+            C = np.random.binomial(1,self.epsilon)
+            if C:
+                vec[np.random.randint(0,len(self.modules))] = 1.0
+            probs = (1-C)*np.array(probs)+ C*vec
         return self.modules[int(np.random.choice(len(self.modules), 1, p=probs))]
     def __call__(self):
         """
-        Calculates the diversity evolution for the current module
+        Evaluates progress made by exploring each module
         """
         for module in self.modules:
-            self.eval_module_diversity(module)
+            for module_ in self.modules:
+                self.eval_module_diversity(module_)
+            goal = self.goal_module(self.history,module)
+            for j in range(self.num_iteration):
+                parameter = self.Pi(goal,self.history,module)
+                self.history.store({"program":parameter}|self.env(parameter))
+            for module_ in self.modules:
+                self.eval_module_diversity(module_)
+            self.progress()
+            module["total_progress"] = np.sum([module["progress"] for module in self.modules])
+        self.calls+=1
     def eval_module_diversity(self,module:dict):
         feature = self.goal_module.data2feature(self.history.memory_perf, module)
         if module["type"] in ["miss_ratios","time_diff","time","miss_ratios_detailled","miss_count"]:

@@ -29,7 +29,7 @@ class IMGEP:
         self.modules = modules 
         self.max_len = max_len
         self.start = 0
-        self.periode_expl = 5
+        self.periode_expl = 10
         self.k = 0
     def take(self,sample:dict,N_init:int): 
         """Takes the ``N_init`` first steps from the ``sample`` dictionnary to initialize the exploration. 
@@ -45,25 +45,27 @@ class IMGEP:
         """Performs the exploration.
         intr_reward:bool. If True, the exploration uses intrinsic reward based on diversity
         """
-        cond = False
-        #time_explor = 0
+        time_explor = 0
         for i in range(self.start,self.N):
             if i%1000==0:
                 print(f"{i} iterations")
+            if i<time_explor:
+                continue
             if i<self.N_init:
                 parameter = make_random_paire_list_instr(self.max_len,num_addr=self.env.num_addr)
             else:
                 if intr_reward:
                     #Sample target goal
-                    if cond and (i-self.N_init)%self.periode==0:
+                    if (i-self.N_init)%(self.periode_expl*self.periode)==0:
                         self.ir()
+                        time_explor = i + self.ir.num_iteration*len(self.ir.modules)
+                        print("time explor", time_explor)
                         module = self.ir.choice()
                         goal = self.G(self.H, module = module)
+                        continue
                     elif (i-self.N_init)%self.periode==0:
-                        module = random.choice(self.modules)
+                        module = self.ir.choice()
                         goal = self.G(self.H, module = module)
-                        self.ir()
-                        cond = True
                 else:
                     if (i-self.N_init)%self.periode==0 and i>=self.N_init:
                         module = random.choice(self.modules)

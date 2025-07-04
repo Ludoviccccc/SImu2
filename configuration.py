@@ -2,15 +2,14 @@ import json
 import numpy as np
 if __name__ == "__main__":
     folder1module = "data_1module"
-    test_mode = False
     num_addr = 20
     N = int(10000)
     N_init = 1000
     max_len = 50
-    periode = 10
+    periode = 50
     num_bank = 4 
     mutation_rate = .1
-    num_iteration = 50
+    num_iteration = 5 #has to be small compared to N
     #modules =   ["time"]
     modules = [{"type":"time_vector","bins":list(np.linspace(0,1000,21))}]
     modules +=   [{"type":"miss_bank","bank":j,"bins":list(np.linspace(0,1,21))} for j in range(num_bank)]
