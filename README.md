@@ -111,19 +111,19 @@ The result of an exploration with **kNN** with k=1,2,3,4. IMGEP is compared with
 ![Alt text](image_comp/comp_ratios_iteration_1_10000.png))
 #### k = 2
 ![Alt text](image_comp/ratios_imgep_ir_2_10000.png)
-![Alt text](image_comp/time_imgep_ir_1_10000.png))
+![Alt text](image_comp/time_imgep_ir_4_40000.png))
 ![Alt text](image_comp/comparaison_time_diversity_2_10000.png)
 ![Alt text](image_comp/comp_global_ratios_iteration_2_10000.png)
 ![Alt text](image_comp/comp_ratios_iteration_2_10000.png))
 #### k = 3
 ![Alt text](image_comp/ratios_imgep_ir_3_10000.png)
-![Alt text](image_comp/time_imgep_ir_1_10000.png))
+![Alt text](image_comp/time_imgep_ir_4_40000.png))
 ![Alt text](image_comp/comparaison_time_diversity_3_10000.png)
 ![Alt text](image_comp/comp_global_ratios_iteration_3_10000.png)
 ![Alt text](image_comp/comp_ratios_iteration_3_10000.png))
 #### k = 4
 ![Alt text](image_comp/ratios_imgep_ir_4_10000.png)
-![Alt text](image_comp/time_imgep_ir_1_10000.png))
+![Alt text](image_comp/time_imgep_ir_4_40000.png))
 ![Alt text](image_comp/comparaison_time_diversity_4_10000.png)
 ![Alt text](image_comp/comp_global_ratios_iteration_4_10000.png)
 ![Alt text](image_comp/comp_ratios_iteration_4_10000.png))
