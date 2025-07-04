@@ -102,28 +102,28 @@ The result of an exploration with **kNN** with k=1,2,3,4. IMGEP is compared with
 * We can visualise distributions on histograms for time differences and miss ratios differences. The distributions look gaussian, probably a consequence of **Central limit theorem** ? For random exploration, the selection of program is random and thus the otention of metrics is also random. With the combination of these these two stages, the obtained metrics are random variables following an unknown multivariate distribution. 
 * As I discussed with Marko, I have implemented an intrinsic reward based on diversity evolution, to help with module selection, in file `exploration.imgep.intrinsic_reward.py`.
 * The diversity is higher with IMGEP, for both miss ratios and time spaces. Meanwhile some spaces aren't explored enough. I will have to make a longer exploration to see changes.
-#### k = 1
-![Alt text](image_comp/comp_ratios_1_10000_lp.png)
-![Alt text](image_comp/comp_times_k1_10000_lp.png)
-![Alt text](image_comp/comparaison_time_diversity_1_10000.png)
-![Alt text](image_comp/comp_global_ratios_iteration_1_10000_lp_vs_no_lp.png)
 
-![Alt text](image_comp/comp_ratios_iteration_1_10000_lp_vs_no_lp.png)
+#### k = 1
+![Alt text](image_comp/ratios_imgep_ir_1_10000.png)
+![Alt text](image_comp/time_imgep_ir_1_10000.png))
+![Alt text](image_comp/comparaison_time_diversity_1_10000.png)
+![Alt text](image_comp/comp_global_ratios_iteration_1_10000.png)
+![Alt text](image_comp/comp_ratios_iteration_1_10000.png))
 #### k = 2
-![Alt text](image_comp/comp_ratios_2_10000_lp.png)
-![Alt text](image_comp/comp_times_k2_10000_lp.png)
+![Alt text](image_comp/ratios_imgep_ir_2_10000.png)
+![Alt text](image_comp/time_imgep_ir_1_10000.png))
 ![Alt text](image_comp/comparaison_time_diversity_2_10000.png)
-![Alt text](image_comp/comp_global_ratios_iteration_2_10000_lp_vs_no_lp.png)
-![Alt text](image_comp/comp_ratios_iteration_2_10000_lp_vs_no_lp.png)
+![Alt text](image_comp/comp_global_ratios_iteration_2_10000.png)
+![Alt text](image_comp/comp_ratios_iteration_2_10000.png))
 #### k = 3
-![Alt text](image_comp/comp_ratios_3_10000_lp.png)
-![Alt text](image_comp/comp_times_k3_10000_lp.png)
-![Alt text](image_comp/comparaison_time_diversity_3.png)
-![Alt text](image_comp/comp_global_ratios_iteration_3_10000_lp_vs_no_lp.png)
-![Alt text](image_comp/comp_ratios_iteration_3_10000_lp_vs_no_lp.png)
+![Alt text](image_comp/ratios_imgep_ir_3_10000.png)
+![Alt text](image_comp/time_imgep_ir_1_10000.png))
+![Alt text](image_comp/comparaison_time_diversity_3_10000.png)
+![Alt text](image_comp/comp_global_ratios_iteration_3_10000.png)
+![Alt text](image_comp/comp_ratios_iteration_3_10000.png))
 #### k = 4
-![Alt text](image_comp/comp_ratios_4_10000_lp.png)
-![Alt text](image_comp/comp_times_k4_10000_lp.png)
+![Alt text](image_comp/ratios_imgep_ir_4_10000.png)
+![Alt text](image_comp/time_imgep_ir_1_10000.png))
 ![Alt text](image_comp/comparaison_time_diversity_4_10000.png)
-![Alt text](image_comp/comp_global_ratios_iteration_4_10000_lp_vs_no_lp.png)
-![Alt text](image_comp/comp_ratios_iteration_4_10000_lp_vs_no_lp.png)
+![Alt text](image_comp/comp_global_ratios_iteration_4_10000.png)
+![Alt text](image_comp/comp_ratios_iteration_4_10000.png))
