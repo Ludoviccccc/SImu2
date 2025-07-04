@@ -5,7 +5,7 @@ from exploration.history import History
 from exploration.imgep.goal_generator import GoalGenerator
 from exploration.imgep.OptimizationPolicy import OptimizationPolicykNN
 from exploration.env.func import Env
-class IR:
+class IR2:
     """
     Intrinsic reward class
     env:Env. The environment 

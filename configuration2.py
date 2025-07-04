@@ -1,8 +1,8 @@
 import json
 if __name__ == "__main__":
-    folder = "data_addr_32_bank_8"
-    folder1module = "data_1module"
-    image_folder ="image_addr_32_bank_8"
+    folder = "all_data/data_addr_32_bank_8"
+    folder1module = "all_data/data_1module"
+    image_folder ="all_images/image_addr_32_bank_8"
     test_mode = False
     num_addr = 64
     N = int(10000)

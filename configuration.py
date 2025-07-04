@@ -7,7 +7,7 @@ if __name__ == "__main__":
     N_init = 1000
     max_len = 50
     periode = 50
-    num_bank = 4 
+    num_bank = 4
     mutation_rate = .1
     num_iteration = 5 #has to be small compared to N
     #modules =   ["time"]
@@ -25,9 +25,8 @@ if __name__ == "__main__":
     modules = modules + dict_modules + ratios_detailled + dict_times
     #modules = [{"type":"miss_ratios_global_time"}]
 
-    folder = "data10"
-    config = {"modules":modules,
-              "N_init":N_init,
+    folder = "all_data/data10"
+    config = {"N_init":N_init,
               "N":N,
               "periode":periode,
               "mutation_rate":mutation_rate,
@@ -39,3 +38,7 @@ if __name__ == "__main__":
               "num_iteration": num_iteration}
     with open(f"{folder}/config.json","w") as f:
         json.dump(config, f)
+    modules_dict = {"modules":modules}
+
+    with open(f"{folder}/modules.json","w") as f:
+        json.dump(modules_dict, f)

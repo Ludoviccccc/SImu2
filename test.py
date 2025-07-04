@@ -18,7 +18,10 @@ if __name__=="__main__":
     folder1module = "data_1module"
     with open(sys.argv[1],"rb") as f:
         config = json.load(f)
-    modules = config["modules"]
+    with open(sys.argv[2],"rb") as f:
+        modules_dict = json.load(f)
+    modules = modules_dict["modules"]
+    #modules = config["modules"]
     periode = config["periode"]
     mutation_rate = config["mutation_rate"]
     N = config["N"]

@@ -9,7 +9,7 @@ import random
 
 from exploration.imgep.intrinsic_reward import IR
 
-class IMGEP:
+class IMGEP2:
     """
     N: int. The experimental budget
     N_init: int. Number of experiments at random
