@@ -98,6 +98,7 @@ Modules are selected at random or with a criterium like intrinsic reward
    	* $\cdots$
 
 ### Goal generattion
+Selection of the module to explore at random or guided with intrinsic reward 
 ### Goal strategy achievement
 ## Results
 
