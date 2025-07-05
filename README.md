@@ -1,8 +1,8 @@
 # Curiosity-driven-approach
 
 ## On going:
-* Quantifying **ddr contention** with the `sim.ddr.py` 
-* Visualizing these data, and showing the diversity of a set.
+* Modelling the exploration of **ddr contention** with the `sim.ddr.py` 
+* Visualizing these data, and showing the diversity of the resulting sets.
 ## Description Simulateur Eric:
  This model represents a memory hierarchy with
  - 3 levels of cache (L1, L2, L3)
@@ -23,8 +23,7 @@ A binary tree is used to implement the PLRU algorithm. here is one tree per set.
 * `sim.class_mem_sim.DDRMemory`:  DDR memory model with banks, row buffers, and latency variations
 
 ## Parameter space
-Parameters are pair of intruction sequences like below:
-I fix the maximum length of the instruction sequences
+Parameters are pairs of intruction sequences. I fix the maximum length of the instruction sequences, therefore this will be an additional parameter. Within the python program, instruction sequences are list of dictionaries :
 ```python
 sequence_core_0 = [{'type': 'r', 'addr': 11, 'core': 0},{'type': 'w', 'addr': 5, 'value': 686, 'core': 0}]
 sequence_core_1 = [{'type': 'w', 'addr': 42, 'value': 686, 'core': 1},{'type': 'r', 'addr': 14,  'core': 1}]
@@ -47,7 +46,6 @@ time[S2, (S_1,S_2)],
 time[S1, (,S_1)],
 time[S2, (S_2,)]}
 ```
-**Question : Is such a vector useful to identify micro-architecural mechanisms ?**
 
 ## Visualisation
 
@@ -84,8 +82,7 @@ To provide more efficiency and to avoid working with a limited novelty in our pa
 The performed mutations consist of changing the existing instructions
 
 ## IMGEP with several goal spaces (modules), each with different type of informations. 
-Modules are selected at random or with a criterium like intrinsic reward
-* I would like to perform a modular approach of IMGEP with several modules : 
+* I would like to perform a modular approach of IMGEP with several goal spaces (modules) : 
 	* time : $(t_{\cdot,1}(c_{1}),t_{0,\cdot}(c_{0}), t_{0,1}(c_{1}),t_{0,1}(c_{0}))\in\mathbb{R}^{4}$
 	* time difference core 0: $|(t_{0,\cdot}(c_{0})-(t_{0,1}(c_{0}))|\in\mathbb{R}$
 	* time difference core 1: $|(t_{\cdot,1}(c_{1})-(t_{0,1}(c_{1}))|\in\mathbb{R}$
@@ -98,7 +95,8 @@ Modules are selected at random or with a criterium like intrinsic reward
    	* $\cdots$
 
 ### Goal generattion
-Selection of the module to explore at random or guided with intrinsic reward 
+During the exploration, we can explore only one module at the same time. THe selection of the module to explore will be either uniformly random or guided with intrinsic reward.
+* I define an intrinsic reward based on the diversity evolution...
 ### Goal strategy achievement
 ## Baseline
 To be compared with random and a strategy of mixing k programs
