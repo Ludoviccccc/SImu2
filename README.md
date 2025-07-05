@@ -71,6 +71,18 @@ One explore the space $\mathcal{T} = \\{(ratio[0,\cdot],ratio[\cdot,1],ratio[0,1
 	* $\mbox{min}_{\mathcal{T}} g:= (\mbox{min} g_1,\cdots,\mbox{min} g_6)$
  	* $\mbox{max}_{\mathcal{T}} g:= (\mbox{max} g_1,\cdots,\mbox{max} g_6)$
  * Periodically sample goal uniformly : $g\sim\mathcal{U}(min_{T} g,max_{T}g)$
+
+   ### Goal strategy achievement
+For a given time goal $g$, I choose to exploit a **kNN** model with a loss function based on the L2 norm, ${\mathcal{L}}(g)(z) = \sum_{i}{(z_{i} - g_{i})}^{2}$:
+*  to select the **k** closest time vectors from our database $\mathcal{H}$. 
+* Once k tuples $((S_{0},S_{1}),z)\in\Theta\times\mathcal{T}$ are selected, mix the pairs of programs together to produce a new one. See function `exploration.imgep.mix_instruction_lists`
+* If `k=1`, the **kNN** model returns the program corresponding to the closest pair from $g$, that is $(S_{0},S_{1})$. If `k>1` the model returns the mixed pair of program.
+
+
+To provide more efficiency and to avoid working with a limited novelty in our parameter space, we also:
+* perform lights mutations on the program according to a `mutation operator`. See function `exploration.imgep.mutation.mutate_instructions`.
+The performed mutations consist of changing the existing instructions
+
 ## IMGEP with several goal spaces (modules), each with different type of informations. 
 Modules are selected at random or with a criterium like intrinsic reward
 * I would like to perform a modular approach of IMGEP with several modules : 
@@ -84,26 +96,10 @@ Modules are selected at random or with a criterium like intrinsic reward
 	* miss ratio differences core 0: $|ratio[(0,1),bk] - ratio[(0,\cdot),bk]|, \mbox{with bank } bk\in\\{1,2,3,4\\}$
 	* miss ratio differences core 1: $|ratio[(0,1),bk] - ratio[(\cdot,1),bk]|, \mbox{with bank } bk\in\\{1,2,3,4\\}$
    	* $\cdots$
+
 ### Goal generattion
-Let's note the cores $c_{0}$ and $c_{1}$.
-* For each module, periodically set the sampling boundaries based on the history $\mathcal{H}$,allowing to sample new goals *e.g*:
-	* $min T (c_{0}),max T (c_{0}),min T (c_{1}),max T (c_{1}) \leftarrow \mathcal{H}.stats((t_{\cdot,1}(c_{1}),t_{0,\cdot}(c_{0}), t_{0,1}(c_{1}),t_{0,1}(c_{0})))$
-	* Sample the time vector $(t_{\cdot,1}(c_{1}),t_{0,\cdot}(c_{0}), t_{0,1}(c_{1}),t_{0,1}(c_{0}))$ in two stages:
-
-	* $(t_{\cdot,1},t_{0,\cdot})\sim (\mathcal{U}([min T (c_{0}), max T (c_{0})]),\mathcal{U}([min T (c_{1}), max T (c_{1})]))$
-
-	* $(t_{0,1}(c_{1}),t_{0,1}(c_{1}))\sim (t_{\cdot,1}(c_{1})\cdot \mathcal{U}([1.0,4.0]),t_{0,\cdot}(c_{0})\cdot \mathcal{U}([1.0,4.0]))$
 ### Goal strategy achievement
-For a given time goal $g$, I choose to exploit a **kNN** model with a loss function based on the L2 norm, ${\mathcal{L}}(g)(z) = \sum_{i}{(z_{i} - g_{i})}^{2}$:
-*  to select the **k** closest time vectors from our database $\mathcal{H}$. 
-* Once k tuples $((S_{0},S_{1}),z)\in\Theta\times\mathcal{T}$ are selected, mix the pairs of programs together to produce a new one. See function `exploration.imgep.mix_instruction_lists`
-* If `k=1`, the **kNN** model returns the program corresponding to the closest pair from $g$, that is $(S_{0},S_{1})$. If `k>1` the model returns the mixed pair of program.
-
-
-To provide more efficiency and to avoid working with a limited novelty in our parameter space, we also:
-* perform lights mutations on the program according to a `mutation operator`. See function `exploration.imgep.mutation.mutate_instructions`.
-The performed mutations consist of changing the existing instructions
-### Results
+## Results
 
 The result of an exploration with **kNN** with k=1,2,3,4. IMGEP is compared with a random exploration for `N=3000` iterations, with `N_init = 500` steps for initialization. 
 * We can visualise distributions on histograms for time differences and miss ratios differences. The distributions look gaussian, probably a consequence of **Central limit theorem** ? For random exploration, the selection of program is random and thus the otention of metrics is also random. With the combination of these these two stages, the obtained metrics are random variables following an unknown multivariate distribution. 
