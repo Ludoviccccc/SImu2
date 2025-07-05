@@ -70,8 +70,7 @@ One explore the space $\mathcal{T} = \\{(ratio[0,\cdot],ratio[\cdot,1],ratio[0,1
 * Periodically set the sampling boundaries based on the history $\mathcal{H}$, allowing to sample new goals *e.g*:
 	* $\mbox{min}_{\mathcal{T}} g:= (\mbox{min} g_1,\cdots,\mbox{min} g_6)$
  	* $\mbox{max}_{\mathcal{T}} g:= (\mbox{max} g_1,\cdots,\mbox{max} g_6)$
- * Periodically sample goal uniformy :
-   	* $g\sim\mathcal{U}(\mbox{min}_{T} g,\mbox{max}_{T} g)$
+ * Periodically sample goal uniformly : $g\sim\mathcal{U}(\mbox{min}_{T} g,\mbox{max}_{T}g)$
 ## IMGEP with several goal spaces (modules), each with different type of informations. 
 Modules are selected at random or with a criterium like intrinsic reward
 * I would like to perform a modular approach of IMGEP with several modules : 
