@@ -65,7 +65,10 @@ l3_conf = {'size': 512, 'line_size': 4, 'assoc': 8}
 ![Alt text](image/time.png) 
 By performing exploration, we would like the white space within the scatter plot to be as covered as possible. Moreover, we would like the diffusion of the histograms to be as high as possible.
 ## IMGEP, Only module made of essential informations
-One create a vector made of $(ratio[0,\cdot],ratio[\cdot,1],ratio[0,1],t_{0,\cdot}(c_{0}),t_{\cdot,1}(c_{1}),t_{0,1}(c_{0}),t_{0,1}(c_{1}))\in\mathbb{R}^{6}$
+One create a vector made of $g = (ratio[0,\cdot],ratio[\cdot,1],ratio[0,1],t_{0,\cdot}(c_{0}),t_{\cdot,1}(c_{1}),t_{0,1}(c_{0}),t_{0,1}(c_{1}))\in\mathbb{R}^{6}$
+### Goal generation
+* Periodically set the sampling boundaries based on the history $\mathcal{H}$,allowing to sample new goals *e.g*:
+	* $min g:= (min g_1,\cdots,ming_6),max g: (max g_1,\cdots,max g_6)$
 
 ## IMGEP with several goal spaces (modules), each with different type of informations. 
 Modules are selected at random or with a criterium like intrinsic reward
@@ -89,7 +92,6 @@ Let's note the cores $c_{0}$ and $c_{1}$.
 	* $(t_{\cdot,1},t_{0,\cdot})\sim (\mathcal{U}([min T (c_{0}), max T (c_{0})]),\mathcal{U}([min T (c_{1}), max T (c_{1})]))$
 
 	* $(t_{0,1}(c_{1}),t_{0,1}(c_{1}))\sim (t_{\cdot,1}(c_{1})\cdot \mathcal{U}([1.0,4.0]),t_{0,\cdot}(c_{0})\cdot \mathcal{U}([1.0,4.0]))$
-* I use an instrinsic reward...
 ### Goal strategy achievement
 For a given time goal $g$, I choose to exploit a **kNN** model with a loss function based on the L2 norm, ${\mathcal{L}}(g)(z) = \sum_{i}{(z_{i} - g_{i})}^{2}$:
 *  to select the **k** closest time vectors from our database $\mathcal{H}$. 
