@@ -100,6 +100,8 @@ Modules are selected at random or with a criterium like intrinsic reward
 ### Goal generattion
 Selection of the module to explore at random or guided with intrinsic reward 
 ### Goal strategy achievement
+## Baseline
+To be compared with random and a strategy of mixing k programs
 ## Results
 
 The result of an exploration with **kNN** with k=1,2,3,4. IMGEP is compared with a random exploration for `N=3000` iterations, with `N_init = 500` steps for initialization. 
