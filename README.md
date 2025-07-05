@@ -65,11 +65,10 @@ l3_conf = {'size': 512, 'line_size': 4, 'assoc': 8}
 ![Alt text](image/time.png) 
 By performing exploration, we would like the white space within the scatter plot to be as covered as possible. Moreover, we would like the diffusion of the histograms to be as high as possible.
 ## IMGEP, Only module made of essential informations
-One create a vector made of $g = (ratio[0,\cdot],ratio[\cdot,1],ratio[0,1],t_{0,\cdot}(c_{0}),t_{\cdot,1}(c_{1}),t_{0,1}(c_{0}),t_{0,1}(c_{1}))\in\mathbb{R}^{6}$
+One explore a space $\mathcal{S} = \\{(ratio[0,\cdot],ratio[\cdot,1],ratio[0,1],t_{0,\cdot}(c_{0}),t_{\cdot,1}(c_{1}),t_{0,1}(c_{0}),t_{0,1}(c_{1}))\in\mathbb{R}^{6}\\}$
 ### Goal generation
-* Periodically set the sampling boundaries based on the history $\mathcal{H}$,allowing to sample new goals *e.g*:
-	* $min g:= (min g_1,\cdots,ming_6),max g: (max g_1,\cdots,max g_6)$
-
+* Periodically set the sampling boundaries based on the history $\mathcal{H}$, allowing to sample new goals *e.g*:
+	* $\mbox{min} g:= (\mbox{min} g_1,\cdots,\mbox{min} g_6),\mbox{max} g: (\mbox{max} g_1,\cdots,\mbox{max} g_6)$
 ## IMGEP with several goal spaces (modules), each with different type of informations. 
 Modules are selected at random or with a criterium like intrinsic reward
 * I would like to perform a modular approach of IMGEP with several modules : 
@@ -83,7 +82,7 @@ Modules are selected at random or with a criterium like intrinsic reward
 	* miss ratio differences core 0: $|ratio[(0,1),bk] - ratio[(0,\cdot),bk]|, \mbox{with bank } bk\in\\{1,2,3,4\\}$
 	* miss ratio differences core 1: $|ratio[(0,1),bk] - ratio[(\cdot,1),bk]|, \mbox{with bank } bk\in\\{1,2,3,4\\}$
    	* $\cdots$
-### Goal generator
+### Goal generattion
 Let's note the cores $c_{0}$ and $c_{1}$.
 * For each module, periodically set the sampling boundaries based on the history $\mathcal{H}$,allowing to sample new goals *e.g*:
 	* $min T (c_{0}),max T (c_{0}),min T (c_{1}),max T (c_{1}) \leftarrow \mathcal{H}.stats((t_{\cdot,1}(c_{1}),t_{0,\cdot}(c_{0}), t_{0,1}(c_{1}),t_{0,1}(c_{0})))$
