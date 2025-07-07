@@ -1,0 +1,1 @@
+{"N_init": 1000, "N": 10000, "mutation_rate": 0.1, "max_len": 50, "num_addr": 20, "num_bank": 4, "image_folder": "image_weak", "folder": "data_weak", "ks": [1, 2, 3, 4]}
