@@ -6,6 +6,7 @@
 ## Description Simulateur Eric:
  This model represents a memory hierarchy with
  - 3 levels of cache (L1, L2, L3)
+ - A shared cache L4
  - a DDR memory implemening some simple optimization features (see the DDR class)
  - an interconnect
  The number of cores, levels of cache, characteristics of the cache (number of ways,...)
