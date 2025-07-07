@@ -70,7 +70,7 @@ One explore the space $\mathcal{T} = \\{(ratio[0,\cdot],ratio[\cdot,1],ratio[0,1
  	* $\mbox{max}_{\mathcal{T}} g:= (\mbox{max } g_1,\cdots,\mbox{max } g_6)$
  * Periodically sample goal uniformly in a slightly larger set, using two factors *e.g* $f_1 = 0.8,f_2 = 1.2$, $g\sim\mathcal{U}([f_1\mbox{min } g_1,f_2\mbox{max } g_2])\otimes\cdots\otimes\mathcal{U}([f_1\mbox{min } g_6,f_2\mbox{max }g_6])$
 
-   ### Goal strategy achievement
+### Goal strategy achievement
 For a given time goal $g$, I choose to exploit a **kNN** model with a loss function based on the L2 norm, ${\mathcal{L}}(g)(z) = \sum_{i}{(z_{i} - g_{i})}^{2}$:
 *  to select the **k** closest time vectors from our database $\mathcal{H}$. 
 * Once k tuples $((S_{0},S_{1}),z)\in\Theta\times\mathcal{T}$ are selected, mix the pairs of programs together to produce a new one. See function `exploration.imgep.mix_instruction_lists`
@@ -95,8 +95,9 @@ The performed mutations consist of changing the existing instructions
    	* $\cdots$
 
 ### Goal generattion
-During the exploration, we can explore only one module at the same time. THe selection of the module to explore will be either uniformly random or guided with intrinsic reward.
-* I define an intrinsic reward based on the diversity evolution...
+During the exploration, we can explore only one module at the same time. The selection of the module to explore will be either uniformly random or guided with intrinsic reward.
+* I define an intrinsic reward based on the diversity evolution.
+To establish the intrinsic reward $ir$ for reaching the current goal g, the agent compares the outcome diversity  with the diversity obtained in a previous context, a few iterations ago: $ir = \mathcal{D}(k) - \mathcal{D}(k-p)$, with the current iteration $k$ and $p\leq 1$.
 ### Goal strategy achievement
 ## Baseline
 To be compared with random and a strategy of mixing k programs
