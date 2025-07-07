@@ -97,7 +97,7 @@ The performed mutations consist of changing the existing instructions
 ### Goal generattion
 During the exploration, we can explore only one module at the same time. The selection of the module to explore will be either uniformly random or guided with intrinsic reward.
 * I define an intrinsic reward based on the diversity evolution.
-To establish the intrinsic reward $ir$ for reaching the current goal g, the agent compares the outcome diversity  with the diversity obtained in a previous context, a few iterations ago: $ir = \mathcal{D}(k) - \mathcal{D}(k-p)$, with the current iteration $k$ and $p\leq 1$.
+To establish the intrinsic reward $ir$ for reaching the current goal g, the agent compares the outcome diversity  with the diversity obtained in a previous context, a few iterations ago: $ir = \mathcal{D}({\mathcal{O}}_{k}) - \mathcal{D}({\mathcal{O}}_{k-p})$, with the current iteration $k$ and $p\geq1$, a mesure to evaluate the diversity $\mathcal{D}$.
 ### Goal strategy achievement
 ## Baseline
 To be compared with random and a strategy of mixing k programs
