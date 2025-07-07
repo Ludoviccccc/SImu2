@@ -99,6 +99,7 @@ During the exploration, we can explore only one module at the same time. The sel
 * I define an intrinsic reward based on the diversity evolution.
 To establish the intrinsic reward $ir$ for reaching the current goal g, the agent compares the outcome diversity  with the diversity obtained in a previous context, a few iterations ago: $ir = \mathcal{D}(O_{k}) - \mathcal{D}(O_{k-p})$, with the current iteration $k$ and $p\geq1$, the set of previous observations at iteration $k$, $O_{k}$, a mesure to evaluate the diversity $\mathcal{D}$.
 ### Goal strategy achievement
+Same strategy with kNN here.
 ## Baseline
 I compare k-NN goal strategy achievement IMGEP with:
 * a random exploration : the warm up for imgep is done by selecting the $Ninit$ first iterations.
