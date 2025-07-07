@@ -1,8 +1,8 @@
 # Curiosity-driven-approach
 
 ## On going:
-* Quantifying **ddr contention** with the `sim.ddr.py` 
-* Visualizing these data, and showing the diversity of a set.
+* Modelling the exploration of **ddr contention** with the `sim.ddr.py` 
+* Visualizing these data, and showing the diversity of the resulting sets.
 ## Description Simulateur Eric:
  This model represents a memory hierarchy with
  - 3 levels of cache (L1, L2, L3)
@@ -23,8 +23,7 @@ A binary tree is used to implement the PLRU algorithm. here is one tree per set.
 * `sim.class_mem_sim.DDRMemory`:  DDR memory model with banks, row buffers, and latency variations
 
 ## Parameter space
-Parameters are pair of intruction sequences like below:
-I fix the maximum length of the instruction sequences
+Parameters are pairs of intruction sequences. I fix the maximum length of the instruction sequences, therefore this will be an additional parameter. Within the python program, instruction sequences are list of dictionaries :
 ```python
 sequence_core_0 = [{'type': 'r', 'addr': 11, 'core': 0},{'type': 'w', 'addr': 5, 'value': 686, 'core': 0}]
 sequence_core_1 = [{'type': 'w', 'addr': 42, 'value': 686, 'core': 1},{'type': 'r', 'addr': 14,  'core': 1}]
@@ -47,7 +46,6 @@ time[S2, (S_1,S_2)],
 time[S1, (,S_1)],
 time[S2, (S_2,)]}
 ```
-**Question : Is such a vector useful to identify micro-architecural mechanisms ?**
 
 ## Visualisation
 
@@ -64,8 +62,27 @@ l3_conf = {'size': 512, 'line_size': 4, 'assoc': 8}
 * The second tab of plots shows that the execution time for both application is usually larger when running in parallel. 
 ![Alt text](image/time.png) 
 By performing exploration, we would like the white space within the scatter plot to be as covered as possible. Moreover, we would like the diffusion of the histograms to be as high as possible.
-## IMGEP
-* I would like to perform a modular approach of IMGEP with several modules : 
+## IMGEP, Only module made of essential informations
+One explore the space $\mathcal{T} = \\{(ratio[0,\cdot],ratio[\cdot,1],ratio[0,1],t_{0,\cdot}(c_{0}),t_{\cdot,1}(c_{1}),t_{0,1}(c_{0}),t_{0,1}(c_{1}))\in\mathbb{R}^{6}\\}$
+### Goal generation
+* Periodically set the sampling boundaries based on the history $\mathcal{H}$, allowing to sample new goals *e.g*:
+	* $\mbox{min}_{\mathcal{T}} g:= (\mbox{min} g_1,\cdots,\mbox{min} g_6)$
+ 	* $\mbox{max}_{\mathcal{T}} g:= (\mbox{max} g_1,\cdots,\mbox{max} g_6)$
+ * Periodically sample goal uniformly : $g\sim\mathcal{U}(min_{T} g,max_{T}g)$
+
+   ### Goal strategy achievement
+For a given time goal $g$, I choose to exploit a **kNN** model with a loss function based on the L2 norm, ${\mathcal{L}}(g)(z) = \sum_{i}{(z_{i} - g_{i})}^{2}$:
+*  to select the **k** closest time vectors from our database $\mathcal{H}$. 
+* Once k tuples $((S_{0},S_{1}),z)\in\Theta\times\mathcal{T}$ are selected, mix the pairs of programs together to produce a new one. See function `exploration.imgep.mix_instruction_lists`
+* If `k=1`, the **kNN** model returns the program corresponding to the closest pair from $g$, that is $(S_{0},S_{1})$. If `k>1` the model returns the mixed pair of program.
+
+
+To provide more efficiency and to avoid working with a limited novelty in our parameter space, we also:
+* perform lights mutations on the program according to a `mutation operator`. See function `exploration.imgep.mutation.mutate_instructions`.
+The performed mutations consist of changing the existing instructions
+
+## IMGEP with several goal spaces (modules), each with different type of informations. 
+* I would like to perform a modular approach of IMGEP with several goal spaces (modules) : 
 	* time : $(t_{\cdot,1}(c_{1}),t_{0,\cdot}(c_{0}), t_{0,1}(c_{1}),t_{0,1}(c_{0}))\in\mathbb{R}^{4}$
 	* time difference core 0: $|(t_{0,\cdot}(c_{0})-(t_{0,1}(c_{0}))|\in\mathbb{R}$
 	* time difference core 1: $|(t_{\cdot,1}(c_{1})-(t_{0,1}(c_{1}))|\in\mathbb{R}$
@@ -76,27 +93,14 @@ By performing exploration, we would like the white space within the scatter plot
 	* miss ratio differences core 0: $|ratio[(0,1),bk] - ratio[(0,\cdot),bk]|, \mbox{with bank } bk\in\\{1,2,3,4\\}$
 	* miss ratio differences core 1: $|ratio[(0,1),bk] - ratio[(\cdot,1),bk]|, \mbox{with bank } bk\in\\{1,2,3,4\\}$
    	* $\cdots$
-### Goal generator
-Let's note the cores $c_{0}$ and $c_{1}$.
-* For each module, periodically set the sampling boundaries based on the history $\mathcal{H}$,allowing to sample new goals *e.g*:
-	* $min T (c_{0}),max T (c_{0}),min T (c_{1}),max T (c_{1}) \leftarrow \mathcal{H}.stats((t_{\cdot,1}(c_{1}),t_{0,\cdot}(c_{0}), t_{0,1}(c_{1}),t_{0,1}(c_{0})))$
-	* Sample the time vector $(t_{\cdot,1}(c_{1}),t_{0,\cdot}(c_{0}), t_{0,1}(c_{1}),t_{0,1}(c_{0}))$ in two stages:
 
-	* $(t_{\cdot,1},t_{0,\cdot})\sim (\mathcal{U}([min T (c_{0}), max T (c_{0})]),\mathcal{U}([min T (c_{1}), max T (c_{1})]))$
-
-	* $(t_{0,1}(c_{1}),t_{0,1}(c_{1}))\sim (t_{\cdot,1}(c_{1})\cdot \mathcal{U}([1.0,4.0]),t_{0,\cdot}(c_{0})\cdot \mathcal{U}([1.0,4.0]))$
-* I use an instrinsic reward...
+### Goal generattion
+During the exploration, we can explore only one module at the same time. THe selection of the module to explore will be either uniformly random or guided with intrinsic reward.
+* I define an intrinsic reward based on the diversity evolution...
 ### Goal strategy achievement
-For a given time goal $g$, I choose to exploit a **kNN** model with a loss function based on the L2 norm, ${\mathcal{L}}(g)(z) = \sum_{i}{(z_{i} - g_{i})}^{2}$:
-*  to select the **k** closest time vectors from our database $\mathcal{H}$. 
-* Once k tuples $((S_{0},S_{1}),z)\in\Theta\times\mathcal{T}$ are selected, mix the pairs of programs together to produce a new one. See function `exploration.imgep.mix_instruction_lists`
-* If `k=1`, the **kNN** model returns the program corresponding to the closest pair from $g$, that is $(S_{0},S_{1})$. If `k>1` the model returns the mixed pair of program.
-
-
-To provide more efficiency and to avoid working with a limited novelty in our parameter space, we also:
-* perform lights mutations on the program according to a `mutation operator`. See function `exploration.imgep.mutation.mutate_instructions`.
-The performed mutations consist of changing the existing instructions
-### Results
+## Baseline
+To be compared with random and a strategy of mixing k programs
+## Results
 
 The result of an exploration with **kNN** with k=1,2,3,4. IMGEP is compared with a random exploration for `N=3000` iterations, with `N_init = 500` steps for initialization. 
 * We can visualise distributions on histograms for time differences and miss ratios differences. The distributions look gaussian, probably a consequence of **Central limit theorem** ? For random exploration, the selection of program is random and thus the otention of metrics is also random. With the combination of these these two stages, the obtained metrics are random variables following an unknown multivariate distribution. 
@@ -104,26 +108,26 @@ The result of an exploration with **kNN** with k=1,2,3,4. IMGEP is compared with
 * The diversity is higher with IMGEP, for both miss ratios and time spaces. Meanwhile some spaces aren't explored enough. I will have to make a longer exploration to see changes.
 
 #### k = 1
-![Alt text](image10k/ratios_imgep_no_ir_1_10000.png)
-![Alt text](image10k/time_imgep_no_ir_1_10000.png)
-![Alt text](image10k/comparaison_time_diversity_1_10000.png)
-![Alt text](image10k/comp_global_ratios_iteration_1_10000.png)
-![Alt text](image10k/comp_ratios_iteration_1_10000.png))
+![Alt text](all_images/image10k/ratios_imgep_ir_1_10000.png)
+![Alt text](all_images/image10k/time_imgep_ir_1_10000.png)
+![Alt text](all_images/image10k/comparaison_time_diversity_1_10000.png)
+![Alt text](all_images/image10k/comp_global_ratios_iteration_1_10000.png)
+![Alt text](all_images/image10k/comp_ratios_iteration_1_10000.png))
 #### k = 2
-![Alt text](image10k/ratios_imgep_no_ir_2_10000.png)
-![Alt text](image10k/time_imgep_no_ir_2_10000.png)
-![Alt text](image10k/comparaison_time_diversity_2_10000.png)
-![Alt text](image10k/comp_global_ratios_iteration_2_10000.png)
-![Alt text](image10k/comp_ratios_iteration_2_10000.png)
+![Alt text](all_images/image10k/ratios_imgep_ir_2_10000.png)
+![Alt text](all_images/image10k/time_imgep_ir_2_10000.png)
+![Alt text](all_images/image10k/comparaison_time_diversity_2_10000.png)
+![Alt text](all_images/image10k/comp_global_ratios_iteration_2_10000.png)
+![Alt text](all_images/image10k/comp_ratios_iteration_2_10000.png)
 #### k = 3
-![Alt text](image10k/ratios_imgep_no_ir_3_10000.png)
-![Alt text](image10k/time_imgep_no_ir_4_10000.png)
-![Alt text](image10k/comparaison_time_diversity_3_10000.png)
-![Alt text](image10k/comp_global_ratios_iteration_3_10000.png)
-![Alt text](image10k/comp_ratios_iteration_3_10000.png))
+![Alt text](all_images/image10k/ratios_imgep_ir_3_10000.png)
+![Alt text](all_images/image10k/time_imgep_ir_4_10000.png)
+![Alt text](all_images/image10k/comparaison_time_diversity_3_10000.png)
+![Alt text](all_images/image10k/comp_global_ratios_iteration_3_10000.png)
+![Alt text](all_images/image10k/comp_ratios_iteration_3_10000.png))
 #### k = 4
-![Alt text](image10k/ratios_imgep_no_ir_4_10000.png)
-![Alt text](image10k/time_imgep_no_ir_4_10000.png)
-![Alt text](image10k/comparaison_time_diversity_4_10000.png)
-![Alt text](image10k/comp_global_ratios_iteration_4_10000.png)
-![Alt text](image10k/comp_ratios_iteration_4_10000.png)
+![Alt text](all_images/image10k/ratios_imgep_ir_4_10000.png)
+![Alt text](all_images/image10k/time_imgep_ir_4_10000.png)
+![Alt text](all_images/image10k/comparaison_time_diversity_4_10000.png)
+![Alt text](all_images/image10k/comp_global_ratios_iteration_4_10000.png)
+![Alt text](all_images/image10k/comp_ratios_iteration_4_10000.png)
