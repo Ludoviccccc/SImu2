@@ -68,7 +68,7 @@ One explore the space $\mathcal{T} = \\{(ratio[0,\cdot],ratio[\cdot,1],ratio[0,1
 * Periodically set the sampling boundaries based on the history $\mathcal{H}$, allowing to sample new goals *e.g*:
 	* $\mbox{min}_{\mathcal{T}} g:= (\mbox{min} g_1,\cdots,\mbox{min} g_6)$
  	* $\mbox{max}_{\mathcal{T}} g:= (\mbox{max} g_1,\cdots,\mbox{max} g_6)$
- * Periodically sample goal uniformly : $g\sim\mathcal{U}([\mbox{min } g_1,\mbox{max } g_2])\otimes\cdots\otimes\mathcal{U}([min g_6,max g_6])$
+ * Periodically sample goal uniformly : $g\sim\mathcal{U}([\mbox{min } g_1,\mbox{max } g_2])\otimes\cdots\otimes\mathcal{U}([\mbox{min } g_6,\mbox{max }g_6])$
 
    ### Goal strategy achievement
 For a given time goal $g$, I choose to exploit a **kNN** model with a loss function based on the L2 norm, ${\mathcal{L}}(g)(z) = \sum_{i}{(z_{i} - g_{i})}^{2}$:
