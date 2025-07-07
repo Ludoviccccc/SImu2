@@ -105,7 +105,7 @@ I compare k-NN goal strategy achievement IMGEP with:
 * a strategy of mixing k programs selected at random: I found out that this brings slightly more diversity but clearly not as much as imgep.
 ## Results
 
-The result of an exploration with **kNN** with k=1,2,3,4. IMGEP is compared with a random exploration for `N=3000` iterations, with `N_init = 500` steps for initialization. 
+The result of an exploration with **kNN** with k=1,2,3,4. IMGEP is compared with a random exploration for `N=10000` iterations, with `N_init = 1000` steps for initialization. 
 * We can visualise distributions on histograms for time differences and miss ratios differences. The distributions look gaussian, probably a consequence of **Central limit theorem** ? For random exploration, the selection of program is random and thus the otention of metrics is also random. With the combination of these these two stages, the obtained metrics are random variables following an unknown multivariate distribution. 
 * As I discussed with Marko, I have implemented an intrinsic reward based on diversity evolution, to help with module selection, in file `exploration.imgep.intrinsic_reward.py`.
 * The diversity is higher with IMGEP, for both miss ratios and time spaces. Meanwhile some spaces aren't explored enough. I will have to make a longer exploration to see changes.
