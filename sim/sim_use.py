@@ -40,34 +40,29 @@ class runpgrms:
         #exit()
         if instr["type"]=="r": 
             if instr["core"]==0:    
-                out = self.core0.read(instr["addr"], lambda val: None) 
+                self.core0.read(instr["addr"], lambda val: None) 
                 #print("fin")
                 #exit()
             elif instr["core"]==1:  
-                out = self.core1.read(instr["addr"], lambda val: None)    
+                self.core1.read(instr["addr"], lambda val: None)    
         elif instr["type"]=="w":    
             if instr["core"]==0:    
-                out = self.core0.write(instr["addr"], instr["value"])  
+                self.core0.write(instr["addr"], instr["value"])  
             elif instr["core"]==1:  
-                out = self.core1.write(instr["addr"], instr["value"])  
+                self.core1.write(instr["addr"], instr["value"])  
         #else:   
         #    print("erreur")    
         #    exit()   
-        return out   
     def __call__(self, list_instr0:list[dict], list_instr1:list[dict]):  
         len_ = 0
         k =1
         for j in range(100*max(len(list_instr0), len(list_instr1))):
 #  print(f"\n========== CYCLE {j} ==========") 
             if j <len(list_instr0):
-                out = self._execut_instr(list_instr0[j], cycle=j)
-                self.list_acces_ddr0.append(out)   
-                self.list_address0.append(list_instr0[j]["addr"]*out+(1-out)*(-1))
+                self._execut_instr(list_instr0[j], cycle=j)
                 len_+=1
             if j <len(list_instr1):
-                out = self._execut_instr(list_instr1[j], cycle=j)
-                self.list_acces_ddr1.append(out)   
-                self.list_address1.append(list_instr1[j]["addr"]*out+(1-out)*(-1))
+                self._execut_instr(list_instr1[j], cycle=j)
                 len_+=1
             self.interconnect.tick()
             output_tick = self.ddr.tick()    
@@ -76,7 +71,8 @@ class runpgrms:
                 #print(k,"output_tick", output_tick)
                 k+=1
             if len_==0:
-                print("erreur")
+                raise TypeError(f"lenght of list instruction is zero")
+                #print("erreur")
                 exit()
         self.reorder()
     def reorder(self):
@@ -98,8 +94,7 @@ class runpgrms:
             elif d["core"]==1:
                 self.compl_time_core1 = max(self.compl_time_core1,d["completion_time"])
             else:
-                print("erreur")
-                exit()
+                raise TypeError(f"value key d['core'] = {d['core']} for best request form ddr")
         denominator = miss + hits
         denominator[denominator==0] = -1
         self.ratios = miss/(denominator)

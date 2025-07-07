@@ -193,7 +193,7 @@ class CacheLevel:
         return addr // (self.line_size * self.num_sets)
 
     # Handles cache read request
-    def read(self, addr, callback):
+    def read(self, addr, callback,origin = None):
         index = self._index(addr)
         tag = self._tag(addr)
         cache_set = self.sets[index]
@@ -229,9 +229,9 @@ class CacheLevel:
             if victim_line.valid and victim_line.dirty and self.write_back:
                 victim_addr = ((victim_line.tag * self.num_sets) + index) * self.line_size
                 if self.lower:
-                    self.lower.write(victim_addr, victim_line.data)
+                    self.lower.write(victim_addr, victim_line.data,origin=self.core_id)
                 elif self.memory:
-                    self.memory.request(DDRRequest(self.core_id, self.memory.cycle, 'write', victim_addr, value=victim_line.data))
+                    self.memory.request(DDRRequest(origin, self.memory.cycle, 'write', victim_addr, value=victim_line.data))
             # Now that we have written the data to the next memory level, the
             # cache entry is updated with the new data (val)
             victim_line.valid = True
@@ -243,17 +243,17 @@ class CacheLevel:
 
         # Forward the read request to the lower-level cache (if any)
         if self.lower:
-            out = self.lower.read(addr, lower_cb)
+            out = self.lower.read(addr, lower_cb,origin=self.core_id)
 #            return 1
         # Or to DDR...
         elif self.memory:
-            self.memory.request(DDRRequest(self.core_id, self.memory.cycle, 'read', addr, lower_cb,num_instr=self.num_instr))
+            self.memory.request(DDRRequest(origin, self.memory.cycle, 'read', addr, lower_cb,num_instr=self.num_instr))
             out = 1 #acces to ddr
 #            return 1
         return out
 
     # Handles cache write request
-    def write(self, addr, val):
+    def write(self, addr, val,origin=None):
         index = self._index(addr)
         tag = self._tag(addr)
         cache_set = self.sets[index]
@@ -274,7 +274,7 @@ class CacheLevel:
                 # propagated to the lower levels of the memory hierarchy
                 if not self.write_back:
                     if self.lower:
-                        self.lower.write(addr, val)
+                        self.lower.write(addr, val,origin=self.core_id)
                     elif self.memory:
                         self.memory.request(DDRRequest(self.core_id, self.memory.cycle, 'write', addr, value=val))
                         out = 1
@@ -291,9 +291,9 @@ class CacheLevel:
             if victim_line.valid and victim_line.dirty and self.write_back:
                 victim_addr = ((victim_line.tag * self.num_sets) + index) * self.line_size
                 if self.lower:
-                    self.lower.write(victim_addr, victim_line.data)
+                    self.lower.write(victim_addr, victim_line.data,origin=self.core_id)
                 elif self.memory:
-                    self.memory.request(DDRRequest(self.core_id, self.memory.cycle, 'write', victim_addr, value=victim_line.data,num_instr=self.num_instr))
+                    self.memory.request(DDRRequest(origin, self.memory.cycle, 'write', victim_addr, value=victim_line.data,num_instr=self.num_instr))
 
             # The entry is now valid
             victim_line.valid = True
@@ -306,9 +306,9 @@ class CacheLevel:
             # If write allocate is false, the data is written to the next level
             # of the memory hierachy.
             if self.lower:
-                self.lower.write(addr, val)
+                self.lower.write(addr, val,origin=self.core_id)
             elif self.memory:
-                self.memory.request(DDRRequest(self.core_id, self.memory.cycle, 'write', addr, value=val))
+                self.memory.request(DDRRequest(origin, self.memory.cycle, 'write', addr, value=val))
 
         return out
     def stats(self):
@@ -323,33 +323,21 @@ class CacheLevel:
 
 # Models full multi-level cache hierarchy for a core
 class MultiLevelCache:
-    def __init__(self, core_id, l1_conf, l2_conf, l3_conf, interconnect):
+    def __init__(self, core_id, l1_conf, l2_conf, l3_conf, shared_cache):
         self.core_id = core_id
-        self.interconnect = interconnect
         self.l1 = CacheLevel("L1", core_id, memory=None, **l1_conf)
         self.l2 = CacheLevel("L2", core_id, memory=None, **l2_conf)
-        # Cache L3 is connected to the DDR memory
-        self.l3 = CacheLevel("L3", core_id, memory=interconnect, **l3_conf)
-        # Cache L1 is connected to cache L2
+        self.l3 = CacheLevel("L3", core_id, memory=None, **l3_conf)
+
         self.l1.lower = self.l2
-        # Cache L2 is connected to cache L3
         self.l2.lower = self.l3
-        # Cache L3 has no lower level cache.
-        self.l3.lower = None
+        self.l3.lower = shared_cache  # Now uses the shared L4 cache
 
     def read(self, addr, callback):
-        out =  self.l1.read(addr, callback)
-        if out==None:
-            #print("read",out)
-            exit()
-        return out
+        self.l1.read(addr, callback)
 
     def write(self, addr, val):
-        out =  self.l1.write(addr, val)
-        if out==None:
-            #print("write",out)
-            exit()
-        return out
+        self.l1.write(addr, val)
 
     def stats(self):
         return {
