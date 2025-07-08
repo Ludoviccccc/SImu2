@@ -8,7 +8,6 @@ from exploration.history import History
 from sim.sim_use import runpgrms, make_random_list_instr, make_random_paire_list_instr
 from sim.ddr import DDRMemory
 from sim.class_mem_sim import *
-from sim.sim_use import runpgrms, make_random_list_instr
 def random_exploration(core0, core1,interconnect,ddr, budget:int=50, max_instr:int=50):
     program = runpgrms(core0, core1, max_instr, interconnect, ddr)
     list_intersection = []
