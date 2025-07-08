@@ -1,6 +1,7 @@
 import json
 import numpy as np
 if __name__ == "__main__":
+    print("")
     folder1module = "data_1module"
     num_addr = 20
     N = int(10000)
