@@ -124,8 +124,8 @@ def make_random_list_instr(length = 5, core = "0",num_addr = 20):
     return out  
 def make_random_paire_list_instr(max_len,num_addr=20)->dict:
     #assert type(length) == int
-    length = np.random.randint(1,max_len)
-    length2 = np.random.randint(1,max_len)
+    length = np.random.randint(5,max_len)
+    length2 = np.random.randint(5,max_len)
     instructions0 = make_random_list_instr(length=length, core=0, num_addr = num_addr)
     instructions1 = make_random_list_instr(length=length2, core=1, num_addr = num_addr)
     return  {"core0": [instructions0],"core1":[instructions1]}

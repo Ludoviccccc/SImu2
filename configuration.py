@@ -5,7 +5,7 @@ if __name__ == "__main__":
     num_addr = 20
     N = int(10000)
     N_init = 1000
-    max_len = 100
+    max_len = 50
     periode = 50
     num_bank = 4
     mutation_rate = .1
@@ -25,7 +25,7 @@ if __name__ == "__main__":
     modules = modules + dict_modules + ratios_detailled + dict_times
     #modules = [{"type":"miss_ratios_global_time"}]
 
-    folder = "all_data/data10"
+    folder = "all_data/data30"
     config = {"N_init":N_init,
               "N":N,
               "periode":periode,

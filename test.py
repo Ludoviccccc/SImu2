@@ -53,7 +53,7 @@ if __name__=="__main__":
             sample_rand = pickle.load(f)
             content_random = sample_rand["memory_perf"]
     ks = ks_
-    for intr_reward in [True]:
+    for intr_reward in [False]:
         for k in ks:
             print(f"start: k = {k}, N={N}")
             G = GoalGenerator(num_bank = num_bank,modules = modules)

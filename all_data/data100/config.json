@@ -1,0 +1,1 @@
+{"N_init": 1000, "N": 10000, "periode": 50, "mutation_rate": 0.1, "max_len": 100, "num_addr": 20, "num_bank": 4, "folder": "all_data/data100", "ks": [1, 2, 3, 4], "num_iteration": 5}

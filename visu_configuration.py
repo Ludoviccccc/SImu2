@@ -1,8 +1,8 @@
 import json
 if __name__ == "__main__":
-    folder = ["all_data/data10","all_data/data","all_data/data_weak"]
+    folder = ["all_data/data30","all_data/data30","all_data/data_weak"]
     folder1module = "all_data/data_1module"
-    image_folder ="all_images/image10k"
+    image_folder ="all_images/image30k"
     test_mode = False
     N = int(10000)
     N_init = 1000
