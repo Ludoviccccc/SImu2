@@ -1,11 +1,10 @@
 import json
 import numpy as np
 if __name__ == "__main__":
-    folder1module = "data_1module"
     num_addr = 20
-    N = int(10000)
-    N_init = 1000
-    max_len = 50
+    N = int(1000)
+    N_init = 100
+    max_len = 100
     periode = 50
     num_bank = 4
     mutation_rate = .1
@@ -25,7 +24,7 @@ if __name__ == "__main__":
     modules = modules + dict_modules + ratios_detailled + dict_times
     #modules = [{"type":"miss_ratios_global_time"}]
 
-    folder = "all_data/data30"
+    folder = "all_data/data_short"
     config = {"N_init":N_init,
               "N":N,
               "periode":periode,
