@@ -3,9 +3,6 @@ import sys
 sys.path.append("../sim")
 sys.path.append("../")
 import random
-from sim.class_mem_sim import Interconnect, MultiLevelCache
-from sim.ddr import DDRMemory
-import matplotlib.pyplot as plt
 class runpgrms: 
     def __init__(self, core0, core1, interconnect, ddr, num_banks = 4,num_addr = 20):   
         self.nb_read =0   

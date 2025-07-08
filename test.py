@@ -7,9 +7,6 @@ from exploration.history import History
 from exploration.imgep.goal_generator import GoalGenerator
 from exploration.imgep.OptimizationPolicy import OptimizationPolicykNN
 from exploration.imgep.imgep import IMGEP
-import matplotlib.pyplot as plt
-from visu import diversity_time_iteration2
-from visu2 import comparaison3, comparaison_ratios_iterations, comparaison_ratios_global_iterations
 from exploration.imgep.intrinsic_reward import IR
 import json
 import sys
