@@ -2,8 +2,8 @@ import json
 import numpy as np
 if __name__ == "__main__":
     num_addr = 20
-    N = int(1000)
-    N_init = 100
+    N = int(10000)
+    N_init = 1000
     max_len = 100
     periode = 50
     num_bank = 4
@@ -20,7 +20,7 @@ if __name__ == "__main__":
     dict_times = [{"type":"time", "core":core,"single":single,"bins":list(np.linspace(0,1000,21))} for core in range(2) for single in [True, False]]
 
     ratios_detailled = [{"type":"miss_ratios_detailled","bank":bank,"core":core,"row":row,"bins":list(np.linspace(0,1,21))} for core in [None,0,1] for bank in range(num_bank) for row in range((num_addr//16)+1)]
-    ks = [1,2,3,4]
+    ks = [2]
     modules = modules + dict_modules + ratios_detailled + dict_times
     #modules = [{"type":"miss_ratios_global_time"}]
 

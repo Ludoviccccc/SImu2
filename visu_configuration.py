@@ -4,9 +4,9 @@ if __name__ == "__main__":
     folder1module = "all_data/data_1module"
     image_folder ="all_images/image_short"
     test_mode = False
-    N = int(1000)
-    N_init = 100
-    ks = [1,2,3,4]
+    N = int(10000)
+    N_init = 1000
+    ks = [2]
     num_bank = 4
     num_addr = 20
     file_mix = lambda k,N: f"history_weak_{k}_N_{N}_0.pkl"
@@ -27,7 +27,8 @@ if __name__ == "__main__":
               "image_folder":image_folder,
               "random":random,
               "num_bank": num_bank,
-              "num_addr":num_addr}
+              "num_addr":num_addr,
+              "ks":ks}
 
     with open(f"{image_folder}/config_plots.json","w") as f:
         json.dump(config, f)

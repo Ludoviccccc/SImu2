@@ -19,6 +19,7 @@ if __name__=="__main__":
     random = config["random"]
     num_bank = config["num_bank"]
     num_addr = config["num_addr"]
+    ks = config["ks"]
     with open(os.path.join(random["folder"],random["file"]),"rb") as f:
         sample = pickle.load(f)
     content_random = sample["memory_perf"]
@@ -34,7 +35,7 @@ if __name__=="__main__":
                      content, 
                      name = [f"{image_folder}/{nn}_{data['type']}_{data['k']}_{N}" for nn in ["ratios","time"]], 
                      title=[f"{name} k = {data['k']}, {data['N']} iterations" for name in ["miss ratios", "time"]],num_bank=num_bank, num_row = num_addr//16 + 1)
-    for k_ in [1,2,3,4]:
+    for k_ in ks:
         diversity_time_iteration2(content_random,
                             [(data["name"],data["k"],f"{data['folder']}/{data['file']}") for data in files if data["k"]==k_],
                            title = f"comparaison_time_diversity_{k_}_{N}",
