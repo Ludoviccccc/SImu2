@@ -4,7 +4,7 @@ if __name__ == "__main__":
     num_addr = 20
     N = int(10000)
     N_init = 1000
-    max_len = 100
+    max_len = 50
     periode = 50
     num_bank = 4
     mutation_rate = .1

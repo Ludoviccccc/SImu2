@@ -36,15 +36,18 @@ class OptimizationPolicykNN(Features):
         return  np.sum((a -elements)**2,axis=0)
     def select_closest_codes(self,H:History,signature: np.ndarray,module:str)->dict:
         assert len(H.memory_program)>0, "history empty"
-        def sort_tuple(to_sort):
-            in_ = sorted(to_sort, key = lambda x:x[0])
-            return [idx for _,idx in in_]
+        #def sort_tuple(to_sort):
+        #    in_ = sorted(to_sort, key = lambda x:x[0])
+        #    return [idx for _,idx in in_]
         b = self.data2feature(H.memory_perf, module)
-        selection = random.sample(range(len(H.memory_program)),min(5000,len(H.memory_program)))
+        b = np.round(b,2)
+        #if b.ndim==1:
+        #    b,bidx = np.unique(b,return_index=True)
         d = self.loss(signature,b)
-        #dist_idx = [(d[l],l) for l in selection]
-        #idx = sort_tuple(dist_idx)[:self.k]
         idx = np.argsort(d)[:self.k]
+        #if b.ndim==1:
+        #    idx = [bidx[i] for i in idx]
+        #print("idx",idx)
         output = {"program": {"core0":[],"core1":[]},}
         for id_ in idx:
             output["program"]["core0"].append(H.memory_program["core0"][id_])

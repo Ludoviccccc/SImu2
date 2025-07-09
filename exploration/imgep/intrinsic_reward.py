@@ -24,6 +24,7 @@ class IR:
             Pi:OptimizationPolicykNN,
             num_iteration:int,
             window:int=2,
+            window_total_progress:int=5,
             epsilon:float=.3
             ):
         self.env = env
@@ -34,6 +35,7 @@ class IR:
         self.Pi = Pi
         self.diversity = {}
         self.window = window
+        self.window_total_progress = window_total_progress
         self.calls = 0
         self.num_iteration = num_iteration
 
@@ -50,11 +52,11 @@ class IR:
         probs = []
         #constant to normalize: sum of all progress accross all modules
         for module in self.modules:
-            sum_ += module["total_progress"]
+            sum_ += np.mean(module["total_progress"],axis=0)
         if sum_!=0:
             for module in self.modules:
                 #print(module["type"], module["progress"])
-                probs.append(module["total_progress"]/sum_)
+                probs.append(np.mean(module["total_progress"],axis=0)/sum_)
         else:
             probs = [(1.0/len(self.modules))]*len(self.modules)
         return probs
@@ -89,7 +91,11 @@ class IR:
             for module_ in self.modules:
                 self.eval_module_diversity(module_)
             self.progress()
-            module["total_progress"] = np.sum([module["progress"] for module in self.modules])
+            if "total_progress" not in module:
+                module["total_progress"] = [np.sum([module["progress"] for module in self.modules])]
+            else:
+                module["total_progress"].append(np.sum([module["progress"] for module in self.modules]))
+            module["total_progress"] = module["total_progress"][-self.window_total_progress:]
         self.calls+=1
     def eval_module_diversity(self,module:dict):
         feature = self.goal_module.data2feature(self.history.memory_perf, module)
