@@ -7,7 +7,9 @@ from typing import List, Dict, Any
 def mutate_paire_instructions(instructions1:list[dict], instructions2:list[dict], mutation_rate=.3,num_addr=20)->(dict,dict):
     return mutate_instructions(instructions1, mutation_rate=mutation_rate),mutate_instructions(instructions2, mutation_rate=mutation_rate, num_addr=num_addr)
 
-def mutate_instructions(instructions:list[dict], mutation_rate=0.3,num_addr=20):
+def mutate_instructions(instructions:list[dict],
+                        mutation_rate:float=0.3,
+                        num_addr:int=20):
     """
     Randomly mutate a list of instructions by:
     1. Changing existing instructions

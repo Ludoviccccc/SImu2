@@ -80,7 +80,70 @@ For a given time goal $g$, I choose to exploit a **kNN** model with a loss funct
 
 To provide more efficiency and to avoid working with a limited novelty in our parameter space, we also:
 * perform lights mutations on the program according to a `mutation operator`. See function `exploration.imgep.mutation.mutate_instructions`.
-The performed mutations consist of changing the existing instructions
+The performed mutations consist of changing,adding or deleting the existing instructions
+```python
+def mutate_instructions(instructions:list[dict], mutation_rate=0.3,num_addr=20):
+    """
+    Randomly mutate a list of instructions by:
+    1. Changing existing instructions
+    2. Deleting instructions
+    3. Adding new instructions
+    
+    
+    Args:
+        instructions: List of instruction dictionaries
+        mutation_rate: Probability of each mutation occurring (0.0 to 1.0)
+    
+    Returns:
+        A new mutated list of instructions
+    """
+    mutated = []
+    for instr in copy.deepcopy(instructions):
+        mutated.append(instr)
+    
+    # Now perform random mutations
+    num_mutations = max(0, int(len(mutated) * mutation_rate))
+    
+    for _ in range(num_mutations):
+        mutation_type = random.choice(['change','delete', 'add'])
+        
+        if mutation_type == 'change' and len(mutated) > 0:
+            idx = random.randint(0, len(mutated) - 1)
+            instr = mutated[idx]
+            
+            change_what = random.choice(['type', 'addr'])
+            
+            if change_what == 'type':
+                instr['type'] = 'w' if instr['type'] == 'r' else 'r'
+                if instr['type'] == 'w' and 'value' not in instr:
+                    instr['value'] = random.randint(0, 1000)
+                elif instr['type'] == 'r':
+                    if 'value' in instr:
+                        del instr['value']
+            
+            elif change_what == 'addr':
+                instr['addr'] = random.randint(0, num_addr)
+            
+            elif change_what == 'value' and instr['type'] == 'w':
+                instr['value'] = random.randint(0, 1000)
+            
+        
+        elif mutation_type == 'delete' and len(mutated) > 1:
+            idx = random.randint(0, len(mutated) - 1)
+            del mutated[idx]
+        
+        elif mutation_type == 'add':
+            new_instr = {}
+            new_instr['type'] = random.choice(['r', 'w'])
+            new_instr['addr'] = random.randint(0, num_addr)
+            new_instr['core'] = instructions[0]["core"]
+            
+            if new_instr['type'] == 'w':
+                new_instr['value'] = random.randint(0, 1000)
+            pos = random.randint(0, len(mutated))
+            mutated.insert(pos, new_instr)
+    return mutated
+```
 
 ## IMGEP with several goal spaces (modules), each with different type of informations. 
 * I would like to perform a modular approach of IMGEP with several goal spaces (modules) : 
