@@ -2,14 +2,15 @@ import json
 import numpy as np
 if __name__ == "__main__":
     num_addr = 20
-    N = int(10000)
-    N_init = 1000
+    N = int(1000)
+    N_init = 100
     max_len = 50
-    periode = 50
+    periode = 5
     num_bank = 4
     mutation_rate = .1
     num_iteration = 5 #has to be small compared to N
     #modules =   ["time"]
+    min_instr = 5
     modules = [{"type":"time_vector","bins":list(np.linspace(0,1000,21))}]
     modules +=   [{"type":"miss_bank","bank":j,"bins":list(np.linspace(0,1,21))} for j in range(num_bank)]
     modules +=  [{"type":"diff_ratios_bank","bank":j,"bins":list(np.linspace(0,1,21))} for j in range(num_bank)]
@@ -30,6 +31,7 @@ if __name__ == "__main__":
               "periode":periode,
               "mutation_rate":mutation_rate,
               "max_len":max_len,
+              "min_len":min_instr,
               "num_addr":num_addr,
               "num_bank":num_bank,
               "folder":folder,

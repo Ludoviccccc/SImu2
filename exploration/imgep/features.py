@@ -83,6 +83,5 @@ class Features:
                                np.array(stats["miss_ratios_global1"])))
 
         else:
-            print(f"module {module} unknown")
-            exit()
+            TypeError(f"module {module} unknown")
         return np.array(out)

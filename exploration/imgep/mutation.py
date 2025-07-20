@@ -4,12 +4,20 @@ import copy
 import copy
 from typing import List, Dict, Any
 
-def mutate_paire_instructions(instructions1:list[dict], instructions2:list[dict], mutation_rate=.3,num_addr=20)->(dict,dict):
-    return mutate_instructions(instructions1, mutation_rate=mutation_rate),mutate_instructions(instructions2, mutation_rate=mutation_rate, num_addr=num_addr)
+def mutate_paire_instructions(instructions1:list[dict],
+                              instructions2:list[dict],
+                              mutation_rate=.3,
+                              num_addr=20,
+                              min_instr:int=5,
+                              max_instr:int=50
+                              )->(dict,dict):
+    return mutate_instructions(instructions1, mutation_rate=mutation_rate,num_addr=num_addr,min_instr=min_instr),mutate_instructions(instructions2, mutation_rate=mutation_rate, num_addr=num_addr,min_instr=min_instr,max_instr=max_instr)
 
 def mutate_instructions(instructions:list[dict],
                         mutation_rate:float=0.3,
-                        num_addr:int=20):
+                        num_addr:int=20,
+                        min_instr:int=5,
+                        max_instr:int=50):
     """
     Randomly mutate a list of instructions by:
     1. Changing existing instructions
@@ -32,8 +40,12 @@ def mutate_instructions(instructions:list[dict],
     num_mutations = max(0, int(len(mutated) * mutation_rate))
     
     for _ in range(num_mutations):
-        mutation_type = random.choice(['change','delete', 'add'])
-        
+        choices = ['change']
+        #if len(mutated)>min_instr:
+        #    choices.append('delete')
+        #if len(mutated)<=max_instr:
+        #    choices.append('add')
+        mutation_type = random.choice(choices)
         if mutation_type == 'change' and len(mutated) > 0:
             idx = random.randint(0, len(mutated) - 1)
             instr = mutated[idx]

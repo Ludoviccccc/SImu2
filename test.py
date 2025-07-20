@@ -25,6 +25,7 @@ if __name__=="__main__":
     N_init = config["N_init"]
     num_bank = config["num_bank"]
     max_len = config["max_len"]
+    min_len = config["min_len"]
     folder = config["folder"]
     num_addr = config["num_addr"]
     num_iteration = config["num_iteration"]
@@ -54,7 +55,7 @@ if __name__=="__main__":
         for k in ks:
             print(f"start: k = {k}, N={N}, intrinsic reward = {intr_reward}")
             G = GoalGenerator(num_bank = num_bank,modules = modules)
-            Pi = OptimizationPolicykNN(k=k,mutation_rate=mutation_rate,max_len=max_len,num_addr=num_addr,num_bank=num_bank)
+            Pi = OptimizationPolicykNN(k=k,mutation_rate=mutation_rate,max_len=max_len,num_addr=num_addr,num_bank=num_bank,min_instr=min_len,max_instr=max_len)
             H_imgep = History(max_size=N)
             ir = IR(En,modules,H_imgep, G,Pi,num_iteration,window = 5)
             imgep = IMGEP(N,N_init, En,H_imgep,G,Pi,ir, modules = modules, periode = periode, max_len = max_len)

@@ -132,8 +132,8 @@ def comparaison_ratios_iterations(contents:list[tuple], name = None,k = None):
         for row in range(2):
             for label, content in contents:
                 ll = len(content["miss_ratios_core0_detailled"])
-                diversity_ratio = [diversity([content["miss_ratios_core0_detailled"][:k,row,j],  content["miss_ratios_detailled"][:k,row,j]], [bins, bins]) for k in range(0,ll,100)]
-                axs[j+row*4].plot(range(0,ll,100),diversity_ratio, label=label)
+                diversity_ratio = [diversity([content["miss_ratios_core0_detailled"][:k,row,j],  content["miss_ratios_detailled"][:k,row,j]], [bins, bins]) for k in range(0,ll+1,100)]
+                axs[j+row*4].plot(range(0,ll+1,100),diversity_ratio, label=label)
                 axs[j+row*4].set_xlabel("iteration",fontsize=18)
                 axs[j+row*4].set_ylabel("diversity",fontsize=18)
                 axs[j+row*4].legend()
@@ -150,10 +150,10 @@ def comparaison_ratios_global_iterations(list_args:list[tuple], name = None,k = 
         ll = len(content["miss_ratios_global0"])
         print("together",len(content["miss_ratios_global0"]))
         print("0 alone",len(content["miss_ratios_global"]))
-        diversity_ratio = [diversity([content["miss_ratios_global0"][:k],  content["miss_ratios_global"][:k]], [bins, bins]) for k in range(0,ll,100)]
+        diversity_ratio = [diversity([content["miss_ratios_global0"][:k],  content["miss_ratios_global"][:k]], [bins, bins]) for k in range(0,ll+1,100)]
         #print("k", k)
         print("name", name)
-        plt.plot(range(0,ll,100),diversity_ratio, label=label)
+        plt.plot(range(0,ll+1,100),diversity_ratio, label=label)
         plt.xlabel("iteration",fontsize=18)
         plt.ylabel("diversity",fontsize=18)
         plt.legend()

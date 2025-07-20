@@ -47,7 +47,7 @@ class IR:
             else:
                 module["progress"] = np.abs(module["diversity"][-1] - module["diversity"][0])/np.abs(module["diversity"][0])
     def prob(self)->dict:
-        self.progress()
+        #self.progress()
         sum_ = 0
         probs = []
         #constant to normalize: sum of all progress accross all modules
@@ -77,7 +77,7 @@ class IR:
                 vec[np.random.randint(0,len(self.modules))] = 1.0
             probs = (1-C)*np.array(probs)+ C*vec
         return self.modules[int(np.random.choice(len(self.modules), 1, p=probs))]
-    def __call__(self):
+    def __call__(self,N:int):
         """
         Evaluates progress made by exploring each module
         """
@@ -86,8 +86,10 @@ class IR:
                 self.eval_module_diversity(module_)
             goal = self.goal_module(self.history,module)
             for j in range(self.num_iteration):
-                parameter = self.Pi(goal,self.history,module)
-                self.history.store({"program":parameter}|self.env(parameter))
+                if len(self.history.memory_program["core0"])<N+1:
+                    parameter = self.Pi(goal,self.history,module)
+                    self.history.store({"program":parameter}|self.env(parameter))
+                    print("len",len(self.history.memory_program["core0"]))
             for module_ in self.modules:
                 self.eval_module_diversity(module_)
             self.progress()
@@ -119,8 +121,7 @@ class IR:
             hist2,_,_ = np.histogram2d(feature[1,:],feature[3,:], bins=[bins, bins])
             div = np.sum(hist1>0) + np.sum(hist2>0)
         else:
-            print(f"module {module} not known")
-            exit()
+            TypeError(f"module {module} not known")
 
         #Stores the result
         if "diversity" in module.keys():

@@ -46,8 +46,8 @@ class IMGEP:
         intr_reward:bool. If True, the exploration uses intrinsic reward based on diversity
         """
         time_explor = 0
-        for i in range(self.start,self.N):
-            if i%1000==0:
+        for i in range(self.start,self.N+1):
+            if i%100==0:
                 print(f"{i} iterations")
             if i<time_explor:
                 continue
@@ -57,7 +57,7 @@ class IMGEP:
                 if intr_reward:
                     #Sample target goal
                     if (i-self.N_init)%(self.periode_expl*self.periode)==0:
-                        self.ir()
+                        self.ir(self.N)
                         time_explor = i + self.ir.num_iteration*len(self.ir.modules)
                         print("time explor", time_explor)
                         module = self.ir.choice()
