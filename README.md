@@ -165,6 +165,7 @@ To establish the intrinsic reward $ir$ for exploring module $m$, the agent compa
 In a special loop for evaluation, we explore every module $m$ for a few iteration, in order to calculate a value $\mbox{ir}(m)$ for its intrinsic reward.
 * Once we obtain a vector $[\mbox{ir}(1),\cdots,\mbox{ir}(N_{m})]$, with $N_{m}$ the number of modules made with the reward of each module, I create a probability distribution $p = [\frac{\mbox{ir}(1)}{\sum_{m}\mbox{ir}},\cdots,\frac{\mbox{ir}(N_{m})}{\sum_{m}\mbox{ir}}]$ to selected the module to explore. I also enhance it so that it selects a module with a discrete uniform random low when $\epsilon\sim \mathcal{B}(p)$, with e.g $p=0.1$ 
 
+Once a module is selected,
 ### Goal strategy achievement
 Same strategy with kNN here.
 ## Baseline
