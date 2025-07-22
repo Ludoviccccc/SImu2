@@ -40,7 +40,11 @@ class OptimizationPolicykNN(Features):
             a = goal.reshape(-1,1) 
         else:
             a = np.array([goal]).reshape(-1,1) 
-        return  np.sum((a -elements)**2,axis=0)
+        #print("a",a.shape)
+        #print("elements",elements.shape)
+        out = np.sum((a -elements)**2,axis=0)
+        print("out", out.shape)
+        return out
     def select_closest_codes(self,H:History,signature: np.ndarray,module:str)->dict:
         assert len(H.memory_program)>0, "history empty"
         #def sort_tuple(to_sort):
@@ -50,6 +54,12 @@ class OptimizationPolicykNN(Features):
         b = np.round(b,2)
         #if b.ndim==1:
         #    b,bidx = np.unique(b,return_index=True)
+#        print("signature", signature.shape)
+#        print("b", b.shape, b.ndim)
+        if type(signature)==np.ndarray:
+            if b.ndim==1 and (signature.shape[0]>1 or signature.ndim>1):
+                print("erre")
+                raise TypeError(f"goal of shape {signature.shape} has be be a float. Features of shape {b.shape}")
         d = self.loss(signature,b)
         idx = np.argsort(d)[:self.k]
         #if b.ndim==1:
