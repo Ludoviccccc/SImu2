@@ -43,7 +43,6 @@ class OptimizationPolicykNN(Features):
         #print("a",a.shape)
         #print("elements",elements.shape)
         out = np.sum((a -elements)**2,axis=0)
-        print("out", out.shape)
         return out
     def select_closest_codes(self,H:History,signature: np.ndarray,module:str)->dict:
         assert len(H.memory_program)>0, "history empty"
