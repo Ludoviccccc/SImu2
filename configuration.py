@@ -26,7 +26,7 @@ if __name__ == "__main__":
     modules = modules + dict_modules + ratios_detailled + dict_times+cache_ratios
     #modules = [{"type":"miss_ratios_global_time"}]
 
-    folder = "all_data/data_short"
+    folder = "all_data/data_short2"
     config = {"N_init":N_init,
               "N":N,
               "periode":periode,

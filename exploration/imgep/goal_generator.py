@@ -19,8 +19,9 @@ class GoalGenerator(Features):
         stat = self.data2feature(stats_, module)
         min_ = stat.min(axis=-1)
         max_ = stat.max(axis=-1)
-        if module["type"] in ["miss_ratios","miss_ratios_detailled","miss_bank","diff_ratios_bank"]:
-            out = np.random.uniform(0,4.0*max_)
-        else:
-            out = np.random.uniform((1-np.sign(min_)*0.6)*min_,4.0*max_)
+        #if module["type"] in ["miss_ratios","miss_ratios_detailled","miss_bank","diff_ratios_bank"]:
+        #    out = np.random.uniform(0,4.0*max_)
+        #else:
+        #    out = np.random.uniform((1-np.sign(min_)*0.6)*min_,4.0*max_)
+        out = np.random.uniform((1-np.sign(min_)*0.6)*min_,4.0*max_)
         return out
