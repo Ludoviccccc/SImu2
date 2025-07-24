@@ -164,7 +164,7 @@ class Interconnect:
 class CacheLevel:
     miss_history = {"level":[],"addr":[],"core_id":[]}
     num_instr = 0
-    def __init__(self, level_name, core_id, size, line_size, assoc, memory=None, write_back=True, write_allocate=True):
+    def __init__(self, level_name, core_id,num_addr, size, line_size, assoc, memory=None, write_back=True, write_allocate=True):
         self.level = level_name
         self.core_id = core_id
         self.line_size = line_size
@@ -176,8 +176,9 @@ class CacheLevel:
         self.lower = None           # Lower level cache
         self.write_back = write_back
         self.write_allocate = write_allocate
-        self.hits = 0
-        self.misses = 0
+        self.num_addr = num_addr
+        self.hits = np.zeros(self.num_addr+1)
+        self.misses = np.zeros(self.num_addr+1)
         self.num_instr =0
         #self.
         #self.num_instr = 0
@@ -206,7 +207,7 @@ class CacheLevel:
             if line.valid and line.tag == tag:
                 # There is a hit.
                 #print(f"[{self.level} cache hit for {addr} on core {self.core_id}]")
-                self.hits += 1
+                self.hits[addr] += 1
                 # Update the pLRU tree to point away from the MRU
                 plru.update_on_access(i)
                 callback(line.data)
@@ -217,7 +218,7 @@ class CacheLevel:
         self.miss_history["addr"].append(addr)
         self.miss_history["core_id"].append(self.core_id)
         # On miss, choose victim line using PLRU and fetch from lower memory
-        self.misses += 1
+        self.misses[addr] += 1
         victim_idx = plru.get_victim()
         victim_line = cache_set[victim_idx]
 
@@ -312,22 +313,20 @@ class CacheLevel:
 
         return out
     def stats(self):
-        total = self.hits + self.misses
-        #print("total", total)
         return {
             "level": self.level,
             "hits": self.hits,
             "misses": self.misses,
-            "hit_rate": self.hits / total if total else 0
+            "miss_ratio": [self.misses[j]/(self.hits[j]+self.misses[j]) if  self.hits[j]+self.misses[j] else -1 for j in range(self.num_addr)]
         }
 
 # Models full multi-level cache hierarchy for a core
 class MultiLevelCache:
-    def __init__(self, core_id, l1_conf, l2_conf, l3_conf, shared_cache):
+    def __init__(self, core_id, l1_conf, l2_conf, l3_conf, shared_cache,num_addr=20):
         self.core_id = core_id
-        self.l1 = CacheLevel("L1", core_id, memory=None, **l1_conf)
-        self.l2 = CacheLevel("L2", core_id, memory=None, **l2_conf)
-        self.l3 = CacheLevel("L3", core_id, memory=None, **l3_conf)
+        self.l1 = CacheLevel("L1", core_id,num_addr=num_addr, memory=None, **l1_conf)
+        self.l2 = CacheLevel("L2", core_id,num_addr=num_addr, memory=None, **l2_conf)
+        self.l3 = CacheLevel("L3", core_id,num_addr=num_addr, memory=None, **l3_conf)
 
         self.l1.lower = self.l2
         self.l2.lower = self.l3

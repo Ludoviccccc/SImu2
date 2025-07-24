@@ -29,7 +29,9 @@ class Env:
             program[j](parameter["core0"][0], parameter["core1"][0])
             program0[j](parameter["core0"][0],[])
             program1[j]([],parameter["core1"][0])
-        return {
+        cache_miss_L1_to_L3 = {f"core0_{level}_cache_miss":program[0].core0.stats()[level]["miss_ratio"] for level in ["L1","L2","L3"]}
+        cache_miss_L1_to_L3 = {f"core1_{level}_cache_miss":program[0].core1.stats()[level]["miss_ratio"] for level in ["L1","L2","L3"]} | cache_miss_L1_to_L3
+        out = {"shared_cache_miss":program[0].core0.l3.lower.stats()["miss_ratio"],
                 "miss_ratios": np.mean([program[j].ratios for j in range(self.repetition)],axis=0),
                 "miss_ratios_global": np.mean([program[j].miss_ratio_global for j in range(self.repetition)],axis=0),
                 "miss_ratios_global0": np.mean([program0[j].miss_ratio_global for j in range(self.repetition)],axis=0),
@@ -52,10 +54,12 @@ class Env:
                 "miss_ratios_core0_detailled": np.mean([program0[j].ratios_tab for j in range(self.repetition)],axis=0),
                 "miss_ratios_core1_detailled": np.mean([program1[j].ratios_tab for j in range(self.repetition)],axis=0),
                 }
+        out = out | cache_miss_L1_to_L3
+        return out
     def _make_program(self):
         ddr = DDRMemory(num_banks=self.num_banks)
         interconnect = Interconnect(ddr, delay=5, bandwidth=4)
-        shared_l4 = CacheLevel("L4", core_id=-1, memory=interconnect, **self.l4_conf)
+        shared_l4 = CacheLevel("L4", core_id=-1,num_addr=self.num_addr, memory=interconnect, **self.l4_conf)
         core0 = MultiLevelCache(0, self.l1_conf, self.l2_conf, self.l3_conf, shared_l4)
-        core1 = MultiLevelCache(1, self.l1_conf, self.l2_conf, self.l3_conf, shared_l4)
+        core1 = MultiLevelCache(1, self.l1_conf, self.l2_conf, self.l3_conf, shared_l4,num_addr=self.num_addr)
         return runpgrms(core0, core1, interconnect, ddr,num_banks=self.num_banks,num_addr = self.num_addr)

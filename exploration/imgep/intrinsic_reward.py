@@ -89,7 +89,6 @@ class IR:
                 if len(self.history.memory_program["core0"])<N+1:
                     parameter = self.Pi(goal,self.history,module)
                     self.history.store({"program":parameter}|self.env(parameter))
-                    print("len",len(self.history.memory_program["core0"]))
             for module_ in self.modules:
                 self.eval_module_diversity(module_)
             self.progress()
@@ -101,7 +100,7 @@ class IR:
         self.calls+=1
     def eval_module_diversity(self,module:dict):
         feature = self.goal_module.data2feature(self.history.memory_perf, module)
-        if module["type"] in ["miss_ratios","time_diff","time","miss_ratios_detailled","miss_count"]:
+        if module["type"] in ["miss_ratios","time_diff","time","miss_ratios_detailled","miss_count","shared_cache_miss_ratio","cache_miss_ratio"]:
             bins = module["bins"]
             hist,_ = np.histogram(feature,bins =bins)
             div = sum(hist>0)
