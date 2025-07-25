@@ -100,7 +100,7 @@ class IR:
         self.calls+=1
     def eval_module_diversity(self,module:dict):
         feature = self.goal_module.data2feature(self.history.memory_perf, module)
-        if module["type"] in ["miss_ratios","time_diff","time","miss_ratios_detailled","miss_count","shared_cache_miss_ratio","cache_miss_ratio"]:
+        if module["type"] in ["miss_ratios","time_diff","time","miss_ratios_detailled","miss_count","shared_cache_miss_ratio","cache_miss_ratio","diff_ratios_detailled"]:
             bins = module["bins"]
             hist,_ = np.histogram(feature,bins =bins)
             div = sum(hist>0)

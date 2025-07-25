@@ -26,7 +26,12 @@ class Features:
         elif module["type"]=="diff_ratios_bank":
             bank = module["bank"]
             out = np.stack((np.array(stats["diff_ratios_core0"])[:,bank],
-            np.array(stats["diff_ratios_core1"])[:,bank]))
+                            np.array(stats["diff_ratios_core1"])[:,bank]))
+        elif module["type"]=="diff_ratios_detailled":
+            bank = module["bank"]
+            row = module["row"]
+            core = module["core"]
+            out = np.array(stats[f"miss_ratios_core{core}_detailled"])[:,row,bank] - np.array(stats[f"miss_ratios_detailled"])[:,row,bank]
         elif module["type"]=="time":
             core = module["core"]
             single = module["single"]
@@ -58,9 +63,9 @@ class Features:
                            np.array(stats["miss_ratios_global0"]),
                            np.array(stats["miss_ratios_global1"]),
                            stats["time_core0_alone"],
-                            stats["time_core1_alone"],
-                            stats["time_core0_together"],
-                            stats["time_core1_together"]))
+                           stats["time_core1_alone"],
+                           stats["time_core0_together"],
+                           stats["time_core1_together"]))
         elif module["type"]=="miss_ratios_global":
             out = np.stack((np.array(stats["miss_ratios_global"]),
                            np.array(stats["miss_ratios_global0"]),
@@ -68,11 +73,11 @@ class Features:
         elif module["type"]=="cache_miss_ratio":
             core = module["core"]
             level = module["level"]
-            out = stats[f"core{core}_{level}_cache_miss"][module["addr"]]
+            out = stats[f"core{core}_{level}_cache_miss"][:,module["addr"]]
             #print("out", np.array(out))
             #exit()
         elif module["type"]=="shared_cache_miss_ratio":
-            out = stats[f"shared_cache_miss"][module["addr"]]
+            out = stats[f"shared_cache_miss"][:,module["addr"]]
         else:
             TypeError(f"module {module} unknown")
         return np.array(out)
