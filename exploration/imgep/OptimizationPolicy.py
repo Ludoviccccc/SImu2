@@ -44,30 +44,33 @@ class OptimizationPolicykNN(Features):
         #print("elements",elements.shape)
         out = np.sum((a -elements)**2,axis=0)
         return out
-    def select_closest_codes(self,H:History,signature: np.ndarray,module:str)->dict:
-        assert len(H.memory_program)>0, "history empty"
-        #def sort_tuple(to_sort):
-        #    in_ = sorted(to_sort, key = lambda x:x[0])
-        #    return [idx for _,idx in in_]
-        b = self.data2feature(H.memory_perf, module)
-#        b = np.round(b,2)
-        #if b.ndim==1:
-        #    b,bidx = np.unique(b,return_index=True)
-#        print("signature", signature.shape)
-#        print("b", b.shape, b.ndim)
+    def feature2closest_code(self,memory_perf:dict,memory_program,module:dict,signature:np.ndarray):
+        b = self.data2feature(memory_perf, module)
         if type(signature)==np.ndarray:
             if b.ndim==1 and (signature.shape[0]>1 or signature.ndim>1):
                 print("erre")
                 raise TypeError(f"goal of shape {signature.shape} has be be a float. Features of shape {b.shape}")
         d = self.loss(signature,b)
         idx = np.argsort(d)[:self.k]
-        #if b.ndim==1:
-        #    idx = [bidx[i] for i in idx]
-        #print("idx",idx)
         output = {"program": {"core0":[],"core1":[]},}
         for id_ in idx:
-            output["program"]["core0"].append(H.memory_program["core0"][id_])
-            output["program"]["core1"].append(H.memory_program["core1"][id_])
+            output["program"]["core0"].append(memory_program["core0"][id_])
+            output["program"]["core1"].append(memory_program["core1"][id_])
+        return output
+    def select_closest_codes(self,H:History,signature: np.ndarray,module:str)->dict:
+        assert len(H.memory_program)>0, "history empty"
+        #b = self.data2feature(H.memory_perf, module)
+        #if type(signature)==np.ndarray:
+        #    if b.ndim==1 and (signature.shape[0]>1 or signature.ndim>1):
+        #        print("erre")
+        #        raise TypeError(f"goal of shape {signature.shape} has be be a float. Features of shape {b.shape}")
+        #d = self.loss(signature,b)
+        #idx = np.argsort(d)[:self.k]
+        #output = {"program": {"core0":[],"core1":[]},}
+        #for id_ in idx:
+        #    output["program"]["core0"].append(H.memory_program["core0"][id_])
+        #    output["program"]["core1"].append(H.memory_program["core1"][id_])
+        output = self.feature2closest_code(H.memory_perf,H.memory_program,module,signature)
         return output
     def light_code_mutation(self,programs:dict[list[dict]]):
         mutated0, mutated1 = mutate_paire_instructions(programs["core0"],

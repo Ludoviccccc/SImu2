@@ -1,6 +1,7 @@
 import numpy as np
 import pickle
 import os.path
+import copy
 class History:
     def __init__(self, max_size = 100):
         self.max_size = max_size
@@ -38,3 +39,10 @@ class History:
                 "memory_program":{"core0":self.memory_program["core0"],"core1":self.memory_program["core1"]}}
         with open(name, "wb") as f:
             pickle.dump(output, f)
+    def __getitem__(self,val):
+        output = copy.deepcopy(self)
+        for k in self.memory_perf.keys():
+            output.memory_perf[k] = self.memory_perf[k][val]
+        for k in self.memory_program.keys():
+            output.memory_program[k] = self.memory_program[k][val]
+        return output
