@@ -6,6 +6,7 @@ from exploration.imgep.intrinsic_reward import IR
 import json
 import sys
 import os
+from visu_modules import visu_modules
 if __name__=="__main__":
     #np.random.seed(0)
     folder1module = "data_1module"
@@ -44,3 +45,9 @@ if __name__=="__main__":
                                      name = f"{image_folder}/comp_ratios_iteration_{k_}_{N}", k = k_)
         comparaison_ratios_global_iterations([(a[0],a[1]) for a in contents_ if a[2]==k_] + [("random", content_random)],
                                             name = f"{image_folder}/comp_global_ratios_iteration_{k_}_{N}", k = k_)
+
+
+    with open(sys.argv[2],"rb") as f:
+        modules_dict = json.load(f)
+    modules = modules_dict["modules"]
+    visu_modules(content,modules,image_folder)

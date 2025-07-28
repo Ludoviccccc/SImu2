@@ -5,27 +5,29 @@ if __name__ == "__main__":
     N = int(10000)
     N_init = 1000
     max_len = 50
-    periode = 5
+    periode = 20
     num_bank = 4
     mutation_rate = .1
     num_iteration = 5 #has to be small compared to N
     #modules =   ["time"]
     min_instr = 5
     modules = [{"type":"time_vector","bins":list(np.linspace(0,1000,21))}]
-    modules +=   [{"type":"miss_bank","bank":j,"bins":list(np.linspace(0,1,21))} for j in range(num_bank)]
+    #modules +=   [{"type":"miss_bank","bank":j,"bins":list(np.linspace(0,1,21))} for j in range(num_bank)]
     #modules +=  [{"type":"diff_ratios_bank","bank":j,"bins":list(np.linspace(0,1,21))} for j in range(num_bank)]
-    modules +=  [{"type":"diff_ratios_detailled","bank":j,"bins":list(np.linspace(-1,1,41)),"row":row,"core":core} for j in range(num_bank) for row in range((num_addr//16)+1) for core in [0,1]]
+    modules +=  [{"type":"diff_ratios_detailled","bank":j,"bins":list(np.linspace(-1,1,21)),"row":row,"core":core} for j in range(num_bank) for row in range((num_addr//16)+1) for core in [0,1]]
 
     modules +=  [{"type":"time_diff","core":core,"bins":list(np.linspace(0,1000,21))} for core in range(2)]
-    modules +=  [{"type":"miss_count", "bank":bank,"core":core,"bins":list(np.linspace(0,20,20))} for bank in range(num_bank) for core in [None,0,1]]
-    dict_modules = [{"type":"miss_ratios","bank":bank, "core":core,"bins":list(np.linspace(0,1,21))} for core in [None, 0,1] for bank in range(num_bank)]
+    #modules +=  [{"type":"miss_count", "bank":bank,"core":core,"bins":list(np.linspace(0,20,20))} for bank in range(num_bank) for core in [None,0,1]]
+    #dict_modules = [{"type":"miss_ratios","bank":bank, "core":core,"bins":list(np.linspace(0,1,21))} for core in [None, 0,1] for bank in range(num_bank)]
     dict_times = [{"type":"time", "core":core,"single":single,"bins":list(np.linspace(0,1000,21))} for core in range(2) for single in [True, False]]
 
     ratios_detailled = [{"type":"miss_ratios_detailled","bank":bank,"core":core,"row":row,"bins":list(np.linspace(0,1,21))} for core in [None,0,1] for bank in range(num_bank) for row in range((num_addr//16)+1)]
-    cache_ratios = [{"type":"shared_cache_miss_ratio","bins":list(np.linspace(0,1,21)),"addr":addr} for addr in range(num_addr)]+[{"type":"cache_miss_ratio","level":f"L{j}","core":i,"bins":list(np.linspace(0,1,21)),"addr":addr} for j in [1,2,3] for i in [0,1] for addr in range(num_addr)]
-    ks = [2]
-    print("cache ratios", len(cache_ratios))
-    modules = modules + dict_modules + ratios_detailled + dict_times#+cache_ratios
+    shared_cache_ratios = [{"type":"shared_cache_miss_ratio","bins":list(np.linspace(0,1,21)),"addr":addr} for addr in range(num_addr)]
+    cache_ratios = [{"type":"cache_miss_ratio","level":f"L{j}","core":i,"bins":list(np.linspace(0,1,21)),"addr":addr} for j in [1,2,3] for i in [0,1] for addr in range(num_addr)]
+    ks = [2,3]
+    #print("cache ratios", len(cache_ratios))
+    #modules = modules + dict_modules + ratios_detailled + dict_times#+cache_ratios
+    modules = modules  + ratios_detailled + shared_cache_ratios+ dict_times#+cache_ratios
     #modules = [{"type":"miss_ratios_global_time"}]
 
     folder = "all_data/data_short5"

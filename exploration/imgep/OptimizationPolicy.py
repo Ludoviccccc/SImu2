@@ -50,7 +50,7 @@ class OptimizationPolicykNN(Features):
         #    in_ = sorted(to_sort, key = lambda x:x[0])
         #    return [idx for _,idx in in_]
         b = self.data2feature(H.memory_perf, module)
-        b = np.round(b,2)
+#        b = np.round(b,2)
         #if b.ndim==1:
         #    b,bidx = np.unique(b,return_index=True)
 #        print("signature", signature.shape)

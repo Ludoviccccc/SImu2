@@ -83,14 +83,18 @@ class IR:
         """
         for module in self.modules:
             for module_ in self.modules:
-                self.eval_module_diversity(module_)
+                feature = self.goal_module.data2feature(self.history.memory_perf, module_)
+                self.eval_module_diversity(feature,module_)
+                del feature
             goal = self.goal_module(self.history,module)
             for j in range(self.num_iteration):
                 if len(self.history.memory_program["core0"])<N+1:
                     parameter = self.Pi(goal,self.history,module)
                     self.history.store({"program":parameter}|self.env(parameter))
             for module_ in self.modules:
-                self.eval_module_diversity(module_)
+                feature = self.goal_module.data2feature(self.history.memory_perf, module_)
+                self.eval_module_diversity(feature,module_)
+                del feature
             self.progress()
             if "total_progress" not in module:
                 module["total_progress"] = [np.sum([module["progress"] for module in self.modules])]
@@ -98,33 +102,35 @@ class IR:
                 module["total_progress"].append(np.sum([module["progress"] for module in self.modules]))
             module["total_progress"] = module["total_progress"][-self.window_total_progress:]
         self.calls+=1
-    def eval_module_diversity(self,module:dict):
-        feature = self.goal_module.data2feature(self.history.memory_perf, module)
-        if module["type"] in ["miss_ratios","time_diff","time","miss_ratios_detailled","miss_count","shared_cache_miss_ratio","cache_miss_ratio","diff_ratios_detailled"]:
-            bins = module["bins"]
-            hist,_ = np.histogram(feature,bins =bins)
-            div = sum(hist>0)
-        elif module["type"]==f"miss_bank":
-            bins = module["bins"]
-            hist0,_,_ = np.histogram2d(feature[0,:],feature[2,:], bins=[bins, bins])
-            hist1,_,_ = np.histogram2d(feature[1,:],feature[2,:], bins=[bins, bins])
-            div = .5*(np.sum(hist0>0)+np.sum(hist1>0))
-        elif module["type"]=="diff_ratios_bank":
-            bins = module["bins"]
-
-            hist,_,_ = np.histogram2d(feature[0,:],feature[1,:], bins=[bins, bins])
-            div = np.sum(hist>0)
-        elif module["type"] in ["time_vector"]:
-            bins = module["bins"]
-            hist1,_,_ = np.histogram2d(feature[0,:],feature[2,:], bins=[bins, bins])
-            hist2,_,_ = np.histogram2d(feature[1,:],feature[3,:], bins=[bins, bins])
-            div = np.sum(hist1>0) + np.sum(hist2>0)
-        else:
-            TypeError(f"module {module} not known")
-
+    def eval_module_diversity(self,feature,module:dict):
+        div = eval_diversity(feature,module)
         #Stores the result
         if "diversity" in module.keys():
             module["diversity"].append(div)
             module["diversity"] =module["diversity"][-self.window:]
         else:
             module["diversity"] = [div]
+
+def eval_diversity(feature,module):
+    if module["type"] in ["miss_ratios","time_diff","time","miss_ratios_detailled","miss_count","shared_cache_miss_ratio","cache_miss_ratio","diff_ratios_detailled"]:
+        bins = module["bins"]
+        hist,_ = np.histogram(feature,bins =bins)
+        div = sum(hist>0)
+    elif module["type"]==f"miss_bank":
+        bins = module["bins"]
+        hist0,_,_ = np.histogram2d(feature[0,:],feature[2,:], bins=[bins, bins])
+        hist1,_,_ = np.histogram2d(feature[1,:],feature[2,:], bins=[bins, bins])
+        div = .5*(np.sum(hist0>0)+np.sum(hist1>0))
+    elif module["type"]=="diff_ratios_bank":
+        bins = module["bins"]
+
+        hist,_,_ = np.histogram2d(feature[0,:],feature[1,:], bins=[bins, bins])
+        div = np.sum(hist>0)
+    elif module["type"] in ["time_vector"]:
+        bins = module["bins"]
+        hist1,_,_ = np.histogram2d(feature[0,:],feature[2,:], bins=[bins, bins])
+        hist2,_,_ = np.histogram2d(feature[1,:],feature[3,:], bins=[bins, bins])
+        div = np.sum(hist1>0) + np.sum(hist2>0)
+    else:
+        TypeError(f"module {module} not known")
+    return div

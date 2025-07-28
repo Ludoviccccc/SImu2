@@ -77,7 +77,9 @@ class Features:
             #print("out", np.array(out))
             #exit()
         elif module["type"]=="shared_cache_miss_ratio":
-            out = stats[f"shared_cache_miss"][:,module["addr"]]
+            out = np.array(stats[f"shared_cache_miss"])
+            #print("out", out.shape)
+            out = out[:,module["addr"]]
         else:
             TypeError(f"module {module} unknown")
         return np.array(out)
