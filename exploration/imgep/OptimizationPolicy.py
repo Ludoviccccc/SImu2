@@ -48,7 +48,6 @@ class OptimizationPolicykNN(Features):
         b = self.data2feature(memory_perf, module)
         if type(signature)==np.ndarray:
             if b.ndim==1 and (signature.shape[0]>1 or signature.ndim>1):
-                print("erre")
                 raise TypeError(f"goal of shape {signature.shape} has be be a float. Features of shape {b.shape}")
         d = self.loss(signature,b)
         idx = np.argsort(d)[:self.k]
@@ -59,17 +58,6 @@ class OptimizationPolicykNN(Features):
         return output
     def select_closest_codes(self,H:History,signature: np.ndarray,module:str)->dict:
         assert len(H.memory_program)>0, "history empty"
-        #b = self.data2feature(H.memory_perf, module)
-        #if type(signature)==np.ndarray:
-        #    if b.ndim==1 and (signature.shape[0]>1 or signature.ndim>1):
-        #        print("erre")
-        #        raise TypeError(f"goal of shape {signature.shape} has be be a float. Features of shape {b.shape}")
-        #d = self.loss(signature,b)
-        #idx = np.argsort(d)[:self.k]
-        #output = {"program": {"core0":[],"core1":[]},}
-        #for id_ in idx:
-        #    output["program"]["core0"].append(H.memory_program["core0"][id_])
-        #    output["program"]["core1"].append(H.memory_program["core1"][id_])
         output = self.feature2closest_code(H.memory_perf,H.memory_program,module,signature)
         return output
     def light_code_mutation(self,programs:dict[list[dict]]):

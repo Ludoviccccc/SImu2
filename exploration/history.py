@@ -40,9 +40,13 @@ class History:
         with open(name, "wb") as f:
             pickle.dump(output, f)
     def __getitem__(self,val):
-        output = copy.deepcopy(self)
+        """
+        returns slice of memory_perf and memory_program in this order
+        """
+        memory_program = {"core0":[],"core1":[]}
+        memory_perf = {}
         for k in self.memory_perf.keys():
-            output.memory_perf[k] = self.memory_perf[k][val]
+            memory_perf[k] = self.memory_perf[k][val]
         for k in self.memory_program.keys():
-            output.memory_program[k] = self.memory_program[k][val]
-        return output
+            memory_program[k] = self.memory_program[k][val]
+        return memory_perf,memory_program
