@@ -7,6 +7,7 @@ class History:
         self.max_size = max_size
         self.memory_program = {"core0":[],"core1":[]}
         self.memory_perf = {}
+        self.memory_tab = []
     def eviction(self):
         if len(self.memory_program)>self.max_size:
             self.memory_program["core0"] = self.memory_program["core0"][-self.max_size:]

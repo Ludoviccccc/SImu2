@@ -40,7 +40,7 @@ def mutate_instructions(instructions:list[dict],
     num_mutations = max(0, int(len(mutated) * mutation_rate))
     
     for _ in range(num_mutations):
-        choices = ['change']
+        choices = ['change','delete', 'add']
         #if len(mutated)>min_instr:
         #    choices.append('delete')
         #if len(mutated)<=max_instr:

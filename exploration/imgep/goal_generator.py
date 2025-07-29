@@ -15,7 +15,7 @@ class GoalGenerator(Features):
         self.modules = modules
     def __call__(self,H:History, module:str)->np.ndarray:
         assert module in self.modules, f"module {module} unknown"
-        stat = self.data2feature(H.memory_perf_, module)
+        stat = self.data2feature(H.memory_perf, module)
         min_ = stat.min(axis=-1)
         max_ = stat.max(axis=-1)
         if module["type"] in ["miss_ratios","miss_ratios_detailled","miss_bank","diff_ratios_bank"]:
