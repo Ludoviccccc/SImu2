@@ -40,25 +40,24 @@ class OptimizationPolicykNN(Features):
             a = goal.reshape(-1,1) 
         else:
             a = np.array([goal]).reshape(-1,1) 
-        #print("a",a.shape)
-        #print("elements",elements.shape)
         out = np.sum((a -elements)**2,axis=0)
         return out
-    def feature2closest_code(self,memory_perf:dict,memory_program,module:dict,signature:np.ndarray):
-        b = self.data2feature(memory_perf, module)
+    def feature2closest_code(self,features,signature:np.ndarray):
         if type(signature)==np.ndarray:
-            if b.ndim==1 and (signature.shape[0]>1 or signature.ndim>1):
-                raise TypeError(f"goal of shape {signature.shape} has be be a float. Features of shape {b.shape}")
-        d = self.loss(signature,b)
+            if features.ndim==1 and (signature.shape[0]>1 or signature.ndim>1):
+                raise TypeError(f"goal of shape {signature.shape} has be a float. Features of shape {features.shape}")
+        d = self.loss(signature,features)
+        d_sorted = np.sort(d)[:self.k]
         idx = np.argsort(d)[:self.k]
-        output = {"program": {"core0":[],"core1":[]},}
-        for id_ in idx:
-            output["program"]["core0"].append(memory_program["core0"][id_])
-            output["program"]["core1"].append(memory_program["core1"][id_])
-        return output
+        return idx,d_sorted
     def select_closest_codes(self,H:History,signature: np.ndarray,module:str)->dict:
         assert len(H.memory_program)>0, "history empty"
-        output = self.feature2closest_code(H.memory_perf,H.memory_program,module,signature)
+        output = {"program": {"core0":[],"core1":[]},}
+        features = self.data2feature(H.memory_perf, module)
+        idx,_ = self.feature2closest_code(features,signature)
+        for id_ in idx:
+            output["program"]["core0"].append(H.memory_program["core0"][id_])
+            output["program"]["core1"].append(H.memory_program["core1"][id_])
         return output
     def light_code_mutation(self,programs:dict[list[dict]]):
         mutated0, mutated1 = mutate_paire_instructions(programs["core0"],
