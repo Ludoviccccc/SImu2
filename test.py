@@ -25,7 +25,10 @@ if __name__=="__main__":
     N_init = config["N_init"]
     num_bank = config["num_bank"]
     max_len = config["max_len"]
-    min_len = config["min_len"]
+    if 'min_len' in config:
+        min_len = config["min_len"]
+    else:
+        min_len = 5
     folder = config["folder"]
     num_addr = config["num_addr"]
     num_iteration = config["num_iteration"]

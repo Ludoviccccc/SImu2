@@ -157,18 +157,18 @@ if __name__=="__main__":
 
     En = Env(repetition=1,num_banks = num_bank,num_addr = num_addr)
     pp = ['shared_cache_miss',
-      'time_core0_together',
-      'time_core1_together',
-      'time_core0_alone',
-      'time_core1_alone',
-      'diff_ratios_core0',
-      'diff_ratios_core1',
-      'diff_time0',
-      'diff_time1',
-      'miss_ratios_detailled',
-      'miss_ratios_core0_detailled',
-      'miss_ratios_core1_detailled',
-     ]
+          'time_core0_together',
+          'time_core1_together',
+          'time_core0_alone',
+          'time_core1_alone',
+          'diff_ratios_core0',
+          'diff_ratios_core1',
+          'diff_time0',
+          'diff_time1',
+          'miss_ratios_detailled',
+          'miss_ratios_core0_detailled',
+          'miss_ratios_core1_detailled',
+        ]
     periode  =5
     max_len = 50
     num_banks = 4
@@ -226,5 +226,5 @@ if __name__=="__main__":
             return out
     aa = ae(58)
     in_ = torch.Tensor(np.array(H.memory_tab))
-    print(in_.shape)
-    print(aa(in_).shape)
+    print(in_[0,:])
+    #print(aa(in_).shape)

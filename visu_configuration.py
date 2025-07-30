@@ -1,11 +1,12 @@
 import json
 if __name__ == "__main__":
     folder = ["all_data/data_short5","all_data/data_short5","all_data/data_weak"]
-    folder1module = "all_data/data_1module"
+    #folder = ["all_data/data10bis","all_data/data10bis","all_data/data_weak"]
+    #image_folder ="all_images/image10bis"
     image_folder ="all_images/image_short5"
     N = int(10000)
     N_init = 1000
-    ks = [2,3]
+    ks = [3]
     num_bank = 4
     num_addr = 20
     file_mix = lambda k,N: f"history_weak_{k}_N_{N}_0.pkl"

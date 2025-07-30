@@ -30,7 +30,6 @@ class OptimizationPolicykNN(Features):
         output = self.mix(closest_codes) #expansion strategie: small random mutation
         return output
     def mix(self,programs):
-        #mix0, mix1 = mix_instruction_lists(programs["program"]["core0"],self.max_len), mix_instruction_lists(programs["program"]["core1"],self.max_len)
         ll = np.random.randint(5,self.max_len)
         mix0, mix1 = mix_instruction_lists(programs["program"]["core0"],ll), mix_instruction_lists(programs["program"]["core1"],ll)
         output = self.light_code_mutation({"core0":mix0[:self.max_len],"core1":mix1[:self.max_len]}) #expansion strategie: small random mutation
