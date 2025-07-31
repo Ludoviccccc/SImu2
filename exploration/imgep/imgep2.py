@@ -9,7 +9,7 @@ import random
 
 from exploration.imgep.intrinsic_reward import IR
 
-class IMGEP2:
+class IMGEP:
     """
     N: int. The experimental budget
     N_init: int. Number of experiments at random
@@ -29,7 +29,7 @@ class IMGEP2:
         self.modules = modules 
         self.max_len = max_len
         self.start = 0
-        self.periode_expl = 5
+        self.periode_expl = 10
         self.k = 0
     def take(self,sample:dict,N_init:int): 
         """Takes the ``N_init`` first steps from the ``sample`` dictionnary to initialize the exploration. 
@@ -45,29 +45,30 @@ class IMGEP2:
         """Performs the exploration.
         intr_reward:bool. If True, the exploration uses intrinsic reward based on diversity
         """
-        cond = False
-        #time_explor = 0
-        for i in range(self.start,self.N):
-            if i%1000==0:
+        time_explor = 0
+        for i in range(self.start,self.N+1):
+            if i%100==0:
                 print(f"{i} iterations")
+            if i<time_explor:
+                continue
             if i<self.N_init:
                 parameter = make_random_paire_list_instr(self.max_len,num_addr=self.env.num_addr)
             else:
                 if intr_reward:
                     #Sample target goal
-                    if cond and (i-self.N_init)%self.periode==0:
-                        self.ir()
+                    if (i-self.N_init)%(self.periode_expl*self.periode)==0:
+                        self.ir(self.N)
+                        time_explor = i + self.ir.num_iteration*len(self.ir.modules)
+                        print("time explor", time_explor)
                         module = self.ir.choice()
-                        goal = self.G(self.H, module = module)
+                        continue
                     elif (i-self.N_init)%self.periode==0:
-                        module = random.choice(self.modules)
-                        goal = self.G(self.H, module = module)
-                        self.ir()
-                        cond = True
+                        module = self.ir.choice()
                 else:
-                    if (i-self.N_init)%self.periode==0 and i>=self.N_init:
+                    if (i-self.N_init)%self.periode==0:
                         module = random.choice(self.modules)
-                        goal = self.G(self.H, module = module)
+                if (i-self.N_init)>=self.periode:
+                    goal = self.G(self.H, module = module)
                 parameter = self.Pi(goal,self.H, module)
             observation = self.env(parameter)
             self.H.store({"program":parameter}|observation)
