@@ -1,11 +1,12 @@
 import json
+import os
 import numpy as np
 if __name__ == "__main__":
     num_addr = 20
     N = int(10000)
     N_init = 1000
     max_len = 50
-    periode = 50
+    periode = 10
     num_bank = 4
     mutation_rate = .1
     num_iteration = 5 #has to be small compared to N
@@ -24,14 +25,11 @@ if __name__ == "__main__":
     ratios_detailled = [{"type":"miss_ratios_detailled","bank":bank,"core":core,"row":row,"bins":list(np.linspace(0,1,21))} for core in [None,0,1] for bank in range(num_bank) for row in range((num_addr//16)+1)]
     shared_cache_ratios = [{"type":"shared_cache_miss_ratio","bins":list(np.linspace(0,1,21)),"addr":addr} for addr in range(num_addr)]
     cache_ratios = [{"type":"cache_miss_ratio","level":f"L{j}","core":i,"bins":list(np.linspace(0,1,21)),"addr":addr} for j in [1,2,3] for i in [0,1] for addr in range(num_addr)]
-    ks = [2,3]
-    #print("cache ratios", len(cache_ratios))
-    #modules = modules + dict_modules + ratios_detailled + dict_times#+cache_ratios
-    #modules = modules  + ratios_detailled + shared_cache_ratios+ dict_times#+cache_ratios
-    modules = modules  + ratios_detailled + dict_times + dict_modules#+cache_ratios
+    ks = [2]
+    modules = modules  + ratios_detailled + dict_times + dict_modules + shared_cache_ratios
     #modules = [{"type":"miss_ratios_global_time"}]
     print(f"{len(modules)} modules")
-    folder = "all_data/data_short5"
+    folder = "all_data/data_short8"
     config = {"N_init":N_init,
               "N":N,
               "periode":periode,
@@ -43,6 +41,8 @@ if __name__ == "__main__":
               "folder":folder,
               "ks":ks,
               "num_iteration": num_iteration}
+    if os.path.exists(folder)==False:
+        os.system(f"mkdir {folder}")
     with open(f"{folder}/config.json","w") as f:
         json.dump(config, f)
     modules_dict = {"modules":modules}

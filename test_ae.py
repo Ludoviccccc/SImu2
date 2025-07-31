@@ -226,5 +226,15 @@ if __name__=="__main__":
             return out
     aa = ae(58)
     in_ = torch.Tensor(np.array(H.memory_tab))
-    print(in_[0,:])
+    def normalize(in_:torch.Tensor):
+        min_ = in_.min(dim=0)[0]
+        max_ = in_.max(dim=0)[0]
+        return (in_ - min_)/(max_-min_)
+    print(in_[0,:].shape)
+    values,idx = in_.max(dim=0)
+    print(values.shape)
     #print(aa(in_).shape)
+    in_0 = normalize(in_).numpy()
+    U,sigma,Vh =np.linalg.svd(in_0)
+    print("sigma", sigma)
+    print(in_0@Vh.transpose())
