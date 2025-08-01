@@ -67,7 +67,7 @@ class IMGEP:
                 else:
                     if (i-self.N_init)%self.periode==0:
                         module = random.choice(self.modules)
-                if (i-self.N_init)>=self.periode:
+                if (i-self.N_init)>=0:
                     goal = self.G(self.H, module = module)
                 parameter = self.Pi(goal,self.H, module)
             observation = self.env(parameter)

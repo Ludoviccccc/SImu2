@@ -121,6 +121,10 @@ def eval_diversity(feature,module):
         hist0,_,_ = np.histogram2d(feature[0,:],feature[2,:], bins=[bins, bins])
         hist1,_,_ = np.histogram2d(feature[1,:],feature[2,:], bins=[bins, bins])
         div = .5*(np.sum(hist0>0)+np.sum(hist1>0))
+    elif module["type"]=="vec_ratios_detailled":
+        bins = module["bins"]
+        hist,_,_ = np.histogram2d(feature[0,:],feature[1,:], bins=[bins, bins])
+        div = np.sum(hist>0)
     elif module["type"]=="diff_ratios_bank":
         bins = module["bins"]
 

@@ -21,17 +21,22 @@ class Features:
         elif module["type"]=="miss_bank":
             bank = module["bank"]
             out = np.stack((np.array(stats["miss_ratios_core0"])[:,bank],
-                            np.array(stats["miss_ratios_core1"])[::,bank],
-                                  np.array(stats["miss_ratios"])[::,bank]))
+                            np.array(stats["miss_ratios_core1"])[:,bank],
+                                  np.array(stats["miss_ratios"])[:,bank]))
         elif module["type"]=="diff_ratios_bank":
             bank = module["bank"]
-            out = np.stack((np.array(stats["diff_ratios_core0"])[::,bank],
-                            np.array(stats["diff_ratios_core1"])[::,bank]))
+            out = np.stack((np.array(stats["diff_ratios_core0"])[:,bank],
+                            np.array(stats["diff_ratios_core1"])[:,bank]))
         elif module["type"]=="diff_ratios_detailled":
             bank = module["bank"]
             row = module["row"]
             core = module["core"]
             out = np.array(stats[f"miss_ratios_core{core}_detailled"])[:,row,bank] - np.array(stats[f"miss_ratios_detailled"])[:,row,bank]
+        elif module["type"]=="vec_ratios_detailled":
+            bank = module["bank"]
+            row = module["row"]
+            core = module["core"]
+            out = np.stack((np.array(stats[f"miss_ratios_core{core}_detailled"])[:,row,bank],np.array(stats[f"miss_ratios_detailled"])[:,row,bank]))
         elif module["type"]=="time":
             core = module["core"]
             single = module["single"]

@@ -1,10 +1,10 @@
 import json
 import os
 if __name__ == "__main__":
-    folder = ["all_data/data_short8","all_data/data_short8","all_data/data_weak"]
+    folder = ["all_data/data_short10","all_data/data_short10","all_data/data_weak"]
     #folder = ["all_data/data10bis","all_data/data10bis","all_data/data_weak"]
     #image_folder ="all_images/image10bis"
-    image_folder ="all_images/image_short8"
+    image_folder ="all_images/image_short10"
     N = int(10000)
     N_init = 1000
     ks = [2]
