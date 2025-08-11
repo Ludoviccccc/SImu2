@@ -2,6 +2,10 @@ import json
 import os
 import numpy as np
 if __name__ == "__main__":
+    """
+    ajout d'un module: vec_ratios_detailled
+    supression de diff artio detailled
+    """
     num_addr = 20
     N = int(10000)
     N_init = 1000

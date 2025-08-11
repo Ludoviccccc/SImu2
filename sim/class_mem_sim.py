@@ -179,6 +179,8 @@ class CacheLevel:
         self.num_addr = num_addr
         self.hits = np.zeros(self.num_addr+1)
         self.misses = np.zeros(self.num_addr+1)
+        self.hit = 0
+        self.miss = 0
         self.num_instr =0
         #self.
         #self.num_instr = 0
