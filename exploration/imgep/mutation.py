@@ -87,56 +87,95 @@ def mutate_instructions(instructions:list[dict],
 
 
 
-def mix_instruction_lists(instruction_lists: List[List[Dict[str, Any]]],
-                         max_length: int = None) -> List[Dict[str, Any]]:
+#def mix_instruction_lists(instruction_lists: List[List[Dict[str, Any]]],
+#                         max_length: int = None) -> List[Dict[str, Any]]:
+#    """
+#    Mix multiple instruction lists to create a new combined list.
+#
+#    Args:
+#        instruction_lists: List of instruction lists to mix from
+#        max_length: Maximum length of the resulting list (None for no limit)
+#
+#    Returns:
+#        A new list of instructions randomly selected from all input lists
+#    """
+#    if len(instruction_lists)==1: 
+#        return instruction_lists[0]
+#    sanitized_lists = []
+#    for instr_list in instruction_lists:
+#        sanitized = []
+#        for instr in copy.deepcopy(instr_list):
+#            sanitized.append(instr)
+#        sanitized_lists.append(sanitized)
+#
+#    # Flatten all instructions with their source list index
+#    all_instructions = []
+#    for list_idx, instr_list in enumerate(sanitized_lists):
+#        for instr_idx, instr in enumerate(instr_list):
+#            all_instructions.append((list_idx, instr_idx, instr))
+#
+#    if not all_instructions:
+#        return []
+#
+#    # Determine target length
+#    if max_length is None:
+#        # Use average length of input lists
+#        lengths = [len(lst) for lst in sanitized_lists]
+#        target_length = int(sum(lengths) / len(lengths))
+#    else:
+#        target_length = max_length
+#
+#    # Create new mixed list
+#    mixed = []
+#    while len(mixed) < target_length and all_instructions:
+#        # Randomly select an instruction from all available
+#        selected = random.choice(all_instructions)
+#        list_idx, instr_idx, instr = selected
+#
+#        # Add to new list
+#        mixed.append(copy.deepcopy(instr))
+#
+#        # Optionally remove this instance from available choices
+#        # to avoid duplicates if desired
+#        # all_instructions.remove(selected)
+#
+#    return mixed
+#
+import copy
+from typing import List, Dict, Any
+
+def mix_instruction_lists(instruction_lists: List[List[Dict[str, Any]]],max_len) -> List[Dict[str, Any]]:
     """
-    Mix multiple instruction lists to create a new combined list.
+    Mix instruction lists while preserving their original ordering.
+    The output length matches the shortest input list.
+    Instructions are selected in round-robin fashion from the input lists.
 
     Args:
         instruction_lists: List of instruction lists to mix from
-        max_length: Maximum length of the resulting list (None for no limit)
 
     Returns:
-        A new list of instructions randomly selected from all input lists
+        A new list of instructions with preserved ordering from inputs
     """
-    if len(instruction_lists)==1: 
-        return instruction_lists[0]
+    # First replace all functions with lambda val: None in all input lists
     sanitized_lists = []
     for instr_list in instruction_lists:
         sanitized = []
         for instr in copy.deepcopy(instr_list):
+            if instr['type'] == 'r' and 'func' in instr:
+                instr['func'] = lambda val: None
             sanitized.append(instr)
         sanitized_lists.append(sanitized)
 
-    # Flatten all instructions with their source list index
-    all_instructions = []
-    for list_idx, instr_list in enumerate(sanitized_lists):
-        for instr_idx, instr in enumerate(instr_list):
-            all_instructions.append((list_idx, instr_idx, instr))
+    # Determine the minimum length
+    min_length = min(len(lst) for lst in sanitized_lists) if sanitized_lists else 0
 
-    if not all_instructions:
-        return []
-
-    # Determine target length
-    if max_length is None:
-        # Use average length of input lists
-        lengths = [len(lst) for lst in sanitized_lists]
-        target_length = int(sum(lengths) / len(lengths))
-    else:
-        target_length = max_length
-
-    # Create new mixed list
+    # Create the mixed list by selecting instructions in order
     mixed = []
-    while len(mixed) < target_length and all_instructions:
-        # Randomly select an instruction from all available
-        selected = random.choice(all_instructions)
-        list_idx, instr_idx, instr = selected
-
-        # Add to new list
-        mixed.append(copy.deepcopy(instr))
-
-        # Optionally remove this instance from available choices
-        # to avoid duplicates if desired
-        # all_instructions.remove(selected)
+    for i in range(min_length):
+        # Round-robin through each list at position i
+        for lst in sanitized_lists:
+            if i < len(lst):
+                mixed.append(copy.deepcopy(lst[i]))
 
     return mixed
+

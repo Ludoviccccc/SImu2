@@ -7,7 +7,7 @@ if __name__ == "__main__":
     image_folder ="all_images/image_short10"
     N = int(10000)
     N_init = 1000
-    ks = [2]
+    ks = [5]
     num_bank = 4
     num_addr = 20
     file_mix = lambda k,N: f"history_weak_{k}_N_{N}_0.pkl"

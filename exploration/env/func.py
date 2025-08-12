@@ -31,7 +31,12 @@ class Env:
             program1[j]([],parameter["core1"][0])
         cache_miss_L1_to_L3 = {f"core0_{level}_cache_miss":program[0].core0.stats()[level]["miss_ratio"] for level in ["L1","L2","L3"]}
         cache_miss_L1_to_L3 = {f"core1_{level}_cache_miss":program[0].core1.stats()[level]["miss_ratio"] for level in ["L1","L2","L3"]} | cache_miss_L1_to_L3
-        out = {"shared_cache_miss":program[0].core0.l3.lower.stats()["miss_ratio"],
+
+        stat_ = program[0].core0.l3.lower.stats()
+        shared_cache_miss = stat_["miss_ratio"]
+        general_shared_cache_miss = stat_["general_shared_cache_miss"]
+        out = {"shared_cache_miss":shared_cache_miss,
+               "general_shared_cache_miss":general_shared_cache_miss,
                 "miss_ratios": np.mean([program[j].ratios for j in range(self.repetition)],axis=0),
                 "miss_ratios_global": np.mean([program[j].miss_ratio_global for j in range(self.repetition)],axis=0),
                 "miss_ratios_global0": np.mean([program0[j].miss_ratio_global for j in range(self.repetition)],axis=0),
@@ -53,6 +58,7 @@ class Env:
                 "miss_ratios_detailled":    np.mean([program[j].ratios_tab for j in range(self.repetition)],axis=0),
                 "miss_ratios_core0_detailled": np.mean([program0[j].ratios_tab for j in range(self.repetition)],axis=0),
                 "miss_ratios_core1_detailled": np.mean([program1[j].ratios_tab for j in range(self.repetition)],axis=0),
+                
                 }
         out = out | cache_miss_L1_to_L3
         return out

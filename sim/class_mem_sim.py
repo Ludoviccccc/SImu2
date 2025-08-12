@@ -210,6 +210,7 @@ class CacheLevel:
                 # There is a hit.
                 #print(f"[{self.level} cache hit for {addr} on core {self.core_id}]")
                 self.hits[addr] += 1
+                self.hit += 1
                 # Update the pLRU tree to point away from the MRU
                 plru.update_on_access(i)
                 callback(line.data)
@@ -221,6 +222,7 @@ class CacheLevel:
         self.miss_history["core_id"].append(self.core_id)
         # On miss, choose victim line using PLRU and fetch from lower memory
         self.misses[addr] += 1
+        self.miss += 1
         victim_idx = plru.get_victim()
         victim_line = cache_set[victim_idx]
 
@@ -319,7 +321,8 @@ class CacheLevel:
             "level": self.level,
             "hits": self.hits,
             "misses": self.misses,
-            "miss_ratio": [self.misses[j]/(self.hits[j]+self.misses[j]) if  self.hits[j]+self.misses[j] else -1 for j in range(self.num_addr)]
+            "miss_ratio": [self.misses[j]/(self.hits[j]+self.misses[j]) if  self.hits[j]+self.misses[j] else -1 for j in range(self.num_addr)],
+            "general_shared_cache_miss": self.miss/(self.miss+self.hit) if self.miss+self.hit>0 else -1
         }
 
 # Models full multi-level cache hierarchy for a core
