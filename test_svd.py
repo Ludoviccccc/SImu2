@@ -8,23 +8,56 @@ from sim.sim_use import make_random_paire_list_instr
 from exploration.history import History
 from exploration.imgep.features import Features
 import numpy as np
+from exploration.random.func import RANDOM
 from exploration.env.func import Env
 from  exploration.imgep.OptimizationPolicy import OptimizationPolicykNN
-from exploration.imgep.goal_generator import GoalGenerator
-from exploration.imgep.intrinsic_reward import IR
-import torch.optim as optim
-from torch.nn.utils.rnn import pad_sequence
-import matplotlib.pyplot as plt
 
-import torch
-import torch.nn as nn
-from torch import distributions
+class GoalGenerator(Features):
+    def __init__(self,
+                 num_bank:int,
+                 ):
+        super().__init__()
+        self.num_bank = num_bank
+        self.k_time = 0
+        self.k_miss = 0
+    def __call__(self,coords:np.ndarray)->np.ndarray:
+        min_ = coords.min(axis=-1)
+        max_ = coords.max(axis=-1)
+        out = np.random.uniform((1-np.sign(min_)*0.6)*min_,4.0*max_)
+        return out
 def env_observation2_subset(output):
     out_list = []
     for o in pp:
-            #print(j,o,output[o])
             out_list.append(np.array(output[o]).flatten())
     return np.concatenate(out_list)
+class OptimizationPolicykNN_(OptimizationPolicykNN):
+    def __init__(self,
+                k=4,
+                mutation_rate = 0.1,
+                max_len=50,
+                num_addr = 20,
+                num_bank = 4,
+                min_instr = 5,
+                max_instr = 50):
+                super(OptimizationPolicykNN_,self).__init__(
+                k=4,
+                mutation_rate = 0.1,
+                max_len=50,
+                num_addr = 20,
+                num_bank = 4,
+                min_instr = 5,
+                max_instr = 50)
+    def select_closest_codes(self,H,coords:np.ndarray,goal:np.ndarray):
+        idx,_ = self.feature2closest_code(coords.reshape((1,-1)),goal)
+        output = {"program": {"core0":[],"core1":[]},}
+        for id_ in idx:
+            output["program"]["core0"].append(H.memory_program["core0"][id_])
+            output["program"]["core1"].append(H.memory_program["core1"][id_])
+        return output
+    def __call__(self,goal:np.ndarray,H:History,coords:np.ndarray)->dict:
+        closest_codes = self.select_closest_codes(H,coords,goal) #most promising sample from the history
+        output = self.mix(closest_codes) #expansion strategie: small random mutation
+        return output
 class IMGEP_:
     """
     N: int. The experimental budget
@@ -40,8 +73,6 @@ class IMGEP_:
                  H:History,
                  G:GoalGenerator,
                  Pi:OptimizationPolicykNN,
-                 ir:IR,
-                 modules:list[dict],
                  periode:int = 1,
                  max_len:int = 100):
         self.N = N
@@ -50,9 +81,7 @@ class IMGEP_:
         self.G = G
         self.N_init = N_init
         self.Pi = Pi
-        self.ir = ir
         self.periode = periode
-        self.modules = modules
         self.max_len = max_len
         self.start = 0
         self.periode_expl = 10
@@ -67,16 +96,23 @@ class IMGEP_:
         self.H.memory_program["core0"] = sample["memory_program"]["core0"][:N_init]
         self.H.memory_program["core1"] = sample["memory_program"]["core1"][:N_init]
         self.start = N_init
+        for j in range(len(H)):
+            
+            dd = {key:sample["memory_perf"][key][j] for key in sample["memory_perf"].keys() if key in pp}
+            #exit()
+            H.memory_tab.append(env_observation2_subset(dd))
 
 class Normalize:
     def __init__(self):
         self.min_=None
         self.max_= None
+        self.g = 1
     def fit(self,x):
-        self.min_ = x.min(axis=-1)
-        self.max_ = x.max(axis=-1)
+        self.min_ = x.min(axis=0)
+        self.max_ = x.max(axis=0)
+        self.g=0
     def transform(self,x):
-        if self.min_==None or self.max_==None:
+        if self.g: 
             raise TypeError(f"User must call method Normalize.fit before calling method Normalize.transform")
         return (x - self.min_)/(self.max_-self.min_)
 
@@ -87,56 +123,40 @@ class IMGEP(IMGEP_):
                  E:Env,
                  H:History,
                  G:GoalGenerator, 
-                 Pi:OptimizationPolicykNN,
+                 Pi:OptimizationPolicykNN_,
                  Norm:Normalize,
                  periode:int = 1,
                  max_len:int = 100):
-        super(IMGEP,self).__init__(N,N_init, En,H,G,Pi,ir=ir, modules = modules, periode = periode, max_len = max_len)
+        super(IMGEP,self).__init__(N,N_init, En,H,G,Pi, periode = periode, max_len = max_len)
         self.norm = Norm
-    def __call__(self,intr_reward=True):
+    def __call__(self):
         
         """Performs the exploration.
         intr_reward:bool. If True, the exploration uses intrinsic reward based on diversity
         """
-        time_explor = 0
         for i in range(self.start,self.N+1):
             if i%100==0:
                 print(f"{i} iterations")
-            if i<time_explor:
-                continue
-            if i<=self.N_init:
+            if i<self.N_init:
                 parameter = make_random_paire_list_instr(self.max_len,num_addr=self.env.num_addr)
             else:
-                if (i-self.N_init)%self.periode==0 and i>self.N_init:
-
+                if (i-self.N_init)%self.periode==0:
                     in_ = np.array(np.array(self.H.memory_tab))
                     self.norm.fit(in_)
                     in_0 = self.norm.transform(in_)
-                    in_0 = normalize(in_)
                     U,sigma,Vh =np.linalg.svd(in_0)
                     probs = sigma/np.sum(sigma)
                     idx_axis = np.random.choice(in_.shape[1],1,p=probs)
-                if (i-self.N_init)>1:
-                    previous_module = module
-                goal = self.G(self.H, module = idx_axis,norm=norm)
-                parameter = self.Pi(goal,self.H, module)
+                in_ = np.array(np.array(self.H.memory_tab))
+                coords = self.norm.transform(in_)@Vh.transpose()
+                goal = self.G(coords[:,idx_axis])
+                parameter = self.Pi(goal,self.H, coords[:,idx_axis])
             observation = self.env(parameter)
             self.H.store({"program":parameter}|observation)
             self.H.memory_tab.append(env_observation2_subset(observation))
 
-class GoalGenerator(Features):
-    def __init__(self,
-                 num_bank:int):
-        super().__init__()
-        self.num_bank = num_bank
-        self.k_time = 0
-        self.k_miss = 0
-        self.modules = modules
-    def __call__(self,H:History,module:int,norm:Normalize)->np.ndarray:
-        min_ = sigma.min(axis=-1)
-        max_ = sigma.max(axis=-1)
-        out = np.random.uniform((1-np.sign(min_)*0.6)*min_,4.0*max_)
-        return out
+
+
 
 if __name__=="__main__":
 
@@ -157,38 +177,39 @@ if __name__=="__main__":
           'miss_ratios_detailled',
           'miss_ratios_core0_detailled',
           'miss_ratios_core1_detailled',
-        ]
-    periode  =5
+    ]
+    periode  = 100
     max_len = 50
     num_banks = 4
     num_addr = 20
     mutation_rate = 0.1
-    N = 100
-    N_init = 100
-    k =2
+    N = 10000
+    N_init = 1000
+    k =20
     min_len=5
 
 
     H = History(N)
-    Pi = OptimizationPolicykNN(k=k,mutation_rate=mutation_rate,max_len=max_len,num_addr=num_addr,num_bank=num_bank,min_instr=min_len,max_instr=max_len)
+    Pi = OptimizationPolicykNN_(k=k,mutation_rate=mutation_rate,max_len=max_len,num_addr=num_addr,num_bank=num_bank,min_instr=min_len,max_instr=max_len)
     G = GoalGenerator(num_banks)
-    imgep = IMGEP(N,N_init, En,H,None,Pi,ir=None, modules = None, periode = periode, max_len = max_len)
-    imgep(intr_reward=False)
-
-
-    in_ = np.array(np.array(H.memory_tab))
-    def normalize(in_:torch.Tensor):
-        min_ = in_.min(axis=0)
-        max_ = in_.max(axis=0)
-        return (in_ - min_)/(max_-min_)
-    print(in_.shape)
-    in_0 = normalize(in_)
-    U,sigma,Vh =np.linalg.svd(in_0)
-    C = in_0@Vh.transpose()
-    print(C.shape)
-    probs = sigma/np.sum(sigma)
-    idx_axis = np.random.choice(in_.shape[1],1,p=probs)
-    print("idx_axis", idx_axis)
-    print("C",C[:,idx_axis].shape)
-    idx_codes,_ = Pi.feature2closest_code(C[:,idx_axis].reshape((1,-1)),np.array([5.0]))
-    print("idx_codes", idx_codes)
+    Norm = Normalize()
+    imgep = IMGEP(N,N_init, En,H,G,Pi,Norm, periode = periode, max_len = max_len)
+    folder = "all_data/svd_results"
+    while True:
+        print("opening data")
+        try:
+            with open(f"{folder}/history_rand_N_{N}_0.pkl","rb") as f:
+                sample_rand = pickle.load(f)
+                content_random = sample_rand["memory_perf"]
+            break
+        except:
+            print("start random exploration")
+            H_rand = History(max_size=N)
+            H2_rand = History(max_size=N)
+            rand = RANDOM(N = N,E = En, H = H_rand, H2 = H2_rand,max_=max_len)
+            rand()
+            H2_rand.save_pickle(f"{folder}/history_rand_N_{N}")
+    imgep.take(sample_rand,N_init)
+    imgep()
+    folder = "all_data/svd_results"
+    H.save_pickle(f"{folder}/history_kNN_{k}_N_{N}_svd")
