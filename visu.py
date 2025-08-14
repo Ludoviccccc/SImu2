@@ -275,8 +275,8 @@ def representation(content, content2 = None):
             axs[j,3].set_ylabel("run 2")
             axs[j,3].set_title(f"miss ratios,bank {j+1} two runs")
 
-    plt.savefig("image/miss_ratios")
-    plt.show()
+    plt.savefig("all_images/example/hits")
+    #plt.show()
 
     fig, axs = plt.subplots(3,2, figsize = (15,10), layout='constrained')
     axs[0,0].scatter(content["time_core0_alone"],content["time_core0_together"])
@@ -298,15 +298,14 @@ def representation(content, content2 = None):
     axs[2,0].set_xlabel("time_core0_together")
     axs[2,0].set_ylabel("time_core1_together")
 
-    plt.savefig("image/time")
-    plt.show()
+    plt.savefig("all_images/example/time")
 
 
 
 if __name__=="__main__":
     random.seed(0)
     N = int(100)
-    max_len = 500  
+    max_len = 50  
     #length_programs = 100
 
     H = History(max_size=1000)

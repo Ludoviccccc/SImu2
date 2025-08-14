@@ -1,8 +1,10 @@
 # Curiosity-driven-approach
 
 ## On going:
-* Modelling the exploration of **ddr contention** with the `sim.ddr.py` 
-* Visualizing these data, and showing the diversity of the resulting sets.
+* Developping SVD and modual IMGEP
+next:
+* see again effects of intrinsic reward on modular IMGEP, and perhaps on SVD IMGEP
+* see effets of rl-agent that samples goal
 ## Description Simulateur Eric:
  This model represents a memory hierarchy with
  - 3 levels of cache (L1, L2, L3)
