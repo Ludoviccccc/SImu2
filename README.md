@@ -175,8 +175,8 @@ I compare k-NN goal strategy achievement IMGEP with:
 ## IMGEP with SVD
 Mention dimensional representation techniques
 
-Let consider $F\in\mathbb{N}$ features, and $N>>1$ individual in our matrix database $A\in\mathcal{M}}{N,F}$
-We can then determine a singual value decomposition like : $A = U\Sigma V^{T}$
+Let consider $F\in\mathbb{N}$ features, and $N>>1$ individual in our matrix database $A\in\mathbb{R}^{N,F}$
+We can then determine a singual value decomposition like : $A = U\Sigma V$
 ## Results
 
 The result of an exploration with **kNN** with k=1,2,3,4. IMGEP is compared with a random exploration for `N=10000` iterations, with `N_init = 1000` steps for initialization. 
