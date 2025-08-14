@@ -175,7 +175,7 @@ I compare k-NN goal strategy achievement IMGEP with:
 ## IMGEP with SVD
 Mention dimensional representation techniques
 
-Let consider $F\in\mathbb{N}$ features, and $N>>1$ individual in our matrix database $A\in\mathbb{R}^{N,F}$
+Let consider $F\in\mathbb{N}$ features, and $N>>1$ individual in our matrix database $A\in\mathbb{R}$
 We can then determine a singual value decomposition like : $A = U\Sigma V$
 ## Results
 
