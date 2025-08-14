@@ -38,12 +38,10 @@ class History:
                 "memory_program":{"core0":self.memory_program["core0"],"core1":self.memory_program["core1"]}}
     def save_pickle(self, name:str=None):
         k = 0
-        name = f"{name}_{k}.pkl"
         while os.path.isfile(f"{name}_{k}.pkl"):
             k+=1
-            name = f"data/{name}_{k}.pkl"
         output = self.content()
-        with open(name, "wb") as f:
+        with open(f"{name}_{k}.pkl", "wb") as f:
             pickle.dump(output, f)
     def __getitem__(self,val):
         """

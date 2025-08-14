@@ -99,7 +99,6 @@ class IMGEP_:
         for j in range(len(H)):
             
             dd = {key:sample["memory_perf"][key][j] for key in sample["memory_perf"].keys() if key in pp}
-            #exit()
             H.memory_tab.append(env_observation2_subset(dd))
 
 class Normalize:
@@ -140,14 +139,16 @@ class IMGEP(IMGEP_):
             if i<self.N_init:
                 parameter = make_random_paire_list_instr(self.max_len,num_addr=self.env.num_addr)
             else:
-                if (i-self.N_init)%self.periode==0:
+                if (i-self.N_init)%(self.periode*10)==0:
                     in_ = np.array(np.array(self.H.memory_tab))
                     self.norm.fit(in_)
                     in_0 = self.norm.transform(in_)
                     U,sigma,Vh =np.linalg.svd(in_0)
                     probs = sigma/np.sum(sigma)
-                    idx_axis = np.random.choice(in_.shape[1],1,p=probs)
-                in_ = np.array(np.array(self.H.memory_tab))
+                if (i-self.N_init)%self.periode==0:
+                    #idx_axis = np.random.choice(in_.shape[1],1,p=probs)
+                    idx_axis = np.random.randint(0,in_.shape[1])
+                in_ = np.array(self.H.memory_tab)
                 coords = self.norm.transform(in_)@Vh.transpose()
                 goal = self.G(coords[:,idx_axis])
                 parameter = self.Pi(goal,self.H, coords[:,idx_axis])
@@ -166,10 +167,20 @@ if __name__=="__main__":
 
     En = Env(repetition=1,num_banks = num_bank,num_addr = num_addr)
     pp = ['shared_cache_miss',
+          'general_shared_cache_miss',
+          'miss_ratios',
+          'miss_ratios_global',
+          'miss_ratios_global0',
+          'miss_ratios_global1',
+          'miss_ratios_core0',
+          'miss_ratios_core1',
           'time_core0_together',
           'time_core1_together',
           'time_core0_alone',
           'time_core1_alone',
+          'miss_count',
+          'miss_count_core0',
+          'miss_count_core1',
           'diff_ratios_core0',
           'diff_ratios_core1',
           'diff_time0',
@@ -178,14 +189,14 @@ if __name__=="__main__":
           'miss_ratios_core0_detailled',
           'miss_ratios_core1_detailled',
     ]
-    periode  = 100
+    periode  = 20
     max_len = 50
     num_banks = 4
     num_addr = 20
     mutation_rate = 0.1
     N = 10000
     N_init = 1000
-    k =20
+    k = 2
     min_len=5
 
 

@@ -38,6 +38,7 @@ def mutate_instructions(instructions:list[dict],
     
     # Now perform random mutations
     num_mutations = max(0, int(len(mutated) * mutation_rate))
+    num_mutations = 1
     
     for _ in range(num_mutations):
         choices = ['change','delete', 'add']
