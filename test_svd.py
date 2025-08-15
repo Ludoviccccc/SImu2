@@ -102,6 +102,8 @@ class IMGEP_:
             H.memory_tab.append(env_observation2_subset(dd))
 
 class Normalize:
+    """Affine normalization
+    """
     def __init__(self):
         self.min_=None
         self.max_= None
@@ -131,7 +133,6 @@ class IMGEP(IMGEP_):
     def __call__(self):
         
         """Performs the exploration.
-        intr_reward:bool. If True, the exploration uses intrinsic reward based on diversity
         """
         for i in range(self.start,self.N+1):
             if i%100==0:
@@ -144,9 +145,7 @@ class IMGEP(IMGEP_):
                     self.norm.fit(in_)
                     in_0 = self.norm.transform(in_)
                     U,sigma,Vh =np.linalg.svd(in_0)
-                    probs = sigma/np.sum(sigma)
                 if (i-self.N_init)%self.periode==0:
-                    #idx_axis = np.random.choice(in_.shape[1],1,p=probs)
                     idx_axis = np.random.randint(0,in_.shape[1])
                 in_ = np.array(self.H.memory_tab)
                 coords = self.norm.transform(in_)@Vh.transpose()
