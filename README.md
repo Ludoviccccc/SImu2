@@ -178,9 +178,10 @@ I compare k-NN goal strategy achievement IMGEP with:
 Mention dimensional representation techniques
 
 Let consider $F\in\mathbb{N}$ features, and $N>>1$ individual in our matrix database $A\in\mathbb{R}$
-We can then determine a singual value decomposition like : $A = U\Sigma V^\intercal$, with orthogonal matrices $U,V\in\mathbb{R}^{N,F}$ and diagonal squared matrix $\Sigma$ such that it has $r$ non-negativ values $\sigma_1\geq \cdots\geq \sigma_r$.
-$(v_i)_{1\leq i \leq r} is a base of $Im A^\intercals$. Therefore we obtain coordinates of every individuals by projetcing with matrix $V$, to get $U\Sigma$.
-matrice## Results
+We can then determine a singular value decomposition like : $A = U\Sigma V^\intercal$, with orthogonal matrices $U,V\in\mathbb{R}^{N,F}$ and diagonal squared matrix $\Sigma$ such that it has $r$ non-negativ values $\sigma_1\geq \cdots\geq \sigma_r$.
+$(v_i)_{1\leq i \leq r}$ is a base of $Im A^\intercals$. Therefore we obtain coordinates of every individuals by projetcing with matrix $V$, to get $U\Sigma$.
+The first axis are the most important inertia directions of the database. The axis are some kind of mixture of the observables quantities that the simulator offers. Exploring on these direction seems to be a relevant choice as the diveristy is significant along them.
+## Results
 
 The result of an exploration with **kNN** with k=1,2,3,4. IMGEP is compared with a random exploration for `N=10000` iterations, with `N_init = 1000` steps for initialization. 
 * We can visualise distributions on histograms for time differences and miss ratios differences. The distributions look gaussian, probably a consequence of **Central limit theorem** ? For random exploration, the selection of program is random and thus the otention of metrics is also random. With the combination of these these two stages, the obtained metrics are random variables following an unknown multivariate distribution. 
