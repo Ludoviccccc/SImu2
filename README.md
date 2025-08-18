@@ -50,21 +50,21 @@ time[S2, (S_1,S_2)],
 time[S1, (,S_1)],
 time[S2, (S_2,)]}
 ```
-Let's remark that observables values are scalar only.
-In our specific simulator case, values are
-	* $(t_{\cdot,1}(c_{1})$
-    * $t_{0,\cdot}(c_{0})$
-    * $t_{0,1}(c_{1})$
-    * $t_{0,1}(c_{0})$
-	* time core 0: $(t_{0,\cdot}(c_{0})\in\mathbb{R}$
-	* time core 1: $(t_{\cdot,1}(c_{1})\in\mathbb{R}$
-	* miss ratio: $(ratio[(0,\cdot),bk], ratio[(\cdot,1),bk],ratio[(0,1),bk])\in{[0,1]}^{3}, \mbox{with bank } bk\in\\{1,2,3,4\\}$
-	* miss ratio in isolation core 0 with location details: $ratio[(0,\cdot),bk,rw]\in[0,1], bk\in\\{1,2,3,4\\}, \mbox{row},rw\in\\{1, \cdots,n_{r}\\}$
-	* miss ratio in isolation core 1 with location details: $ratio[(\cdot,1),bk,rw]\in[0,1], bk\in\\{1,2,3,4\\}, \mbox{row},rw\in\\{1, \cdots,n_{r}\\}$
-	* mutual miss ratio with location details: $ratio[(0,1),bk,rw]\in[0,1], bk\in\\{1,2,3,4\\},\mbox{row} in rw\in\\{1, \cdots,n_{r}\\}$
-	* global shared cache miss ratio in isolation core 0: $ratio[(0,\cdot),bk,rw]\in[0,1]$
-	* global shared cache miss ratio in isolation core 1: $ratio[(\cdot,1),bk,rw]\in[0,1]$
-	* global shared cache mutual miss ratio: $ratio[(0,1),bk,rw]\in[0,1]$
+
+Let's remark that observables values are scalar only. In our specific simulator case, values are:
+* $(t_{\cdot,1}(c_{1})$
+* $t_{0,\cdot}(c_{0})$
+* $t_{0,1}(c_{1})$
+* $t_{0,1}(c_{0})$
+* time core 0: $(t_{0,\cdot}(c_{0})\in\mathbb{R}$
+* time core 1: $(t_{\cdot,1}(c_{1})\in\mathbb{R}$
+* miss ratio: $(ratio[(0,\cdot),bk], ratio[(\cdot,1),bk],ratio[(0,1),bk])\in{[0,1]}^{3}, \mbox{with bank } bk\in\\{1,2,3,4\\}$
+* miss ratio in isolation core 0 with location details: $ratio[(0,\cdot),bk,rw]\in[0,1], bk\in\\{1,2,3,4\\}, \mbox{row},rw\in\\{1, \cdots,n_{r}\\}$
+* miss ratio in isolation core 1 with location details: $ratio[(\cdot,1),bk,rw]\in[0,1], bk\in\\{1,2,3,4\\}, \mbox{row},rw\in\\{1, \cdots,n_{r}\\}$
+* mutual miss ratio with location details: $ratio[(0,1),bk,rw]\in[0,1], bk\in\\{1,2,3,4\\},\mbox{row} in rw\in\\{1, \cdots,n_{r}\\}$
+* global shared cache miss ratio in isolation core 0: $ratio[(0,\cdot),bk,rw]\in[0,1]$
+* global shared cache miss ratio in isolation core 1: $ratio[(\cdot,1),bk,rw]\in[0,1]$
+* global shared cache mutual miss ratio: $ratio[(0,1),bk,rw]\in[0,1]$
 
 ## Visualisation
 
