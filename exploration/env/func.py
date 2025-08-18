@@ -33,31 +33,36 @@ class Env:
         cache_miss_L1_to_L3 = {f"core1_{level}_cache_miss":program[0].core1.stats()[level]["miss_ratio"] for level in ["L1","L2","L3"]} | cache_miss_L1_to_L3
 
         stat_ = program[0].core0.l3.lower.stats()
+        stat_0 = program[0].core0.l3.lower.stats()
+        stat_1 = program[0].core0.l3.lower.stats()
         shared_cache_miss = stat_["miss_ratio"]
         general_shared_cache_miss = stat_["general_shared_cache_miss"]
+        general_shared_cache_miss_core0 = stat_0["general_shared_cache_miss"]
+        general_shared_cache_miss_core1 = stat_1["general_shared_cache_miss"]
         out = {"shared_cache_miss":shared_cache_miss,
                "general_shared_cache_miss":general_shared_cache_miss,
-                "miss_ratios": np.mean([program[j].ratios for j in range(self.repetition)],axis=0),
-                "miss_ratios_global": np.mean([program[j].miss_ratio_global for j in range(self.repetition)],axis=0),
-                "miss_ratios_global0": np.mean([program0[j].miss_ratio_global for j in range(self.repetition)],axis=0),
-                "miss_ratios_global1": np.mean([program1[j].miss_ratio_global for j in range(self.repetition)],axis=0),
-                "miss_ratios_core0": np.mean([program0[j].ratios for j in range(self.repetition)],axis=0),
-                "miss_ratios_core1": np.mean([program1[j].ratios for j in range(self.repetition)],axis=0),
-                "time_core0_together":np.mean([program[j].compl_time_core0 for j in range(self.repetition)],axis=0),
-                "time_core1_together":np.mean([program[j].compl_time_core1],axis=0),
-                "time_core0_alone":np.mean([program0[j].compl_time_core0],axis=0),
-                "time_core1_alone":np.mean([program1[j].compl_time_core1],axis=0),
-                "miss_count":np.mean([program[j].miss_count],axis=0),
-                "miss_count_core0":np.mean([program0[j].miss_count],axis=0),
-                "miss_count_core1":np.mean([program1[j].miss_count],axis=0),
-                "diff_ratios_core0":np.mean([np.abs(program[j].ratios - program0[j].ratios)],axis=0),
-                "diff_ratios_core1":np.mean([np.abs(program[j].ratios - program1[j].ratios)],axis=0),
-                "diff_time0":np.mean([np.abs(program[j].compl_time_core0 - program0[j].compl_time_core0)],axis=0),
-                "diff_time1":np.mean([np.abs(program[j].compl_time_core1 - program1[j].compl_time_core1)],axis=0),
-                "miss_ratios_detailled":    np.mean([program[j].ratios_tab for j in range(self.repetition)],axis=0),
-                "miss_ratios_core0_detailled": np.mean([program0[j].ratios_tab for j in range(self.repetition)],axis=0),
-                "miss_ratios_core1_detailled": np.mean([program1[j].ratios_tab for j in range(self.repetition)],axis=0),
-                
+               "general_shared_cache_miss_core0":general_shared_cache_miss_core0,
+               "general_shared_cache_miss_core1":general_shared_cache_miss_core1,
+               "miss_ratios": np.mean([program[j].ratios for j in range(self.repetition)],axis=0),
+               "miss_ratios_global": np.mean([program[j].miss_ratio_global for j in range(self.repetition)],axis=0),
+               "miss_ratios_global0": np.mean([program0[j].miss_ratio_global for j in range(self.repetition)],axis=0),
+               "miss_ratios_global1": np.mean([program1[j].miss_ratio_global for j in range(self.repetition)],axis=0),
+               "miss_ratios_core0": np.mean([program0[j].ratios for j in range(self.repetition)],axis=0),
+               "miss_ratios_core1": np.mean([program1[j].ratios for j in range(self.repetition)],axis=0),
+               "time_core0_together":np.mean([program[j].compl_time_core0 for j in range(self.repetition)],axis=0),
+               "time_core1_together":np.mean([program[j].compl_time_core1],axis=0),
+               "time_core0_alone":np.mean([program0[j].compl_time_core0],axis=0),
+               "time_core1_alone":np.mean([program1[j].compl_time_core1],axis=0),
+               "miss_count":np.mean([program[j].miss_count],axis=0),
+               "miss_count_core0":np.mean([program0[j].miss_count],axis=0),
+               "miss_count_core1":np.mean([program1[j].miss_count],axis=0),
+               "diff_ratios_core0":np.mean([np.abs(program[j].ratios - program0[j].ratios)],axis=0),
+               "diff_ratios_core1":np.mean([np.abs(program[j].ratios - program1[j].ratios)],axis=0),
+               "diff_time0":np.mean([np.abs(program[j].compl_time_core0 - program0[j].compl_time_core0)],axis=0),
+               "diff_time1":np.mean([np.abs(program[j].compl_time_core1 - program1[j].compl_time_core1)],axis=0),
+               "miss_ratios_detailled":    np.mean([program[j].ratios_tab for j in range(self.repetition)],axis=0),
+               "miss_ratios_core0_detailled": np.mean([program0[j].ratios_tab for j in range(self.repetition)],axis=0),
+               "miss_ratios_core1_detailled": np.mean([program1[j].ratios_tab for j in range(self.repetition)],axis=0),
                 }
         out = out | cache_miss_L1_to_L3
         return out

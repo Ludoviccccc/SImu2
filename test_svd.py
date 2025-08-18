@@ -6,13 +6,13 @@ import pickle
 import random
 from sim.sim_use import make_random_paire_list_instr
 from exploration.history import History
-from exploration.imgep.features import Features
+#from exploration.imgep.features import Features
 import numpy as np
 from exploration.random.func import RANDOM
 from exploration.env.func import Env
 from  exploration.imgep.OptimizationPolicy import OptimizationPolicykNN
 
-class GoalGenerator(Features):
+class GoalGenerator():
     def __init__(self,
                  num_bank:int,
                  ):
@@ -167,6 +167,8 @@ if __name__=="__main__":
     En = Env(repetition=1,num_banks = num_bank,num_addr = num_addr)
     pp = ['shared_cache_miss',
           'general_shared_cache_miss',
+          'general_shared_cache_miss_core0',
+          'general_shared_cache_miss_core1',
           'miss_ratios',
           'miss_ratios_global',
           'miss_ratios_global0',
@@ -195,7 +197,7 @@ if __name__=="__main__":
     mutation_rate = 0.1
     N = 10000
     N_init = 1000
-    k = 2
+    k = 5
     min_len=5
 
 
