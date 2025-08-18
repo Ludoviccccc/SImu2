@@ -6,7 +6,6 @@ import pickle
 import random
 from sim.sim_use import make_random_paire_list_instr
 from exploration.history import History
-#from exploration.imgep.features import Features
 import numpy as np
 from exploration.random.func import RANDOM
 from exploration.env.func import Env
@@ -197,7 +196,7 @@ if __name__=="__main__":
     mutation_rate = 0.1
     N = 10000
     N_init = 1000
-    k = 5
+    k = 10
     min_len=5
 
 
