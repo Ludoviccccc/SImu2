@@ -177,10 +177,35 @@ I compare k-NN goal strategy achievement IMGEP with:
 ## IMGEP with SVD
 Mention dimensional representation techniques
 
-Let consider $F\in\mathbb{N}$ features, and $N>>1$ individual in our matrix database $A\in\mathbb{R}$
-We can then determine a singular value decomposition like : $A = U\Sigma V^\intercal$, with orthogonal matrices $U,V\in\mathbb{R}^{N,F}$ and diagonal squared matrix $\Sigma$ such that it has $r$ non-negativ values $\sigma_1\geq \cdots\geq \sigma_r$.
-$(v_i)_{1\leq i \leq r}$ is a base of $Im A^\intercals$. Therefore we obtain coordinates of every individuals by projetcing with matrix $V$, to get $U\Sigma$.
-The first axis are the most important inertia directions of the database. The axis are some kind of mixture of the observables quantities that the simulator offers. Exploring on these direction seems to be a relevant choice as the diveristy is significant along them.
+Let consider $F\in\mathbb{N}$ features, and $N>>1$ individual in our matrix database $A\in\mathbb{R}^{N,F}$
+We can then determine a singular value decomposition like : $A = U\Sigma V^\intercal$, with orthogonal matrices $U\in\mathbb{R}^{N},V\in\mathbb{R}^{F}$ and diagonal matrix $\Sigma\in\in\mathbb{R}^{N,F}$ such that it has $r$ non-negativ values $\sigma_1\geq \cdots\geq \sigma_r$.
+
+$(v_i)_{1\leq i \leq r}$ is a base of $Im A^\intercal$. Therefore we obtain coordinates of every individuals by projetcing with matrix $V$, to get a $\mathbb{R}^{N,F}$ matrix: $AV = U\Sigma$.
+The first axis is the most important inertia direction of the database along which the data spreads the most and so on. The axes are some kind of mixture of the observables quantities that the simulator offers. Exploring on these direction seems to be a relevant choice as the diveristy is significant along them. 
+The number $r>0$ of non-zeros singual values is a dimension of the dimension of the observed phenomenon.
+
+Each point of data collected has a scalar coordinate on each of the axes given by the SVD. Therefore, we can perform a modular exploration by exploring for a few iterations on each of the directions one by one. 
+To do so, 
+```
+Initialize IMGEP with $N_i$ initialization steps
+For each j such N\geq j N_i:
+	if $j \equiv 0\ (\textrm{mod}\ P0)$
+		From history H, take observation points A:
+		Perform SVD: A = U,Sigma,Vh
+		get matrix 
+	Project history on space V to get coordinates in matrix X:
+	C = A.V
+	if $j \equiv 0\ (\textrm{mod}\ P1)$
+		sample a direction i with canonical vector:
+	get coordinates along axis i : C.e_i
+	sample a goal : g = G(C.e_i)
+	Infer a parameter with optimization model Pi: p = Pi(g,C.e_i)
+	Collect context c and observation o : c,o = Env(p)
+	Store (p,c,o) in H
+
+```
+**We could also perform an exploration on a vector made of the $0\leq d \leq r$ first dimensions given by the SVD.**
+
 ## Results
 
 The result of an exploration with **kNN** with k=1,2,3,4. IMGEP is compared with a random exploration for `N=10000` iterations, with `N_init = 1000` steps for initialization. 
