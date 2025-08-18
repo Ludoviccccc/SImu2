@@ -188,7 +188,7 @@ Each point of data collected has a scalar coordinate on each of the axes given b
 To do so, 
 ```
 Initialize IMGEP with N_i initialization steps
-For each j such N\geq j N_i:
+For each j such N_i<j<N:
 	if P0 divises j:
 		From history H, take observation points A:
 		Perform SVD: A = U,Sigma,Vh
