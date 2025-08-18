@@ -52,10 +52,10 @@ time[S2, (S_2,)]}
 ```
 
 Let's remark that observables values are scalar only. In our specific simulator case, values are:
-* $(t_{\cdot,1}(c_{1})$
-* $t_{0,\cdot}(c_{0})$
-* $t_{0,1}(c_{1})$
-* $t_{0,1}(c_{0})$
+* time: $(t_{\cdot,1}(c_{1})$
+* time: $t_{0,\cdot}(c_{0})$
+* time: $t_{0,1}(c_{1})$
+* time: $t_{0,1}(c_{0})$
 * time core 0: $(t_{0,\cdot}(c_{0})\in\mathbb{R}$
 * time core 1: $(t_{\cdot,1}(c_{1})\in\mathbb{R}$
 * miss ratio: $(ratio[(0,\cdot),bk], ratio[(\cdot,1),bk],ratio[(0,1),bk])\in{[0,1]}^{3}, \mbox{with bank } bk\in\\{1,2,3,4\\}$
