@@ -187,15 +187,15 @@ The number $r>0$ of non-zeros singual values is a dimension of the dimension of 
 Each point of data collected has a scalar coordinate on each of the axes given by the SVD. Therefore, we can perform a modular exploration by exploring for a few iterations on each of the directions one by one. 
 To do so, 
 ```
-Initialize IMGEP with $N_i$ initialization steps
+Initialize IMGEP with N_i initialization steps
 For each j such N\geq j N_i:
-	if $j \equiv 0\ (\textrm{mod}\ P0)$
+	if P0 divises j:
 		From history H, take observation points A:
 		Perform SVD: A = U,Sigma,Vh
 		get matrix 
 	Project history on space V to get coordinates in matrix X:
 	C = A.V
-	if $j \equiv 0\ (\textrm{mod}\ P1)$
+	if P1 divises j:
 		sample a direction i with canonical vector:
 	get coordinates along axis i : C.e_i
 	sample a goal : g = G(C.e_i)
