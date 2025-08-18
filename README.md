@@ -176,14 +176,14 @@ def mutate_instructions(instructions:list[dict], mutation_rate=0.3,num_addr=20):
 	* miss ratio differences core 1: $|ratio[(0,1),bk] - ratio[(\cdot,1),bk]|, \mbox{with bank } bk\in\\{1,2,3,4\\}$
    	* $\cdots$
 
-### Goal generattion
+### Goal generation
 During the exploration, we can explore only one module at the same time. The selection of the module to explore will be either uniformly random or guided with intrinsic reward.
 * I define an intrinsic reward based on the diversity evolution.
 To establish the intrinsic reward $ir$ for exploring module $m$, the agent compares the outcome diversity  with the diversity obtained in a previous context $k-p$, a few iterations ago: $ir = \mathcal{D}(O_{k}) - \mathcal{D}(O_{k-p})$, with the current iteration $k$ and $p\geq1$, the set of previous observations at iteration $k$, $O_{k}$, a mesure to evaluate the diversity $\mathcal{D}$.
 In a special loop for evaluation, we explore every module $m$ for a few iteration, in order to calculate a value $\mbox{ir}(m)$ for its intrinsic reward.
 * Once we obtain a vector $[\mbox{ir}(1),\cdots,\mbox{ir}(N_{m})]$, with $N_{m}$ the number of modules made with the reward of each module, I create a probability distribution $p = [\frac{\mbox{ir}(1)}{\sum_{m}\mbox{ir}},\cdots,\frac{\mbox{ir}(N_{m})}{\sum_{m}\mbox{ir}}]$ to selected the module to explore. I also enhance it so that it selects a module with a discrete uniform random low when $\epsilon\sim \mathcal{B}(p)$, with e.g $p=0.1$ 
 
-Once a module is selected,
+Once a module is selected, we sample a vector like before.
 ### Goal strategy achievement
 Same strategy with kNN here.
 ## Baseline
@@ -217,14 +217,14 @@ Each point of data collected has a scalar coordinate on each of the axes given b
 To do so, 
 ```
 
-For each j such N_i<j<N:
+For each j such that N_i<j<N:
 	if j <N_i:
 		Perform initialization step
 	if P0 divises j-N_i:
 		From history H, take observation points A:
 		Perform SVD: A = U,Sigma,Vh
 		get matrix 
-	Project history on space V to get coordinates in matrix X:
+	Project history on V space to get coordinates in matrix C:
 	C = A.V
 	if P1 divises j-N_i:
 		sample a direction i with canonical vector:
