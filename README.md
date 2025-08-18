@@ -2,6 +2,7 @@
 
 ## On going:
 * Developping SVD and modual IMGEP
+
 next:
 * see again effects of intrinsic reward on modular IMGEP, and perhaps on SVD IMGEP
 * see effets of rl-agent that samples goal
@@ -49,6 +50,21 @@ time[S2, (S_1,S_2)],
 time[S1, (,S_1)],
 time[S2, (S_2,)]}
 ```
+Let's remark that values that are observables are scalar only.
+In our specific simulator case, values are
+	* execution time informations: * $(t_{\cdot,1}(c_{1})$
+             * $t_{0,\cdot}(c_{0})$
+             * $t_{0,1}(c_{1})$
+             * $t_{0,1}(c_{0})$
+	* time core 0: $(t_{0,\cdot}(c_{0})\in\mathbb{R}$
+	* time core 1: $(t_{\cdot,1}(c_{1})\in\mathbb{R}$
+	* miss ratio: $(ratio[(0,\cdot),bk], ratio[(\cdot,1),bk],ratio[(0,1),bk])\in{[0,1]}^{3}, \mbox{with bank } bk\in\\{1,2,3,4\\}$
+	* miss ratio in isolation core 0 with location details: $ratio[(0,\cdot),bk,rw]\in[0,1], bk\in\\{1,2,3,4\\}, \mbox{row},rw\in\\{1, \cdots,n_{r}\\}$
+	* miss ratio in isolation core 1 with location details: $ratio[(\cdot,1),bk,rw]\in[0,1], bk\in\\{1,2,3,4\\}, \mbox{row},rw\in\\{1, \cdots,n_{r}\\}$
+	* mutual miss ratio with location details: $ratio[(0,1),bk,rw]\in[0,1], bk\in\\{1,2,3,4\\},\mbox{row} in rw\in\\{1, \cdots,n_{r}\\}$
+	* global shared cache miss ratio in isolation core 0: $ratio[(0,\cdot),bk,rw]\in[0,1]$
+	* global shared cache miss ratio in isolation core 1: $ratio[(\cdot,1),bk,rw]\in[0,1]$
+	* global shared cache mutual miss ratio: $ratio[(0,1),bk,rw]\in[0,1]$
 
 ## Visualisation
 
@@ -181,35 +197,16 @@ The result of an exploration with **kNN** with k=1,2,3,4. IMGEP is compared with
 * As I discussed with Marko, I have implemented an intrinsic reward based on diversity evolution, to help with module selection, in file `exploration.imgep.intrinsic_reward.py`.
 * The diversity is higher with IMGEP, for both miss ratios and time spaces. Meanwhile some spaces aren't explored enough. I will have to make a longer exploration to see changes.
 
-#### k = 1
-![Alt text](all_images/image10k/ratios_imgep_ir_1_10000.png)
-![Alt text](all_images/image10k/time_imgep_ir_1_10000.png)
-![Alt text](all_images/image10k/comparaison_time_diversity_1_10000.png)
-![Alt text](all_images/image10k/comp_global_ratios_iteration_1_10000.png)
-![Alt text](all_images/image10k/comp_ratios_iteration_1_10000.png))
 #### k = 2
 ![Alt text](all_images/image10k/ratios_imgep_ir_2_10000.png)
 ![Alt text](all_images/image10k/time_imgep_ir_2_10000.png)
 ![Alt text](all_images/image10k/comparaison_time_diversity_2_10000.png)
 ![Alt text](all_images/image10k/comp_global_ratios_iteration_2_10000.png)
 ![Alt text](all_images/image10k/comp_ratios_iteration_2_10000.png)
-#### k = 3
-![Alt text](all_images/image10k/ratios_imgep_ir_3_10000.png)
-![Alt text](all_images/image10k/time_imgep_ir_4_10000.png)
-![Alt text](all_images/image10k/comparaison_time_diversity_3_10000.png)
-![Alt text](all_images/image10k/comp_global_ratios_iteration_3_10000.png)
-![Alt text](all_images/image10k/comp_ratios_iteration_3_10000.png))
-#### k = 4
-![Alt text](all_images/image10k/ratios_imgep_ir_4_10000.png)
-![Alt text](all_images/image10k/time_imgep_ir_4_10000.png)
-![Alt text](all_images/image10k/comparaison_time_diversity_4_10000.png)
-![Alt text](all_images/image10k/comp_global_ratios_iteration_4_10000.png)
-![Alt text](all_images/image10k/comp_ratios_iteration_4_10000.png)
 
 ## IMGEP with SVD
-Mention dimensional representation techniques
 
-Let consider $F\in\mathbb{N}$ features, and $N>>1$ individual in our matrix database $A\in\mathbb{R}^{N,F}$
+Let consider $F\in\mathbb{N}$ features given by the simulator, and $N>>1$ individual in our matrix database $A\in\mathbb{R}^{N,F}$
 We can then determine a singular value decomposition like : $A = U\Sigma V^\intercal$, with orthogonal matrices $U\in\mathbb{R}^{N},V\in\mathbb{R}^{F}$ and diagonal matrix $\Sigma\in\in\mathbb{R}^{N,F}$ such that it has $r$ non-negativ values $\sigma_1\geq \cdots\geq \sigma_r$.
 
 $(v_i)_{1\leq i \leq r}$ is a base of $Im A^\intercal$. Therefore we obtain coordinates of every individuals by projetcing with matrix $V$, to get a $\mathbb{R}^{N,F}$ matrix: $AV = U\Sigma$.
@@ -238,6 +235,7 @@ For each j such N_i<j<N:
 	Store (p,c,o) in H
 
 ```
-![Alt text](all_images/example/comp_global_ratios_iteration_10000.png)
+![Alt text](all_images/svd/comp_global_ratios_iteration_10000.png)
+![Alt text](all_images/svd/ratios_imgep_svd_2_10000.png)
 **We could also perform an exploration on a vector made of the $0\leq d \leq r$ first dimensions given by the SVD.**
 
