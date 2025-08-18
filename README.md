@@ -174,6 +174,38 @@ Same strategy with kNN here.
 I compare k-NN goal strategy achievement IMGEP with:
 * a random exploration : the warm up for imgep is done by selecting the $Ninit$ first iterations.
 * a strategy of mixing k programs selected at random: I found out that this brings slightly more diversity but clearly not as much as imgep.
+## Results
+
+The result of an exploration with **kNN** with k=1,2,3,4. IMGEP is compared with a random exploration for `N=10000` iterations, with `N_init = 1000` steps for initialization. 
+* We can visualise distributions on histograms for time differences and miss ratios differences. The distributions look gaussian, probably a consequence of **Central limit theorem** ? For random exploration, the selection of program is random and thus the otention of metrics is also random. With the combination of these these two stages, the obtained metrics are random variables following an unknown multivariate distribution. 
+* As I discussed with Marko, I have implemented an intrinsic reward based on diversity evolution, to help with module selection, in file `exploration.imgep.intrinsic_reward.py`.
+* The diversity is higher with IMGEP, for both miss ratios and time spaces. Meanwhile some spaces aren't explored enough. I will have to make a longer exploration to see changes.
+
+#### k = 1
+![Alt text](all_images/image10k/ratios_imgep_ir_1_10000.png)
+![Alt text](all_images/image10k/time_imgep_ir_1_10000.png)
+![Alt text](all_images/image10k/comparaison_time_diversity_1_10000.png)
+![Alt text](all_images/image10k/comp_global_ratios_iteration_1_10000.png)
+![Alt text](all_images/image10k/comp_ratios_iteration_1_10000.png))
+#### k = 2
+![Alt text](all_images/image10k/ratios_imgep_ir_2_10000.png)
+![Alt text](all_images/image10k/time_imgep_ir_2_10000.png)
+![Alt text](all_images/image10k/comparaison_time_diversity_2_10000.png)
+![Alt text](all_images/image10k/comp_global_ratios_iteration_2_10000.png)
+![Alt text](all_images/image10k/comp_ratios_iteration_2_10000.png)
+#### k = 3
+![Alt text](all_images/image10k/ratios_imgep_ir_3_10000.png)
+![Alt text](all_images/image10k/time_imgep_ir_4_10000.png)
+![Alt text](all_images/image10k/comparaison_time_diversity_3_10000.png)
+![Alt text](all_images/image10k/comp_global_ratios_iteration_3_10000.png)
+![Alt text](all_images/image10k/comp_ratios_iteration_3_10000.png))
+#### k = 4
+![Alt text](all_images/image10k/ratios_imgep_ir_4_10000.png)
+![Alt text](all_images/image10k/time_imgep_ir_4_10000.png)
+![Alt text](all_images/image10k/comparaison_time_diversity_4_10000.png)
+![Alt text](all_images/image10k/comp_global_ratios_iteration_4_10000.png)
+![Alt text](all_images/image10k/comp_ratios_iteration_4_10000.png)
+
 ## IMGEP with SVD
 Mention dimensional representation techniques
 
@@ -206,36 +238,6 @@ For each j such N_i<j<N:
 	Store (p,c,o) in H
 
 ```
+![Alt text](all_images/example/comp_global_ratios_iteration_10000.png)
 **We could also perform an exploration on a vector made of the $0\leq d \leq r$ first dimensions given by the SVD.**
 
-## Results
-
-The result of an exploration with **kNN** with k=1,2,3,4. IMGEP is compared with a random exploration for `N=10000` iterations, with `N_init = 1000` steps for initialization. 
-* We can visualise distributions on histograms for time differences and miss ratios differences. The distributions look gaussian, probably a consequence of **Central limit theorem** ? For random exploration, the selection of program is random and thus the otention of metrics is also random. With the combination of these these two stages, the obtained metrics are random variables following an unknown multivariate distribution. 
-* As I discussed with Marko, I have implemented an intrinsic reward based on diversity evolution, to help with module selection, in file `exploration.imgep.intrinsic_reward.py`.
-* The diversity is higher with IMGEP, for both miss ratios and time spaces. Meanwhile some spaces aren't explored enough. I will have to make a longer exploration to see changes.
-
-#### k = 1
-![Alt text](all_images/image10k/ratios_imgep_ir_1_10000.png)
-![Alt text](all_images/image10k/time_imgep_ir_1_10000.png)
-![Alt text](all_images/image10k/comparaison_time_diversity_1_10000.png)
-![Alt text](all_images/image10k/comp_global_ratios_iteration_1_10000.png)
-![Alt text](all_images/image10k/comp_ratios_iteration_1_10000.png))
-#### k = 2
-![Alt text](all_images/image10k/ratios_imgep_ir_2_10000.png)
-![Alt text](all_images/image10k/time_imgep_ir_2_10000.png)
-![Alt text](all_images/image10k/comparaison_time_diversity_2_10000.png)
-![Alt text](all_images/image10k/comp_global_ratios_iteration_2_10000.png)
-![Alt text](all_images/image10k/comp_ratios_iteration_2_10000.png)
-#### k = 3
-![Alt text](all_images/image10k/ratios_imgep_ir_3_10000.png)
-![Alt text](all_images/image10k/time_imgep_ir_4_10000.png)
-![Alt text](all_images/image10k/comparaison_time_diversity_3_10000.png)
-![Alt text](all_images/image10k/comp_global_ratios_iteration_3_10000.png)
-![Alt text](all_images/image10k/comp_ratios_iteration_3_10000.png))
-#### k = 4
-![Alt text](all_images/image10k/ratios_imgep_ir_4_10000.png)
-![Alt text](all_images/image10k/time_imgep_ir_4_10000.png)
-![Alt text](all_images/image10k/comparaison_time_diversity_4_10000.png)
-![Alt text](all_images/image10k/comp_global_ratios_iteration_4_10000.png)
-![Alt text](all_images/image10k/comp_ratios_iteration_4_10000.png)
