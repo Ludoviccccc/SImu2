@@ -220,17 +220,18 @@ To do so,
 For each j such that N_i<j<N:
 	if j <N_i:
 		Perform initialization step
-	if P0 divises j-N_i:
-		From history H, take observation points A:
-		Perform SVD: A = U,Sigma,Vh
-		get matrix 
-	Project history on V space to get coordinates in matrix C:
-	C = A.V
-	if P1 divises j-N_i:
-		sample a direction i with canonical vector:
-	get coordinates along axis i : C.e_i
-	sample a goal : g = G(C.e_i)
-	Infer a parameter with optimization model Pi: p = Pi(g,C.e_i)
+	else:
+		if P0 divises j-N_i:
+			From history H, take observation points A:
+			Perform SVD: A = U,Sigma,Vh
+			get matrix 
+		Project history on V space to get coordinates in matrix C:
+		C = A.V
+		if P1 divises j-N_i:
+			sample a direction i with canonical vector:
+		get coordinates along axis i : C.e_i
+		sample a goal : g = G(C.e_i)
+		Infer a parameter with optimization model Pi: p = Pi(g,C.e_i)
 	Collect context c and observation o : c,o = Env(p)
 	Store (p,c,o) in H
 
