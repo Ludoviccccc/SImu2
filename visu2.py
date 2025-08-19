@@ -10,10 +10,13 @@ def comparaison3(content_random, content_imgep = None, name = None, title = None
         for row in range(num_row):
             bins = np.arange(-1.0,1.0,0.05)
             axs[num_bank*row+j,0].hist(content_imgep["miss_ratios_detailled"][:,row,j] - content_imgep["miss_ratios_core0_detailled"][:,row,j],bins=bins,alpha = .5, label=label_algo)
+            axs[num_bank*row+j,0].set_yscale('log')
             axs[num_bank*row+j,0].hist(content_random["miss_ratios_detailled"][:,row,j] - content_random["miss_ratios_core0_detailled"][:,row,j],  bins=bins,alpha = .5, label="random")
             axs[num_bank*row+j,0].set_xlabel(f"ratio[bank{j+1},row{row},(S_0,S_1)] - ratio[bank{j+1},row{row},(S_0,)]")
             axs[num_bank*row+j,0].set_title("row miss hits ratio difference")
             axs[num_bank*row+j,0].legend()
+            axs[num_bank*row+j,0].set_yscale('log')
+
             axs[num_bank*row+j,1].hist(content_imgep["miss_ratios_detailled"][:,row,j] - content_imgep["miss_ratios_core1_detailled"][:,row,j],bins=bins,alpha = .5, label=label_algo)
             axs[num_bank*row+j,1].hist(content_random["miss_ratios_detailled"][:,row,j] - content_random["miss_ratios_core1_detailled"][:,row,j],  bins=bins,alpha = .5, label="random")
 #            axs[num_bank*row+j,1].hist(content_imgep["miss_ratios"][:,j] - content_imgep["miss_ratios_core1"][:,j],bins=bins,alpha = .5, label=label_algo)
@@ -21,6 +24,7 @@ def comparaison3(content_random, content_imgep = None, name = None, title = None
             axs[num_bank*row+j,1].set_xlabel(f"ratio[bank{j+1},row{row},(S_0,S_1)] - ratio[bank{j+1},row{row},(,S_1)]")
             axs[num_bank*row+j,1].set_title("row miss hits ratio difference")
             axs[num_bank*row+j,1].legend()
+            axs[num_bank*row+j,1].set_yscale('log')
 
             diversity_ratio_random = diversity([content_random["miss_ratios_core0_detailled"][:,row,j],  content_random["miss_ratios_detailled"][:,row,j]], [bins, bins])
             diversity_ratio_imgep = diversity([content_imgep["miss_ratios_core0_detailled"][:,row,j],  content_imgep["miss_ratios_detailled"][:,row,j]], [bins, bins])
