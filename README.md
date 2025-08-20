@@ -206,7 +206,7 @@ The result of an exploration with **kNN** with k=1,2,3,4. IMGEP is compared with
 
 ## IMGEP with SVD
 
-Let consider $F\in\mathbb{N}$ features given by the simulator, and $N>>1$ individual in our matrix database $A\in\mathbb{R}^{N,F}$
+Let $F\in\mathbb{N}$ features given by the simulator, and $N>>F$ individuals in our matrix database $A\in\mathbb{R}^{N,F}$
 We can then determine a singular value decomposition like : $A = U\Sigma V^\intercal$, with orthogonal matrices $U\in\mathbb{R}^{N},V\in\mathbb{R}^{F}$ and diagonal matrix $\Sigma\in\in\mathbb{R}^{N,F}$ such that it has $r$ non-negativ values $\sigma_1\geq \cdots\geq \sigma_r$.
 
 $(v_i)_{1\leq i \leq r}$ is a base of $Im A^\intercal$. Therefore we obtain coordinates of every individuals by projetcing with matrix $V$, to get a $\mathbb{R}^{N,F}$ matrix: $AV = U\Sigma$.
@@ -238,5 +238,6 @@ For each j such that N_i<j<N:
 ```
 ![Alt text](all_images/svd/comp_global_ratios_iteration_10000.png)
 ![Alt text](all_images/svd/ratios_imgep_svd_2_10000.png)
+![Alt text](all_images/svd/time_imgep_svd_2_10000.png)
 **We could also perform an exploration on a vector made of the $0\leq d \leq r$ first dimensions given by the SVD.**
 
