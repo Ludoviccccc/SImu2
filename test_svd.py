@@ -196,7 +196,7 @@ if __name__=="__main__":
     mutation_rate = 0.1
     N = 10000
     N_init = 1000
-    k = 10
+    k = 3
     min_len=5
 
 
