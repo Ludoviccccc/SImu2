@@ -25,9 +25,15 @@ if __name__ == "__main__":
     ratios_detailled = [{"type":"miss_ratios_detailled","bank":bank,"core":core,"row":row,"bins":list(np.linspace(0,1,21))} for core in [None,0,1] for bank in range(num_bank) for row in range((num_addr//16)+1)]
     shared_cache_ratios = [{"type":"shared_cache_miss_ratio","bins":list(np.linspace(0,1,21)),"addr":addr} for addr in range(num_addr)]
     general_shared_cache_ratio = [{"type":"general_shared_cache_miss","bins":list(np.linspace(0,1,21))}]
+    general_shared_cache_ratio_core0 = [{"type":"general_shared_cache_miss_core0","bins":list(np.linspace(0,1,21))}]
+    general_shared_cache_ratio_core1 = [{"type":"general_shared_cache_miss_core1","bins":list(np.linspace(0,1,21))}]
     cache_ratios = [{"type":"cache_miss_ratio","level":f"L{j}","core":i,"bins":list(np.linspace(0,1,21)),"addr":addr} for j in [1,2,3] for i in [0,1] for addr in range(num_addr)]
-    ks = [20]
-    modules = modules  + ratios_detailled + dict_times + general_shared_cache_ratio+ dict_modules# + shared_cache_ratios
+    ks = [2]
+    modules = modules  + ratios_detailled + dict_times 
+    modules += general_shared_cache_ratio
+    modules += general_shared_cache_ratio_core0
+    modules += general_shared_cache_ratio_core1
+    modules += dict_modules# + shared_cache_ratios
 #    modules += shared_cache_ratios
     #modules = [{"type":"miss_ratios_global_time"}]
     print(f"{len(modules)} modules")

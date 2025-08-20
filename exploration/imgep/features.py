@@ -86,7 +86,10 @@ class Features:
             out = out[:,module["addr"]]
         elif module["type"]=="general_shared_cache_miss":
             out = np.array(stats[f"general_shared_cache_miss"])
-            out = out[:]
+        elif module["type"]=="general_shared_cache_miss_core0":
+            out = np.array(stats[f"general_shared_cache_miss_core0"])
+        elif module["type"]=="general_shared_cache_miss_core1":
+            out = np.array(stats[f"general_shared_cache_miss_core1"])
         else:
             TypeError(f"module {module} unknown")
         return np.array(out)
