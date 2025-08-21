@@ -7,7 +7,7 @@ if __name__ == "__main__":
     image_folder ="all_images/svd"
     N = int(10000)
     N_init = 1000
-    ks = [1,5,2]
+    ks = [20]
     ks2 = [1,10,20]
     ks2 = []
     num_bank = 4
