@@ -236,6 +236,9 @@ For each j such that N_i<j<N:
 	Store (p,c,o) in H
 
 ```
+python```
+test_svd.py
+```
 ![Alt text](all_images/svd/comp_global_ratios_iteration_10000.png)
 ![Alt text](all_images/svd/ratios_imgep_svd_2_10000.png)
 ![Alt text](all_images/svd/time_imgep_svd_2_10000.png)
