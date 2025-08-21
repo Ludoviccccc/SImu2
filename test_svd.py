@@ -47,7 +47,7 @@ class OptimizationPolicykNN_(OptimizationPolicykNN):
                 min_instr = 5,
                 max_instr = 50)
     def select_closest_codes(self,H,coords:np.ndarray,goal:np.ndarray):
-        idx,_ = self.feature2closest_code(coords.reshape((1,-1)),goal)
+        idx = self.feature2closest_code(coords.reshape((1,-1)),goal)
         output = {"program": {"core0":[],"core1":[]},}
         for id_ in idx:
             output["program"]["core0"].append(H.memory_program["core0"][id_])

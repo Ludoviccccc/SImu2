@@ -41,19 +41,18 @@ class OptimizationPolicykNN(Features):
             a = np.array([goal]).reshape(-1,1) 
         out = np.sum((a -elements)**2,axis=0)
         return out
-    def feature2closest_code(self,features,signature:np.ndarray):
+    def feature2closest_code(self,features,signature:np.ndarray)->np.ndarray:
         if type(signature)==np.ndarray:
             if features.ndim==1 and (signature.shape[0]>1 or signature.ndim>1):
                 raise TypeError(f"goal of shape {signature.shape} has be a float. Features of shape {features.shape}")
         d = self.loss(signature,features)
-        d_sorted = np.sort(d)[:self.k]
         idx = np.argsort(d)[:self.k]
-        return idx,d_sorted
+        return idx
     def select_closest_codes(self,H:History,signature: np.ndarray,module:str)->dict:
         assert len(H.memory_program)>0, "history empty"
         output = {"program": {"core0":[],"core1":[]},}
         features = self.data2feature(H.memory_perf, module)
-        idx,_ = self.feature2closest_code(features,signature)
+        idx = self.feature2closest_code(features,signature)
         for id_ in idx:
             output["program"]["core0"].append(H.memory_program["core0"][id_])
             output["program"]["core1"].append(H.memory_program["core1"][id_])

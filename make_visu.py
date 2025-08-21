@@ -6,7 +6,7 @@ from exploration.imgep.intrinsic_reward import IR
 import json
 import sys
 import os
-from visu_modules import visu_modules
+from visualisation.visu_modules import visu_modules
 if __name__=="__main__":
     #np.random.seed(0)
     folder1module = "data_1module"
