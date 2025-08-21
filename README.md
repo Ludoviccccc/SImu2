@@ -237,7 +237,7 @@ For each j such that N_i<j<N:
 
 ```
 ```python
-test_svd.py
+python3 test_svd.py
 ```
 ![Alt text](all_images/svd/comp_global_ratios_iteration_10000.png)
 ![Alt text](all_images/svd/ratios_imgep_svd_2_10000.png)
