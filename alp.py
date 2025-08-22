@@ -11,4 +11,4 @@ class alp:
             a = np.array([goal]).reshape(-1,1)
         out = np.sum((a -elements)**2,axis=0)
         return out
-    #def alp(self,point
+    def alp(self,history_points,

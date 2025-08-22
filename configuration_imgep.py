@@ -7,9 +7,10 @@ if __name__ == "__main__":
     N_init = 1000
     max_len = 50
     periode = 20
+    periode_ir_computation = 500
     num_bank = 4
     mutation_rate = .1
-    num_iteration = 1 #has to be small compared to N
+    num_iteration = 2 #has to be small compared to N
     #modules =   ["time"]
     min_instr = 5
     modules = [{"type":"time_vector","bins":list(np.linspace(0,1000,21))}]
@@ -28,7 +29,7 @@ if __name__ == "__main__":
     general_shared_cache_ratio_core0 = [{"type":"general_shared_cache_miss_core0","bins":list(np.linspace(0,1,21))}]
     general_shared_cache_ratio_core1 = [{"type":"general_shared_cache_miss_core1","bins":list(np.linspace(0,1,21))}]
     cache_ratios = [{"type":"cache_miss_ratio","level":f"L{j}","core":i,"bins":list(np.linspace(0,1,21)),"addr":addr} for j in [1,2,3] for i in [0,1] for addr in range(num_addr)]
-    ks = [1,2,3,5]
+    ks = [2,3,5]
     modules = modules  + ratios_detailled + dict_times 
     modules += general_shared_cache_ratio
     modules += general_shared_cache_ratio_core0
@@ -41,6 +42,7 @@ if __name__ == "__main__":
     config = {"N_init":N_init,
               "N":N,
               "periode":periode,
+              "periode_ir_computation":periode_ir_computation,
               "mutation_rate":mutation_rate,
               "max_len":max_len,
               "min_len":min_instr,

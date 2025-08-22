@@ -115,6 +115,10 @@ class Normalize:
         if self.g: 
             raise TypeError(f"User must call method Normalize.fit before calling method Normalize.transform")
         return (x - self.min_)/(self.max_-self.min_)
+class History_(History)
+    def __init__(self,max_size=100):
+        super(History_,self).__init__(max_size)
+        self.memory_reward = {}
 
 class IMGEP(IMGEP_):
     def __init__(self,
@@ -200,7 +204,7 @@ if __name__=="__main__":
     min_len=5
 
 
-    H = History(N)
+    H = History_(N)
     Pi = OptimizationPolicykNN_(k=k,mutation_rate=mutation_rate,max_len=max_len,num_addr=num_addr,num_bank=num_bank,min_instr=min_len,max_instr=max_len)
     G = GoalGenerator(num_banks)
     Norm = Normalize()
