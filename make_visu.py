@@ -1,7 +1,7 @@
 
 import pickle
-from visu import diversity_time_iteration2
-from visu2 import comparaison3, comparaison_ratios_iterations, comparaison_ratios_global_iterations
+from visualisation.visu import diversity_time_iteration2
+from visualisation.visu2 import comparaison3, comparaison_ratios_iterations, comparaison_ratios_global_iterations
 from exploration.imgep.intrinsic_reward import IR
 import json
 import sys
