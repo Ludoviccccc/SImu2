@@ -20,6 +20,7 @@ if __name__=="__main__":
     modules = modules_dict["modules"]
     #modules = config["modules"]
     periode = config["periode"]
+    periode_ir_computation = config["periode_ir_computation"]
     mutation_rate = config["mutation_rate"]
     N = config["N"]
     N_init = config["N_init"]
@@ -54,7 +55,7 @@ if __name__=="__main__":
             sample_rand = pickle.load(f)
             content_random = sample_rand["memory_perf"]
     ks = ks_
-    for intr_reward in [False]:
+    for intr_reward in [True]:
         for k in ks:
             print(f"start: k = {k}, N={N}, intrinsic reward = {intr_reward}")
             G = GoalGenerator(num_bank = num_bank,modules = modules)

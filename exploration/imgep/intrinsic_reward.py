@@ -112,7 +112,7 @@ class IR:
             module["diversity"] = [div]
 
 def eval_diversity(feature,module):
-    if module["type"] in ["miss_ratios","time_diff","time","miss_ratios_detailled","miss_count","general_shared_cache_miss","shared_cache_miss_ratio","cache_miss_ratio","diff_ratios_detailled"]:
+    if module["type"] in ["miss_ratios","time_diff","time","miss_ratios_detailled","miss_count","general_shared_cache_miss", "general_shared_cache_miss_core0", "general_shared_cache_miss_core1","shared_cache_miss_ratio","cache_miss_ratio","diff_ratios_detailled"]:
         bins = module["bins"]
         hist,_ = np.histogram(feature,bins =bins)
         div = sum(hist>0)
@@ -136,5 +136,5 @@ def eval_diversity(feature,module):
         hist2,_,_ = np.histogram2d(feature[1,:],feature[3,:], bins=[bins, bins])
         div = np.sum(hist1>0) + np.sum(hist2>0)
     else:
-        TypeError(f"module {module} not known")
+        raise Exception(f"module {module} not known")
     return div

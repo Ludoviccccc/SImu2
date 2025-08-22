@@ -26,10 +26,12 @@ class IMGEP:
         self.Pi = Pi
         self.ir = ir
         self.periode = periode
+        self.periode_ir_computation = periode_ir_computation
         self.modules = modules 
         self.max_len = max_len
         self.start = 0
         self.periode_expl = 10
+        self.periode_ir_computation:int=500,
         self.k = 0
     def take(self,sample:dict,N_init:int): 
         """Takes the ``N_init`` first steps from the ``sample`` dictionnary to initialize the exploration. 
@@ -56,10 +58,10 @@ class IMGEP:
             else:
                 if intr_reward:
                     #Sample target goal
-                    if (i-self.N_init)%(self.periode_expl*self.periode)==0:
+                    if (i-self.N_init)%(self.periode_ir_computation)==0:
                         self.ir(self.N)
                         time_explor = i + self.ir.num_iteration*len(self.ir.modules)
-                        print("time explor", time_explor)
+                        print("time":i,"time explor", time_explor)
                         module = self.ir.choice()
                         goal = self.G(self.H, module = module)
                         continue

@@ -17,7 +17,7 @@ class IMGEP:
     G: GoalGenerator.
     Pi: OptimizationPolicy.
     """
-    def __init__(self,N:int,N_init:int,E:Env,H:History,G:GoalGenerator, Pi:OptimizationPolicykNN,ir:IR,modules:list[dict],periode:int = 1,max_len:int = 100):
+    def __init__(self,N:int,N_init:int,E:Env,H:History,G:GoalGenerator, Pi:OptimizationPolicykNN,ir:IR,modules:list[dict],periode:int = 1,periode_ir_computation:int=500,max_len:int = 100):
         self.N = N
         self.env = E
         self.H = H
@@ -26,6 +26,7 @@ class IMGEP:
         self.Pi = Pi
         self.ir = ir
         self.periode = periode
+        self.periode_ir_computation = periode_ir_computation
         self.modules = modules 
         self.max_len = max_len
         self.start = 0
@@ -56,7 +57,7 @@ class IMGEP:
             else:
                 if intr_reward:
                     #Sample target goal
-                    if (i-self.N_init)%(self.periode_expl*self.periode)==0:
+                    if (i-self.N_init)%(self.periode_ir_computation)==0:
                         self.ir(self.N)
                         time_explor = i + self.ir.num_iteration*len(self.ir.modules)
                         print("time explor", time_explor)
