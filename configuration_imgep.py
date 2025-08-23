@@ -7,7 +7,7 @@ if __name__ == "__main__":
     N_init = 1000
     max_len = 50
     periode = 20
-    periode_ir_computation = 500
+    periode_ir_computation = 400
     num_bank = 4
     mutation_rate = .1
     num_iteration = 2 #has to be small compared to N

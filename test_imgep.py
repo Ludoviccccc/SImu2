@@ -6,7 +6,7 @@ from exploration.env.func import Env
 from exploration.history import History
 from exploration.imgep.goal_generator import GoalGenerator
 from exploration.imgep.OptimizationPolicy import OptimizationPolicykNN
-from exploration.imgep.imgep2 import IMGEP
+from exploration.imgep.imgep import IMGEP
 from exploration.imgep.intrinsic_reward import IR
 import json
 import sys
