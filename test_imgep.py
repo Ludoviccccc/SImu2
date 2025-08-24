@@ -21,6 +21,7 @@ if __name__=="__main__":
     #modules = config["modules"]
     periode = config["periode"]
     periode_ir_computation = config["periode_ir_computation"]
+    print("periode_ir_compt",periode_ir_computation)
     mutation_rate = config["mutation_rate"]
     N = config["N"]
     N_init = config["N_init"]

@@ -17,7 +17,7 @@ class IMGEP:
     G: GoalGenerator.
     Pi: OptimizationPolicy.
     """
-    def __init__(self,N:int,N_init:int,E:Env,H:History,G:GoalGenerator, Pi:OptimizationPolicykNN,ir:IR,modules:list[dict],periode:int = 1,max_len:int = 100):
+    def __init__(self,N:int,N_init:int,E:Env,H:History,G:GoalGenerator, Pi:OptimizationPolicykNN,ir:IR,modules:list[dict],periode:int = 1,periode_ir_computation=400,max_len:int = 100):
         self.N = N
         self.env = E
         self.H = H
@@ -31,7 +31,6 @@ class IMGEP:
         self.max_len = max_len
         self.start = 0
         self.periode_expl = 10
-        self.periode_ir_computation:int=500,
         self.k = 0
     def take(self,sample:dict,N_init:int): 
         """Takes the ``N_init`` first steps from the ``sample`` dictionnary to initialize the exploration. 
@@ -58,10 +57,10 @@ class IMGEP:
             else:
                 if intr_reward:
                     #Sample target goal
-                    if (i-self.N_init)%(self.periode_ir_computation)==0:
+                    if (i-self.N_init)%self.periode_ir_computation==0:
                         self.ir(self.N)
                         time_explor = i + self.ir.num_iteration*len(self.ir.modules)
-                        print("time":i,"time explor", time_explor)
+                        print("time explor", time_explor)
                         module = self.ir.choice()
                         goal = self.G(self.H, module = module)
                         continue
