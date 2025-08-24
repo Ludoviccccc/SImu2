@@ -62,7 +62,7 @@ if __name__=="__main__":
             G = GoalGenerator(num_bank = num_bank,modules = modules)
             Pi = OptimizationPolicykNN(k=k,mutation_rate=mutation_rate,max_len=max_len,num_addr=num_addr,num_bank=num_bank,min_instr=min_len,max_instr=max_len)
             H_imgep = History(max_size=N)
-            ir = IR(En,modules,H_imgep, G,Pi,num_iteration,window = 5)
+            ir = IR(En,modules,H_imgep, G,Pi,num_iteration)
             imgep = IMGEP(N,N_init, En,H_imgep,G,Pi,ir, modules = modules, periode = periode, max_len = max_len)
             imgep.take(sample_rand,N_init)
             imgep(intr_reward=intr_reward)

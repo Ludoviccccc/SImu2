@@ -11,7 +11,7 @@ if __name__ == "__main__":
     num_bank = 4
     num_addr = 20
     file_mix = lambda k,N: f"history_weak_{k}_N_{N}_0.pkl"
-    file_imgep_ir = lambda k,N: f"history_kNN_{k}_N_{N}_lp_2.pkl"
+    file_imgep_ir = lambda k,N: f"history_kNN_{k}_N_{N}_lp_3.pkl"
     file_imgep_no_ir = lambda k,N: f"history_kNN_{k}_N_{N}_no_lp_0.pkl"
     files = []
 #    files +=[{"folder":folder[2],"file":file_mix(k,N),"name":f"mix_programs k={k},N={N}","k":k,"N":N,"type":"mix_programs"} for k in ks]
