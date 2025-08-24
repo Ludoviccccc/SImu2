@@ -16,7 +16,7 @@ if __name__ == "__main__":
     modules = [{"type":"time_vector","bins":list(np.linspace(0,1000,21))}]
     modules +=  [{"type":"miss_bank","bank":j,"bins":list(np.linspace(0,1,21))} for j in range(num_bank)]
     modules +=  [{"type":"diff_ratios_bank","bank":j,"bins":list(np.linspace(0,1,21))} for j in range(num_bank)]
-    modules +=  [{"type":"diff_ratios_detailled","bank":j,"bins":list(np.linspace(-1,1,21)),"row":row,"core":core} for j in range(num_bank) for row in range((num_addr//16)+1) for core in [0,1]]
+    #modules +=  [{"type":"diff_ratios_detailled","bank":j,"bins":list(np.linspace(-1,1,21)),"row":row,"core":core} for j in range(num_bank) for row in range((num_addr//16)+1) for core in [0,1]]
 
     modules +=  [{"type":"time_diff","core":core,"bins":list(np.linspace(0,1000,21))} for core in range(2)]
     #modules +=  [{"type":"miss_count", "bank":bank,"core":core,"bins":list(range(20))} for bank in range(num_bank) for core in [None,0,1]]
