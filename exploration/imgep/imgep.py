@@ -17,7 +17,7 @@ class IMGEP:
     G: GoalGenerator.
     Pi: OptimizationPolicy.
     """
-    def __init__(self,N:int,N_init:int,E:Env,H:History,G:GoalGenerator, Pi:OptimizationPolicykNN,ir:IR,modules:list[dict],periode:int = 1,periode_ir_computation=400,max_len:int = 100):
+    def __init__(self,N:int,N_init:int,E:Env,H:History,G:GoalGenerator, Pi:OptimizationPolicykNN,ir:IR,modules:list[dict],periode:int = 1,periode_ir_computation=400,max_len:int = 50):
         self.N = N
         self.env = E
         self.H = H
