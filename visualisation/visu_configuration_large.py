@@ -7,11 +7,11 @@ if __name__ == "__main__":
     image_folder ="all_images/image_large"
     N = int(10000)
     N_init = 1000
-    ks = [2,3,5]
+    ks = [2]
     num_bank = 4
     num_addr = 20
     file_mix = lambda k,N: f"history_weak_{k}_N_{N}_0.pkl"
-    file_imgep_ir = lambda k,N: f"history_kNN_{k}_N_{N}_lp_4.pkl"
+    file_imgep_ir = lambda k,N: f"history_kNN_{k}_N_{N}_lp_3.pkl"
     file_imgep_no_ir = lambda k,N: f"history_kNN_{k}_N_{N}_no_lp_0.pkl"
     files = []
 #    files +=[{"folder":folder[2],"file":file_mix(k,N),"name":f"mix_programs k={k},N={N}","k":k,"N":N,"type":"mix_programs"} for k in ks]

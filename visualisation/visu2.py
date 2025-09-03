@@ -1,4 +1,5 @@
 import numpy as np
+import os
 import matplotlib.pyplot as plt
 def diversity(data:[np.ndarray,np.ndarray],bins:[np.ndarray, np.ndarray]):
     H,_,_ = np.histogram2d(data[0],data[1],bins)
@@ -10,21 +11,19 @@ def comparaison3(content_random, content_imgep = None, name = None, title = None
         for row in range(num_row):
             bins = np.arange(-1.0,1.0,0.05)
             axs[num_bank*row+j,0].hist(content_imgep["miss_ratios_detailled"][:,row,j] - content_imgep["miss_ratios_core0_detailled"][:,row,j],bins=bins,alpha = .5, label=label_algo)
-            axs[num_bank*row+j,0].set_yscale('log')
+            #axs[num_bank*row+j,0].set_yscale('log')
             axs[num_bank*row+j,0].hist(content_random["miss_ratios_detailled"][:,row,j] - content_random["miss_ratios_core0_detailled"][:,row,j],  bins=bins,alpha = .5, label="random")
             axs[num_bank*row+j,0].set_xlabel(f"ratio[bank{j+1},row{row},(S_0,S_1)] - ratio[bank{j+1},row{row},(S_0,)]")
             axs[num_bank*row+j,0].set_title("row miss hits ratio difference")
             axs[num_bank*row+j,0].legend()
-            axs[num_bank*row+j,0].set_yscale('log')
+            #axs[num_bank*row+j,0].set_yscale('log')
 
             axs[num_bank*row+j,1].hist(content_imgep["miss_ratios_detailled"][:,row,j] - content_imgep["miss_ratios_core1_detailled"][:,row,j],bins=bins,alpha = .5, label=label_algo)
             axs[num_bank*row+j,1].hist(content_random["miss_ratios_detailled"][:,row,j] - content_random["miss_ratios_core1_detailled"][:,row,j],  bins=bins,alpha = .5, label="random")
-#            axs[num_bank*row+j,1].hist(content_imgep["miss_ratios"][:,j] - content_imgep["miss_ratios_core1"][:,j],bins=bins,alpha = .5, label=label_algo)
-#            axs[num_bank*row+j,1].hist(content_random["miss_ratios"][:,j] - content_random["miss_ratios_core1"][:,j],  bins=bins,alpha = .5, label="random")
             axs[num_bank*row+j,1].set_xlabel(f"ratio[bank{j+1},row{row},(S_0,S_1)] - ratio[bank{j+1},row{row},(,S_1)]")
             axs[num_bank*row+j,1].set_title("row miss hits ratio difference")
             axs[num_bank*row+j,1].legend()
-            axs[num_bank*row+j,1].set_yscale('log')
+            #axs[num_bank*row+j,1].set_yscale('log')
 
             diversity_ratio_random = diversity([content_random["miss_ratios_core0_detailled"][:,row,j],  content_random["miss_ratios_detailled"][:,row,j]], [bins, bins])
             diversity_ratio_imgep = diversity([content_imgep["miss_ratios_core0_detailled"][:,row,j],  content_imgep["miss_ratios_detailled"][:,row,j]], [bins, bins])
@@ -55,7 +54,11 @@ def comparaison3(content_random, content_imgep = None, name = None, title = None
     if title:
         fig.suptitle(title[0],fontsize = 20)
     if name:
-        plt.savefig(name[0])
+        #plt.savefig(name[0])
+        k = 0
+        while os.path.isfile(f"{name[0]}_{k}.png"):
+            k+=1
+        plt.savefig(f"{name[0]}_{k}.png")
     plt.close()
     fig = plt.figure(figsize = (12,12))#, layout='constrained')
 
@@ -127,10 +130,11 @@ def comparaison3(content_random, content_imgep = None, name = None, title = None
     ax5.set_title(f"imgep:{diversity_time_imgep}, rand:{diversity_time_rand}")
     if title:
         fig.suptitle(title[1],fontsize = 15,y = .95)
-
     if name:
-        plt.savefig(name[1],bbox_inches = 'tight',
-    pad_inches = 0)
+        k = 0
+        while os.path.isfile(f"{name[1]}_{k}.png"):
+            k+=1
+        plt.savefig(f"{name[1]}_{k}.png",bbox_inches = 'tight',pad_inches = 0)
     plt.close()
 
 

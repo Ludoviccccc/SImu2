@@ -7,14 +7,14 @@ if __name__ == "__main__":
     image_folder ="all_images/svd"
     N = int(10000)
     N_init = 1000
-    ks = [2,3,5,20]
+    ks = [2]
     ks2 = [1,2,3,5,10]
     ks2 = []
     num_bank = 4
     num_addr = 20
     file_mix = lambda k,N: f"history_weak_{k}_N_{N}_0.pkl"
     file_imgep_ir = lambda k,N: f"history_kNN_{k}_N_{N}_lp_0.pkl"
-    file_imgep_svd = lambda k,N: f"history_kNN_{k}_N_{N}_svd_0.pkl"
+    file_imgep_svd = lambda k,N: f"history_kNN_{k}_N_{N}_svd_8.pkl"
     file_imgep_svd2 = lambda k,N: f"history_kNN_{k}_N_{N}_svd_1.pkl"
     files = []
 #    files +=[{"folder":folder[2],"file":file_mix(k,N),"name":f"mix_programs k={k},N={N}","k":k,"N":N,"type":"mix_programs"} for k in ks]
