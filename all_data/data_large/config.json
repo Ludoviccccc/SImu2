@@ -1,1 +1,1 @@
-{"N_init": 1000, "N": 10000, "periode": 20, "periode_ir_computation": 400, "mutation_rate": 0.1, "max_len": 50, "min_len": 5, "num_addr": 20, "num_bank": 4, "folder": "all_data/data_large", "ks": [2, 3, 5], "num_iteration": 2}
+{"N_init": 1000, "N": 10000, "periode": 50, "periode_ir_computation": 600, "mutation_rate": 0.1, "max_len": 50, "min_len": 3, "num_addr": 20, "num_bank": 4, "folder": "all_data/data_large", "ks": [2], "num_iteration": 3}
