@@ -41,10 +41,10 @@ if __name__=="__main__":
                             [(data["name"],data["k"],f"{data['folder']}/{data['file']}") for data in files if data["k"]==k_],
                            title = f"comparaison_time_diversity_{k_}_{N}",
                            folder = image_folder)
-        #comparaison_ratios_iterations([(a[0],a[1]) for a in contents_ if a[2]==k_] + [("random", content_random)],
-        #                             name = f"{image_folder}/comp_ratios_iteration_{k_}_{N}", k = k_)
-        #comparaison_ratios_global_iterations([(a[0],a[1]) for a in contents_ if a[2]==k_] + [("random", content_random)],
-        #                                    name = f"{image_folder}/comp_global_ratios_iteration_{k_}_{N}", k = k_)
+        comparaison_ratios_iterations([(a[0],a[1]) for a in contents_ if a[2]==k_] + [("random", content_random)],
+                                     name = f"{image_folder}/comp_ratios_iteration_{k_}_{N}", k = k_)
+        comparaison_ratios_global_iterations([(a[0],a[1]) for a in contents_ if a[2]==k_] + [("random", content_random)],
+                                            name = f"{image_folder}/comp_global_ratios_iteration_{k_}_{N}", k = k_)
 
     comparaison_ratios_iterations([(a[0],a[1]) for a in contents_] + [("random", content_random)],
                     name = f"{image_folder}/comp_ratios_iteration_{N}", k = k_)
