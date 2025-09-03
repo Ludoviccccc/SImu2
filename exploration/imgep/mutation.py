@@ -38,14 +38,16 @@ def mutate_instructions(instructions:list[dict],
     
     # Now perform random mutations
     num_mutations = max(0, int(len(mutated) * mutation_rate))
-    num_mutations = 1
+    #num_mutations = 1
     
     for _ in range(num_mutations):
         choices = ['change','delete', 'add']
-        #if len(mutated)>min_instr:
-        #    choices.append('delete')
-        #if len(mutated)<=max_instr:
-        #    choices.append('add')
+        #################
+        if len(mutated)>min_instr:
+            choices.append('delete')
+        if len(mutated)<=max_instr:
+            choices.append('add')
+        #################
         mutation_type = random.choice(choices)
         if mutation_type == 'change' and len(mutated) > 0:
             idx = random.randint(0, len(mutated) - 1)
